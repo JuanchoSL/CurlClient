@@ -1,0 +1,36 @@
+{
+    "name": "juanchosl/curlclient",
+    "description": "A small, lightweight utility to perform curl calls using GET, POST, PUT, PATH, DELETE and HEAD methods...",
+    "type": "package",
+    "license": "MIT",
+    "homepage": "https://github.com/JuanchoSL/CurlCLient",
+    "keywords": [
+        "curl",
+        "request"
+    ],
+    "authors": [
+        {
+            "name": "Juan Sánchez Lecegui",
+            "email": "JuanchoSL@hotmail.com",
+            "homepage": "https://github.com/JuanchoSL/"
+        }
+    ],
+    "require": {
+        "php": "^7.1 || ^8.0",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "apigen/apigen": "*",
+        "phpstan/phpstan": "1.9.1"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "JuanchoSL\\CurlClient\\": "src/"
+        }
+    },
+    "scripts": {
+        "apigen": "vendor/bin/apigen --output ./doc --title 'cURL Client' --exclude vendor/** ./src",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon --xdebug"
+    }
+}
