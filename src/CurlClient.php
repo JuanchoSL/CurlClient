@@ -5,13 +5,7 @@ declare(strict_types=1);
 namespace JuanchoSL\CurlClient;
 
 /**
- * Description of CurlClient
- *
- * @author Juan Sánchez
- */
-
-/**
- * Clase para gestionar las conexiones y peticiones HTTP a urls remotas
+ * Perform cURL request to remote services as APIs
  */
 class CurlClient
 {
@@ -44,7 +38,7 @@ class CurlClient
     const HTTPCONNECTION_AGENT_IE10_WIN8 = 6;
 
     /**
-     *
+     * Class constructor
      * @param array $settings Associative array including CURL_OPT_*** as key and his value
      */
     public function __construct(array $settings = [])
@@ -144,7 +138,8 @@ class CurlClient
     /**
      * Prepare the curl object with the default values and then the user settings
      * @param String $url URL of the reuqest
-     * @param Array $header Extra headers for send in this request
+     * @param Array $header Extra headers for send in this request.
+     * Indexed or associative arrays are valid values
      * @param String|Null $cookie Cookie path
      * @return void
      */
@@ -155,9 +150,11 @@ class CurlClient
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_USERAGENT, $this->getUserAgent());
         if (!empty($header)) {
-            array_walk($header, function (&$value, $key) {
-                $value = (is_numeric($key)) ? $value : implode(': ', [$key, $value]);
-            });
+            array_walk(
+                    $header, function (&$value, $key) {
+                        $value = (is_numeric($key)) ? $value : implode(': ', [$key, $value]);
+                    }
+            );
             $header = array_values($header);
             curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header);
         }
@@ -188,9 +185,9 @@ class CurlClient
 
     /**
      * Send the prepared request
-     * @return string The result of the request or the error message
+     * @return mixed The result of the request or the error message
      */
-    protected function exec()
+    protected function exec(): mixed
     {
         $result = curl_exec($this->curl);
         $this->response_info = curl_getinfo($this->curl);
@@ -202,9 +199,8 @@ class CurlClient
     }
 
     /**
-     * Establece en que ruta se guardan las cookies.
-     * Importante: El usuario de apache debe tener acceso de lectura y escritura
-     * @param string $path
+     * Define the cookies saving place. The webserver user needs to have read and write privileges
+     * @param string $path the cookies saving directory
      * @return void
      */
     public function setCookiePath($path): void
@@ -216,9 +212,9 @@ class CurlClient
      * Send a GET request to the URL
      * @param string $url URL
      * @param Array $header Extra headers for send in this request
-     * @return string Request response or error message
+     * @return mixed Request response or error message
      */
-    public function get(string $url, array $header = []): string
+    public function get(string $url, array $header = []): mixed
     {
         $this->init($url, $header);
         return $this->exec();
@@ -229,9 +225,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $post_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return string Request response or error message
+     * @return mixed Request response or error message
      */
-    public function post(string $url, $post_elements, array $header = []): string
+    public function post(string $url, $post_elements, array $header = []): mixed
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_POST, true);
@@ -244,9 +240,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $put_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return string Request response or error message
+     * @return mixed Request response or error message
      */
-    public function put(string $url, $put_elements, array $header = []): string
+    public function put(string $url, $put_elements, array $header = []): mixed
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -259,9 +255,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $patch_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return string Request response or error message
+     * @return mixed Request response or error message
      */
-    public function patch(string $url, $patch_elements, array $header = []): string
+    public function patch(string $url, $patch_elements, array $header = []): mixed
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PATCH");
@@ -273,9 +269,9 @@ class CurlClient
      * Send a DELETE request to the URL
      * @param string $url URL
      * @param Array $header Extra headers for send in this request
-     * @return string Request response or error message
+     * @return mixed Request response or error message
      */
-    public function delete(string $url, array $header = []): string
+    public function delete(string $url, array $header = []): mixed
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -291,9 +287,11 @@ class CurlClient
     public function head(string $url, array $header = []): array
     {
         $this->init($url, $header);
-        curl_setopt_array($this->curl, array(
-            CURLOPT_HEADER => true,
-            CURLOPT_NOBODY => true,
+        curl_setopt_array(
+                $this->curl,
+                array(
+                    CURLOPT_HEADER => true,
+                    CURLOPT_NOBODY => true,
                 )
         );
         $result = explode("\n", curl_exec($this->curl));
@@ -332,10 +330,10 @@ class CurlClient
 
     /**
      * Retrieve the info from the last request performed
-     * @param int $id The CURLINFO_** constants can be used or null for all responses array
-     * @return string The value of the selected index or the full array of data
+     * @param int $id The desired info name or null for all responses array
+     * @return mixed The value of the selected index or the full array of data
      */
-    public function getLastInfo($id = null)
+    public function getLastInfo($id = null): mixed
     {
         $info = $this->response_info;
         return (!empty($id)) ? $info[$id] : $info;
