@@ -1,0 +1,1018 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Class JuanchoSL\CurlClient\CurlClient | 'CurlClient' API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-JuanchoSL.html">JuanchoSL</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li class="active">
+						<a href="JuanchoSL.CurlClient.CurlClient.html">
+							CurlClient
+						</a>
+					</li>
+					<li>
+						<a href="JuanchoSL.CurlClient.DataConverter.html">
+							DataConverter
+						</a>
+					</li>
+			</ul>
+		</div>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-JuanchoSL.CurlClient.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="JuanchoSL.CurlClient.CurlClient.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-JuanchoSL.html">JuanchoSL</a>\<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>\<a href="JuanchoSL.CurlClient.CurlClient.html">CurlClient</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Perform cURL request to remote services as APIs</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-CurlClient.html#10" title="Go to source code">CurlClient.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#40-49" title="Go to source code">__construct</a>(<span>array <var>$settings</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Class constructor
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Class constructor</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$settings</var>&nbsp;&nbsp;</td>
+										<td><p>Associative array including CURL_OPT_*** as key and his value</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setSsl" id="_setSsl">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#51-61" title="Go to source code">setSsl</a>(<span>bool <var>$ssl</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Enable or disable SSL Strict mode
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Enable or disable SSL Strict mode</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setSsl">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getSsl" id="_getSsl">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#63-70" title="Go to source code">getSsl</a>(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Return if SSL Strict mode is enabled
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Return if SSL Strict mode is enabled</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getSsl">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setFollowLocations" id="_setFollowLocations">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#72-82" title="Go to source code">setFollowLocations</a>(<span>bool <var>$follow_locations</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Enable or disable the follow location directive
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Enable or disable the follow location directive</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setFollowLocations">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFollowLocations" id="_getFollowLocations">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#84-91" title="Go to source code">getFollowLocations</a>(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Return if follow location directive is enabled or not
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Return if follow location directive is enabled or not</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFollowLocations">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setReturnTransfer" id="_setReturnTransfer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#93-103" title="Go to source code">setReturnTransfer</a>(<span>bool <var>$return_transfer</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Enable or disable the return transfer directive
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Enable or disable the return transfer directive</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setReturnTransfer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReturnTransfer" id="_getReturnTransfer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#105-112" title="Go to source code">getReturnTransfer</a>(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Return if return transfer directive is enabled or not
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Return if return transfer directive is enabled or not</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReturnTransfer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setUserAgent" id="_setUserAgent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#114-127" title="Go to source code">setUserAgent</a>(<span>string|int <var>$agent</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Set the user agent for send with the request, can send a full string with the user agent
+or use the constants for set a…
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Set the user agent for send with the request, can send a full string with the user agent
+or use the constants for set a predeterminated user agent</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setUserAgent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getUserAgent" id="_getUserAgent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#129-136" title="Go to source code">getUserAgent</a>(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		The user agent for use in the request
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>The user agent for use in the request</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getUserAgent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="exec" id="_exec">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#186-199" title="Go to source code">exec</a>(): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send the prepared request
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send the prepared request</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>The result of the request or the error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_exec">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setCookiePath" id="_setCookiePath">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#201-209" title="Go to source code">setCookiePath</a>(<span>string <var>$path</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Define the cookies saving place. The webserver user needs to have read and write privileges
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Define the cookies saving place. The webserver user needs to have read and write privileges</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$path</var>&nbsp;&nbsp;</td>
+										<td><p>the cookies saving directory</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setCookiePath">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="get" id="_get">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#211-221" title="Go to source code">get</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a GET request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a GET request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_get">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="post" id="_post">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#223-236" title="Go to source code">post</a>(<span>string <var>$url</var></span>, <span>mixed <var>$post_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a POST request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a POST request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$post_elements</var>&nbsp;&nbsp;</td>
+										<td><p>Fullformatted values to send into request</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_post">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="put" id="_put">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#238-251" title="Go to source code">put</a>(<span>string <var>$url</var></span>, <span>mixed <var>$put_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a PUT request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a PUT request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$put_elements</var>&nbsp;&nbsp;</td>
+										<td><p>Fullformatted values to send into request</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_put">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="patch" id="_patch">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#253-266" title="Go to source code">patch</a>(<span>string <var>$url</var></span>, <span>mixed <var>$patch_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a PATCH request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a PATCH request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$patch_elements</var>&nbsp;&nbsp;</td>
+										<td><p>Fullformatted values to send into request</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_patch">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="delete" id="_delete">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#268-279" title="Go to source code">delete</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a DELETE request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a DELETE request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_delete">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="head" id="_head">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#281-300" title="Go to source code">head</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Send a HEAD request to the URL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send a HEAD request to the URL</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>URL</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$header</var>&nbsp;&nbsp;</td>
+										<td><p>Extra headers for send in this request</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Request response or error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_head">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getBinary" id="_getBinary">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#302-312" title="Go to source code">getBinary</a>(<span>string <var>$url</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Retrieve a remote file on binary format
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Retrieve a remote file on binary format</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$url</var>&nbsp;&nbsp;</td>
+										<td><p>Path of the remote file</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getBinary">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="close" id="_close">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#319-329" title="Go to source code">close</a>(): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Close the conection
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Close the conection</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_close">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getLastInfo" id="_getLastInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlClient.html#331-340" title="Go to source code">getLastInfo</a>(<span>int <var>$id</var> = <span class="php-kw">null</span></span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Retrieve the info from the last request performed
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Retrieve the info from the last request performed</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$id</var>&nbsp;&nbsp;</td>
+										<td><p>The desired info name or null for all responses array</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>The value of the selected index or the full array of data</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getLastInfo">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_LINUX" id="HTTPCONNECTION_AGENT_LINUX">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#33" title="Go to source code">HTTPCONNECTION_AGENT_LINUX</a> = <span class="php-num">0</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_LINUX">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_UBUNTU" id="HTTPCONNECTION_AGENT_UBUNTU">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#34" title="Go to source code">HTTPCONNECTION_AGENT_UBUNTU</a> = <span class="php-num">1</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_UBUNTU">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_IPHONE" id="HTTPCONNECTION_AGENT_IPHONE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#35" title="Go to source code">HTTPCONNECTION_AGENT_IPHONE</a> = <span class="php-num">3</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_IPHONE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_ANDROID_4_4" id="HTTPCONNECTION_AGENT_ANDROID_4_4">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#36" title="Go to source code">HTTPCONNECTION_AGENT_ANDROID_4_4</a> = <span class="php-num">4</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_ANDROID_4_4">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_ANDROID_5" id="HTTPCONNECTION_AGENT_ANDROID_5">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#37" title="Go to source code">HTTPCONNECTION_AGENT_ANDROID_5</a> = <span class="php-num">5</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_ANDROID_5">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_IE10_WIN8" id="HTTPCONNECTION_AGENT_IE10_WIN8">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code><a href="source-CurlClient.html#38" title="Go to source code">HTTPCONNECTION_AGENT_IE10_WIN8</a> = <span class="php-num">6</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HTTPCONNECTION_AGENT_IE10_WIN8">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			'CurlClient' API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha.3</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

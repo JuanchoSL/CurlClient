@@ -1,0 +1,225 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Class JuanchoSL\CurlClient\DataConverter | 'CurlClient' API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-JuanchoSL.html">JuanchoSL</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="JuanchoSL.CurlClient.CurlClient.html">
+							CurlClient
+						</a>
+					</li>
+					<li class="active">
+						<a href="JuanchoSL.CurlClient.DataConverter.html">
+							DataConverter
+						</a>
+					</li>
+			</ul>
+		</div>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-JuanchoSL.CurlClient.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="JuanchoSL.CurlClient.DataConverter.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-JuanchoSL.html">JuanchoSL</a>\<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>\<a href="JuanchoSL.CurlClient.DataConverter.html">DataConverter</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-DataConverter.html#7" title="Go to source code">DataConverter.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="array2xml" id="_array2xml">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-DataConverter.html#10-23" title="Go to source code">array2xml</a>(<span>array <var>$data</var></span>, <span><a href="SimpleXMLElement.html"><span title="SimpleXMLElement">SimpleXMLElement</span></a> <var>$xml</var> = <span class="php-kw">null</span></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Create a new XML string with the array data on recursive mode
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Create a new XML string with the array data on recursive mode</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$data</var>&nbsp;&nbsp;</td>
+										<td><p>Values to parse</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$xml</var>&nbsp;&nbsp;</td>
+										<td><p>Child where we would append the result, null for root index</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>XML string</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_array2xml">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="bodyPrepare" id="_bodyPrepare">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-DataConverter.html#52-85" title="Go to source code">bodyPrepare</a>(<span>array <var>$elements</var></span>, <span>string <var>$type</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Read, parse and convert the array of elements for the desired type, can be:
+- JSON
+- XML
+- URL or FORM (form url…
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Read, parse and convert the array of elements for the desired type, can be:</p>
+<ul>
+<li>JSON</li>
+<li>XML</li>
+<li>URL or FORM (form url encoded body content)</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$elements</var>&nbsp;&nbsp;</td>
+										<td><p>Data to convert</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>Type of conversion (JSON, XML, FORM)</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>The conversion result</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_bodyPrepare">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			'CurlClient' API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha.3</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>
