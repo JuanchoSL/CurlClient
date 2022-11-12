@@ -46,5 +46,5 @@ $curl->setSsl(true);
 $response = $curl->post($url, $array_body_data, $extra_headers);
 
 $http_code = $response->getResponseCode();
-$body = $response->getbody();
+$body = $response->getBody();
 ```
