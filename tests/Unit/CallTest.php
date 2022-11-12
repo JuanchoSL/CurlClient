@@ -2,61 +2,75 @@
 
 namespace Tests\Unit;
 
-use JuanchoSL\CurlClient\CurlClient;
+use JuanchoSL\CurlClient\CurlRequest;
+use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\DataConverter;
 use PHPUnit\Framework\TestCase;
 
 class CallTest extends TestCase
 {
+
     public function testGetApiLyrics()
     {
-        $curl = new CurlClient();
+        $curl = new CurlRequest();
         $curl->setSsl(false);
         $body = DataConverter::bodyPrepare(['artist' => 'rihanna', 'song' => 'umbrella'], 'url');
         $response = $curl->get('http://api.chartlyrics.com/apiv1.asmx/SearchLyric?' . $body);
-        $code = $curl->getLastInfo('http_code');
-        $xml = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
-        $this->assertEquals(200, $code);
-        $response = json_decode(json_encode($xml), false, 512, JSON_THROW_ON_ERROR);
-        $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('SearchLyricResult', $response);
-        $this->assertIsArray($response->SearchLyricResult);
-        $this->assertNotEmpty($response->SearchLyricResult);
-        $response = current($response->SearchLyricResult);
-        $this->assertObjectHasAttribute('Artist', $response);
-        $this->assertStringContainsStringIgnoringCase('rihanna', $response->Artist);
-        $this->assertObjectHasAttribute('Song', $response);
-        $this->assertStringContainsStringIgnoringCase('umbrella', $response->Song);
+
+        $this->assertInstanceOf(CurlResponse::class, $response);
+        $this->assertEquals(200, $response->getResponseCode());
+        $this->assertStringStartsWith('text/xml', $response->getContentType());
+
+        $xml = simplexml_load_string($response->getBody(), "SimpleXMLElement", LIBXML_NOCDATA);
+        $body = json_decode(json_encode($xml), false, 512, JSON_THROW_ON_ERROR);
+        $this->assertIsObject($body);
+        $this->assertObjectHasAttribute('SearchLyricResult', $body);
+        $this->assertIsArray($body->SearchLyricResult);
+        $this->assertNotEmpty($body->SearchLyricResult);
+        $body = current($body->SearchLyricResult);
+        $this->assertObjectHasAttribute('Artist', $body);
+        $this->assertStringContainsStringIgnoringCase('rihanna', $body->Artist);
+        $this->assertObjectHasAttribute('Song', $body);
+        $this->assertStringContainsStringIgnoringCase('umbrella', $body->Song);
     }
+
     public function testGetApiBitcoinPrice()
     {
-        $curl = new CurlClient();
+        $curl = new CurlRequest();
         $curl->setSsl(true);
         $response = $curl->get('https://api.coindesk.com/v1/bpi/currentprice.json');
-        $code = $curl->getLastInfo('http_code');
-        $this->assertEquals(200, $code);
-        $response = json_decode($response, false, 512, JSON_THROW_ON_ERROR);
-        $this->assertIsObject($response);
-        $this->assertObjectHasAttribute('chartName', $response);
-        $this->assertEqualsIgnoringCase('bitcoin', $response->chartName);
+
+        $this->assertInstanceOf(CurlResponse::class, $response);
+        $this->assertEquals(200, $response->getResponseCode());
+        $this->assertStringStartsWith('application/javascript', $response->getContentType());
+
+        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $this->assertIsObject($body);
+        $this->assertObjectHasAttribute('chartName', $body);
+        $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
+
     public function testGetExchangeRatesApi()
     {
-        $curl = new CurlClient();
+        $curl = new CurlRequest();
         $curl->setSsl(true);
         $response = $curl->get('https://api.coingecko.com/api/v3/exchange_rates');
-        $code = $curl->getLastInfo('http_code');
-        $this->assertEquals(200, $code);
-        $response = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-        $this->assertIsArray($response);
-        $this->assertArrayHasKey('rates', $response);
-        $this->assertIsArray($response['rates']);
-        $this->assertArrayHasKey('eur', $response['rates']);
-        $this->assertArrayHasKey('name', $response['rates']['eur']);
-        $this->assertArrayHasKey('unit', $response['rates']['eur']);
-        $this->assertArrayHasKey('value', $response['rates']['eur']);
-        $this->assertArrayHasKey('type', $response['rates']['eur']);
-        $this->assertEqualsIgnoringCase('fiat', $response['rates']['eur']['type']);
-        $this->assertEqualsIgnoringCase('euro', $response['rates']['eur']['name']);
+
+        $this->assertInstanceOf(CurlResponse::class, $response);
+        $this->assertEquals(200, $response->getResponseCode());
+        $this->assertStringStartsWith('application/json', $response->getContentType());
+
+        $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertIsArray($body);
+        $this->assertArrayHasKey('rates', $body);
+        $this->assertIsArray($body['rates']);
+        $this->assertArrayHasKey('eur', $body['rates']);
+        $this->assertArrayHasKey('name', $body['rates']['eur']);
+        $this->assertArrayHasKey('unit', $body['rates']['eur']);
+        $this->assertArrayHasKey('value', $body['rates']['eur']);
+        $this->assertArrayHasKey('type', $body['rates']['eur']);
+        $this->assertEqualsIgnoringCase('fiat', $body['rates']['eur']['type']);
+        $this->assertEqualsIgnoringCase('euro', $body['rates']['eur']['name']);
     }
+
 }
