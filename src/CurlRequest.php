@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace JuanchoSL\CurlClient;
 
+use JuanchoSL\CurlClient\CurlResponse;
+
 /**
  * Perform cURL request to remote services as APIs
  */
-class CurlClient
+class CurlRequest
 {
 
     private \CurlHandle $curl;
@@ -185,9 +187,10 @@ class CurlClient
 
     /**
      * Send the prepared request
-     * @return mixed The result of the request or the error message
+     * @return CurlResponse Request response
+
      */
-    protected function exec(): mixed
+    protected function exec(): CurlResponse
     {
         $result = curl_exec($this->curl);
         $this->response_info = curl_getinfo($this->curl);
@@ -195,7 +198,7 @@ class CurlClient
             $result = curl_error($this->curl);
         }
         $this->close();
-        return $result;
+        return new CurlResponse($result, $this->response_info);
     }
 
     /**
@@ -212,9 +215,9 @@ class CurlClient
      * Send a GET request to the URL
      * @param string $url URL
      * @param Array $header Extra headers for send in this request
-     * @return mixed Request response or error message
+     * @return CurlResponse Request response
      */
-    public function get(string $url, array $header = []): mixed
+    public function get(string $url, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         return $this->exec();
@@ -225,9 +228,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $post_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return mixed Request response or error message
+     * @return CurlResponse Request response
      */
-    public function post(string $url, $post_elements, array $header = []): mixed
+    public function post(string $url, $post_elements, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_POST, true);
@@ -240,9 +243,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $put_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return mixed Request response or error message
+     * @return CurlResponse Request response
      */
-    public function put(string $url, $put_elements, array $header = []): mixed
+    public function put(string $url, $put_elements, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -255,9 +258,9 @@ class CurlClient
      * @param string $url URL
      * @param mixed $patch_elements Fullformatted values to send into request
      * @param Array $header Extra headers for send in this request
-     * @return mixed Request response or error message
+     * @return CurlResponse Request response
      */
-    public function patch(string $url, $patch_elements, array $header = []): mixed
+    public function patch(string $url, $patch_elements, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PATCH");
@@ -269,9 +272,9 @@ class CurlClient
      * Send a DELETE request to the URL
      * @param string $url URL
      * @param Array $header Extra headers for send in this request
-     * @return mixed Request response or error message
+     * @return CurlResponse Request response
      */
-    public function delete(string $url, array $header = []): mixed
+    public function delete(string $url, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -282,9 +285,9 @@ class CurlClient
      * Send a HEAD request to the URL
      * @param string $url URL
      * @param Array $header Extra headers for send in this request
-     * @return array Request response or error message
+     * @return CurlResponse Request response
      */
-    public function head(string $url, array $header = []): array
+    public function head(string $url, array $header = []): CurlResponse
     {
         $this->init($url, $header);
         curl_setopt_array(
@@ -295,7 +298,9 @@ class CurlClient
                 )
         );
         $result = explode("\n", curl_exec($this->curl));
+        $this->response_info = curl_getinfo($this->curl);
         $this->close();
+        return new CurlResponse($result, $this->response_info);
         return $result;
     }
 

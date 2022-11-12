@@ -1,13 +1,26 @@
 # Change Log Curl Client
 
 
+## [1.0.2] - 2022-11-12
+
+### Added
+
+- Response object with all information about the request result
+
+### Changed
+
+- CurlClient class change his name to CurlRequest in order to difference it of CurlResponse
+
+### Fixed
+
+
 ## [1.0.1] - 2022-11-09
 
 ### Added
 
 - Change Log file
 - Unit tests
- -Documentation into ./etc/doc/ folder
+- Documentation into ./etc/doc/ folder
 
 ### Changed
 
