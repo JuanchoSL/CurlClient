@@ -35,15 +35,12 @@ $ composer install
 
 ```
 use JuanchoSL\CurlClient\CurlRequest;
-use JuanchoSL\CurlClient\DataConverter;
-
-$array_body_data = DataConverter::bodyPrepare([$key => $value], 'JSON');
 
 $extra_headers = ['Content-type' => 'application/json'];
 
 $curl = new CurlRequest();
 $curl->setSsl(true);
-$response = $curl->post($url, $array_body_data, $extra_headers);
+$response = $curl->post($url, json_encode([$key => $value]), $extra_headers);
 
 $http_code = $response->getResponseCode();
 $body = $response->getBody();
