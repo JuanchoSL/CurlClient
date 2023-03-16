@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Class JuanchoSL\CurlClient\CurlClient | 'CurlClient' API</title>
+	<title>Class JuanchoSL\CurlClient\CurlRequest | 'CurlClient' API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -20,6 +20,11 @@
 	<ul>
 			<li class="menuGroup-item active">
 				<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-JuanchoSL.CurlClient.Contracts.html">Contracts</a>
+			</li>
+	</ul>
 			</li>
 	</ul>
 			</li>
@@ -30,13 +35,18 @@
 			<h3>Classes</h3>
 			<ul>
 					<li class="active">
-						<a href="JuanchoSL.CurlClient.CurlClient.html">
-							CurlClient
+						<a href="JuanchoSL.CurlClient.CurlRequest.html">
+							CurlRequest
 						</a>
 					</li>
 					<li>
-						<a href="JuanchoSL.CurlClient.DataConverter.html">
-							DataConverter
+						<a href="JuanchoSL.CurlClient.CurlResponse.html">
+							CurlResponse
+						</a>
+					</li>
+					<li>
+						<a href="JuanchoSL.CurlClient.UserAgent.html">
+							UserAgent
 						</a>
 					</li>
 			</ul>
@@ -62,7 +72,7 @@
 						<a href="namespace-JuanchoSL.CurlClient.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="JuanchoSL.CurlClient.CurlClient.html">Class</a></li>				<li>
+<li class="active"><a href="JuanchoSL.CurlClient.CurlRequest.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -78,7 +88,7 @@
 
 		<div class="layout-content">
 		<h1>
-			Class <a href="namespace-JuanchoSL.html">JuanchoSL</a>\<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>\<a href="JuanchoSL.CurlClient.CurlClient.html">CurlClient</a>
+			Class <a href="namespace-JuanchoSL.html">JuanchoSL</a>\<a href="namespace-JuanchoSL.CurlClient.html">CurlClient</a>\<a href="JuanchoSL.CurlClient.CurlRequest.html">CurlRequest</a>
 		</h1>
 
 
@@ -95,7 +105,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-CurlClient.html#10" title="Go to source code">CurlClient.php</a><br>
+			<b>Located at</b> <a href="source-CurlRequest.html#13" title="Go to source code">CurlRequest.php</a><br>
 		</div>
 
 
@@ -115,7 +125,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#40-49" title="Go to source code">__construct</a>(<span>array <var>$settings</var> = []</span>)</code>
+				<code><a href="source-CurlRequest.html#36-44" title="Go to source code">__construct</a>(<span>array&lt;int, string&gt; <var>$settings</var> = []</span>)</code>
 
 
 	<div class="expandable-collapsedView">
@@ -154,7 +164,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#51-61" title="Go to source code">setSsl</a>(<span>bool <var>$ssl</var></span>): void</code>
+				<code><a href="source-CurlRequest.html#46-57" title="Go to source code">setSsl</a>(<span>bool <var>$ssl</var></span>): <b><span class="active" title="JuanchoSL\CurlClient\CurlRequest">CurlRequest</span></b></code>
 
 
 	<div class="expandable-collapsedView">
@@ -185,7 +195,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#63-70" title="Go to source code">getSsl</a>(): bool</code>
+				<code><a href="source-CurlRequest.html#59-66" title="Go to source code">getSsl</a>(): bool</code>
 
 
 	<div class="expandable-collapsedView">
@@ -216,7 +226,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#72-82" title="Go to source code">setFollowLocations</a>(<span>bool <var>$follow_locations</var></span>): void</code>
+				<code><a href="source-CurlRequest.html#68-79" title="Go to source code">setFollowLocations</a>(<span>bool <var>$follow_locations</var></span>): <b><span class="active" title="JuanchoSL\CurlClient\CurlRequest">CurlRequest</span></b></code>
 
 
 	<div class="expandable-collapsedView">
@@ -247,7 +257,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#84-91" title="Go to source code">getFollowLocations</a>(): bool</code>
+				<code><a href="source-CurlRequest.html#81-88" title="Go to source code">getFollowLocations</a>(): bool</code>
 
 
 	<div class="expandable-collapsedView">
@@ -278,7 +288,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#93-103" title="Go to source code">setReturnTransfer</a>(<span>bool <var>$return_transfer</var></span>): void</code>
+				<code><a href="source-CurlRequest.html#90-101" title="Go to source code">setReturnTransfer</a>(<span>bool <var>$return_transfer</var></span>): <b><span class="active" title="JuanchoSL\CurlClient\CurlRequest">CurlRequest</span></b></code>
 
 
 	<div class="expandable-collapsedView">
@@ -309,7 +319,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#105-112" title="Go to source code">getReturnTransfer</a>(): bool</code>
+				<code><a href="source-CurlRequest.html#103-110" title="Go to source code">getReturnTransfer</a>(): bool</code>
 
 
 	<div class="expandable-collapsedView">
@@ -340,17 +350,15 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#114-127" title="Go to source code">setUserAgent</a>(<span>string|int <var>$agent</var></span>): void</code>
+				<code><a href="source-CurlRequest.html#112-121" title="Go to source code">setUserAgent</a>(<span>string <var>$agent</var></span>): <b><span class="active" title="JuanchoSL\CurlClient\CurlRequest">CurlRequest</span></b></code>
 
 
 	<div class="expandable-collapsedView">
-		Set the user agent for send with the request, can send a full string with the user agent
-or use the constants for set a…
+		Set the user agent for send with the request,  a full string with the user agent
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Set the user agent for send with the request, can send a full string with the user agent
-or use the constants for set a predeterminated user agent</p>
+	<div class="description"><p>Set the user agent for send with the request,  a full string with the user agent</p>
 </div>
 
 
@@ -373,7 +381,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#129-136" title="Go to source code">getUserAgent</a>(): string</code>
+				<code><a href="source-CurlRequest.html#123-130" title="Go to source code">getUserAgent</a>(): string</code>
 
 
 	<div class="expandable-collapsedView">
@@ -393,40 +401,6 @@ or use the constants for set a predeterminated user agent</p>
 			<a href="#_getUserAgent">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="exec" id="_exec">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-CurlClient.html#186-199" title="Go to source code">exec</a>(): mixed</code>
-
-
-	<div class="expandable-collapsedView">
-		Send the prepared request
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Send the prepared request</p>
-</div>
-
-
-							<h4>Returns</h4>
-							<div><p>The result of the request or the error message</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_exec">#</a>
-		</td>
-	</tr>
 	<tr class="expandable collapsed" data-order="setCookiePath" id="_setCookiePath">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -438,7 +412,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#201-209" title="Go to source code">setCookiePath</a>(<span>string <var>$path</var></span>): void</code>
+				<code><a href="source-CurlRequest.html#132-141" title="Go to source code">setCookiePath</a>(<span>string <var>$path</var></span>): <b><span class="active" title="JuanchoSL\CurlClient\CurlRequest">CurlRequest</span></b></code>
 
 
 	<div class="expandable-collapsedView">
@@ -466,6 +440,74 @@ or use the constants for set a predeterminated user agent</p>
 			<a href="#_setCookiePath">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="getCookiePath" id="_getCookiePath">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlRequest.html#143-150" title="Go to source code">getCookiePath</a>(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Return the directory where cookies has
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Return the directory where cookies has</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>The cookie path</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCookiePath">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="exec" id="_exec">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlRequest.html#205-218" title="Go to source code">exec</a>(): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Send the prepared request
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Send the prepared request</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Request response</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_exec">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="get" id="_get">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -477,7 +519,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#211-221" title="Go to source code">get</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+				<code><a href="source-CurlRequest.html#220-230" title="Go to source code">get</a>(<span>string <var>$url</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -503,7 +545,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -524,7 +566,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#223-236" title="Go to source code">post</a>(<span>string <var>$url</var></span>, <span>mixed <var>$post_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+				<code><a href="source-CurlRequest.html#232-245" title="Go to source code">post</a>(<span>string <var>$url</var></span>, <span>mixed <var>$post_elements</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -555,7 +597,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -576,7 +618,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#238-251" title="Go to source code">put</a>(<span>string <var>$url</var></span>, <span>mixed <var>$put_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+				<code><a href="source-CurlRequest.html#247-260" title="Go to source code">put</a>(<span>string <var>$url</var></span>, <span>mixed <var>$put_elements</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -607,7 +649,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -628,7 +670,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#253-266" title="Go to source code">patch</a>(<span>string <var>$url</var></span>, <span>mixed <var>$patch_elements</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+				<code><a href="source-CurlRequest.html#262-275" title="Go to source code">patch</a>(<span>string <var>$url</var></span>, <span>mixed <var>$patch_elements</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -659,7 +701,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -680,7 +722,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#268-279" title="Go to source code">delete</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): mixed</code>
+				<code><a href="source-CurlRequest.html#277-288" title="Go to source code">delete</a>(<span>string <var>$url</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -706,7 +748,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -727,7 +769,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#281-300" title="Go to source code">head</a>(<span>string <var>$url</var></span>, <span>Array <var>$header</var> = []</span>): array</code>
+				<code><a href="source-CurlRequest.html#290-311" title="Go to source code">head</a>(<span>string <var>$url</var></span>, <span>array&lt;string, string&gt; <var>$header</var> = []</span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -753,7 +795,7 @@ or use the constants for set a predeterminated user agent</p>
 							</table>
 
 							<h4>Returns</h4>
-							<div><p>Request response or error message</p>
+							<div><p>Request response</p>
 </div>
 
 
@@ -774,7 +816,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#302-312" title="Go to source code">getBinary</a>(<span>string <var>$url</var></span>): string</code>
+				<code><a href="source-CurlRequest.html#313-323" title="Go to source code">getBinary</a>(<span>string <var>$url</var></span>): <a href="JuanchoSL.CurlClient.Contracts.CurlResponseInterface.html"><span title="JuanchoSL\CurlClient\Contracts\CurlResponseInterface">CurlResponseInterface</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -794,12 +836,41 @@ or use the constants for set a predeterminated user agent</p>
 									</tr>
 							</table>
 
+							<h4>Returns</h4>
+							<div><p>Request response</p>
+</div>
 
 
 	</div>
 			</td>
 		<td class="table-anchor">
 			<a href="#_getBinary">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="__destruct" id="___destruct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-CurlRequest.html#325-331" title="Go to source code">__destruct</a>()</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___destruct">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="close" id="_close">
@@ -813,7 +884,7 @@ or use the constants for set a predeterminated user agent</p>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-CurlClient.html#319-329" title="Go to source code">close</a>(): void</code>
+				<code><a href="source-CurlRequest.html#333-342" title="Go to source code">close</a>(): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -833,172 +904,10 @@ or use the constants for set a predeterminated user agent</p>
 			<a href="#_close">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="getLastInfo" id="_getLastInfo">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-CurlClient.html#331-340" title="Go to source code">getLastInfo</a>(<span>int <var>$id</var> = <span class="php-kw">null</span></span>): mixed</code>
-
-
-	<div class="expandable-collapsedView">
-		Retrieve the info from the last request performed
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Retrieve the info from the last request performed</p>
-</div>
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$id</var>&nbsp;&nbsp;</td>
-										<td><p>The desired info name or null for all responses array</p>
-</td>
-									</tr>
-							</table>
-
-							<h4>Returns</h4>
-							<div><p>The value of the selected index or the full array of data</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getLastInfo">#</a>
-		</td>
-	</tr>
 		</table>
 
 
 
-		<table class="table" id="constants">
-			<tr>
-				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
-			</tr>
-
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_LINUX" id="HTTPCONNECTION_AGENT_LINUX">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#33" title="Go to source code">HTTPCONNECTION_AGENT_LINUX</a> = <span class="php-num">0</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_LINUX">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_UBUNTU" id="HTTPCONNECTION_AGENT_UBUNTU">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#34" title="Go to source code">HTTPCONNECTION_AGENT_UBUNTU</a> = <span class="php-num">1</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_UBUNTU">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_IPHONE" id="HTTPCONNECTION_AGENT_IPHONE">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#35" title="Go to source code">HTTPCONNECTION_AGENT_IPHONE</a> = <span class="php-num">3</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_IPHONE">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_ANDROID_4_4" id="HTTPCONNECTION_AGENT_ANDROID_4_4">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#36" title="Go to source code">HTTPCONNECTION_AGENT_ANDROID_4_4</a> = <span class="php-num">4</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_ANDROID_4_4">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_ANDROID_5" id="HTTPCONNECTION_AGENT_ANDROID_5">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#37" title="Go to source code">HTTPCONNECTION_AGENT_ANDROID_5</a> = <span class="php-num">5</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_ANDROID_5">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="HTTPCONNECTION_AGENT_IE10_WIN8" id="HTTPCONNECTION_AGENT_IE10_WIN8">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code><a href="source-CurlClient.html#38" title="Go to source code">HTTPCONNECTION_AGENT_IE10_WIN8</a> = <span class="php-num">6</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#HTTPCONNECTION_AGENT_IE10_WIN8">#</a>
-		</td>
-	</tr>
-		</table>
 
 
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JuanchoSL\CurlClient;
 
+use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 
 /**
@@ -16,50 +17,43 @@ class CurlRequest
     private bool $ssl = false;
     private bool $follow_locations = false;
     private bool $return_transfer = true;
-    private int $id;
     private string $cookie;
-    private string $cookie_path = "/cookies";
-    private array $response_info = [];
-    private array $settings = [];
+    private string $cookie_path = "cookies";
     private string $user_agent;
-    private array $navigator = [
-        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:24.0) Gecko/20100101 Firefox/24.0',
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:13.0)Gecko/20100101 Firefox/13.0',
-        'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16',
-        'Mozilla/5.0 (Linux; Android 4.4; Nexus 5 Build/_BuildID_) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/30.0.0.0 Mobile Safari/537.36',
-        'Mozilla/5.0 (Linux; Android 5.0; Nexus 5 Build/LPX13D) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.102 Mobile Safari/537.36',
-        'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Win64; x64; Trident/6.0)'
-    ];
 
-    const HTTPCONNECTION_AGENT_LINUX = 0;
-    const HTTPCONNECTION_AGENT_UBUNTU = 1;
-    const HTTPCONNECTION_AGENT_IPHONE = 3;
-    const HTTPCONNECTION_AGENT_ANDROID_4_4 = 4;
-    const HTTPCONNECTION_AGENT_ANDROID_5 = 5;
-    const HTTPCONNECTION_AGENT_IE10_WIN8 = 6;
+    /**
+     *
+     * @var array<string,mixed>
+     */
+    private array $response_info = [];
+
+    /**
+     *
+     * @var array<int,string>
+     */
+    private array $settings = [];
 
     /**
      * Class constructor
-     * @param array $settings Associative array including CURL_OPT_*** as key and his value
+     * @param array<int,string> $settings Associative array including CURL_OPT_*** as key and his value
      */
     public function __construct(array $settings = [])
     {
-        $this->setUserAgent(0);
+        $this->cookie_path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->cookie_path;
         $this->settings = $settings;
-        $this->id = time();
     }
 
     /**
      * Enable or disable SSL Strict mode
      * @param bool $ssl
-     * @return void
+     * @return CurlRequest
      */
-    public function setSsl(bool $ssl): void
+    public function setSsl(bool $ssl): self
     {
         if (is_bool($ssl)) {
             $this->ssl = $ssl;
         }
+        return $this;
     }
 
     /**
@@ -74,13 +68,14 @@ class CurlRequest
     /**
      * Enable or disable the follow location directive
      * @param bool $follow_locations
-     * @return void
+     * @return CurlRequest
      */
-    public function setFollowLocations(bool $follow_locations): void
+    public function setFollowLocations(bool $follow_locations): self
     {
         if (is_bool($follow_locations)) {
             $this->follow_locations = $follow_locations;
         }
+        return $this;
     }
 
     /**
@@ -95,13 +90,14 @@ class CurlRequest
     /**
      * Enable or disable the return transfer directive
      * @param bool $return_transfer
-     * @return void
+     * @return CurlRequest
      */
-    public function setReturnTransfer(bool $return_transfer): void
+    public function setReturnTransfer(bool $return_transfer): self
     {
         if (is_bool($return_transfer)) {
             $this->return_transfer = $return_transfer;
         }
+        return $this;
     }
 
     /**
@@ -114,18 +110,14 @@ class CurlRequest
     }
 
     /**
-     * Set the user agent for send with the request, can send a full string with the user agent
-     * or use the constants for set a predeterminated user agent
-     * @param string|int $agent
-     * @return void
+     * Set the user agent for send with the request,  a full string with the user agent
+     * @param string $agent
+     * @return CurlRequest
      */
-    public function setUserAgent(string|int $agent): void
+    public function setUserAgent(string $agent): self
     {
-        if (is_numeric($agent) && array_key_exists($agent, $this->navigator)) {
-            $this->user_agent = $this->navigator[$agent];
-        } elseif (is_string($agent) && strlen($agent) > 20) {
-            $this->user_agent = $agent;
-        }
+        $this->user_agent = $agent;
+        return $this;
     }
 
     /**
@@ -138,24 +130,50 @@ class CurlRequest
     }
 
     /**
+     * Define the cookies saving place. The webserver user needs to have read and write privileges
+     * @param string $path the cookies saving directory
+     * @return CurlRequest
+     */
+    public function setCookiePath($path): self
+    {
+        $this->cookie_path = $path;
+        return $this;
+    }
+
+    /**
+     * Return the directory where cookies has
+     * @return string The cookie path
+     */
+    public function getCookiePath(): string
+    {
+        return $this->cookie_path;
+    }
+
+    /**
      * Prepare the curl object with the default values and then the user settings
-     * @param String $url URL of the reuqest
-     * @param Array $header Extra headers for send in this request.
+     * @param string $url URL of the request
+     * @param array<string,string> $header Extra headers for send in this request.
      * Indexed or associative arrays are valid values
-     * @param String|Null $cookie Cookie path
      * @return void
      */
-    private function init(string $url, array $header = [], $cookie = null): void
+    private function init(string $url, array $header = []): void
     {
-        $this->cookie = ($cookie) ? $cookie : $this->cookie_path . $this->id;
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new \Exception("The provided url is malformed");
+        }
+        $host = (string) parse_url($url, PHP_URL_HOST);
+        $this->cookie = $this->cookie_path . DIRECTORY_SEPARATOR . md5($host);
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_URL, $url);
-        curl_setopt($this->curl, CURLOPT_USERAGENT, $this->getUserAgent());
+        if (!empty($this->user_agent)) {
+            curl_setopt($this->curl, CURLOPT_USERAGENT, $this->getUserAgent());
+        }
         if (!empty($header)) {
             array_walk(
-                    $header, function (&$value, $key) {
-                        $value = (is_numeric($key)) ? $value : implode(': ', [$key, $value]);
-                    }
+                $header,
+                function (&$value, $key) {
+                    $value = (is_numeric($key)) ? $value : implode(': ', [$key, $value]);
+                }
             );
             $header = array_values($header);
             curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header);
@@ -164,8 +182,7 @@ class CurlRequest
         curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($this->curl, CURLOPT_AUTOREFERER, true);
-        $urlArray = parse_url($url);
-        if ($urlArray['scheme'] === 'https' || $this->ssl === true) {
+        if (parse_url($url, PHP_URL_SCHEME) === 'https' || $this->ssl === true) {
             $caCert = dirname(__DIR__, 1) . DIRECTORY_SEPARATOR . "etc" . DIRECTORY_SEPARATOR . 'cacert.pem';
             $strictSSL = (file_exists($caCert) && $this->ssl === true);
             curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, ($strictSSL) ? 2 : 0);
@@ -187,10 +204,9 @@ class CurlRequest
 
     /**
      * Send the prepared request
-     * @return CurlResponse Request response
-
+     * @return CurlResponseInterface Request response
      */
-    protected function exec(): CurlResponse
+    protected function exec(): CurlResponseInterface
     {
         $result = curl_exec($this->curl);
         $this->response_info = curl_getinfo($this->curl);
@@ -202,22 +218,12 @@ class CurlRequest
     }
 
     /**
-     * Define the cookies saving place. The webserver user needs to have read and write privileges
-     * @param string $path the cookies saving directory
-     * @return void
-     */
-    public function setCookiePath($path): void
-    {
-        $this->cookie_path = $path;
-    }
-
-    /**
      * Send a GET request to the URL
      * @param string $url URL
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function get(string $url, array $header = []): CurlResponse
+    public function get(string $url, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         return $this->exec();
@@ -227,10 +233,10 @@ class CurlRequest
      * Send a POST request to the URL
      * @param string $url URL
      * @param mixed $post_elements Fullformatted values to send into request
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function post(string $url, $post_elements, array $header = []): CurlResponse
+    public function post(string $url, $post_elements, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_POST, true);
@@ -242,10 +248,10 @@ class CurlRequest
      * Send a PUT request to the URL
      * @param string $url URL
      * @param mixed $put_elements Fullformatted values to send into request
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function put(string $url, $put_elements, array $header = []): CurlResponse
+    public function put(string $url, $put_elements, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -257,10 +263,10 @@ class CurlRequest
      * Send a PATCH request to the URL
      * @param string $url URL
      * @param mixed $patch_elements Fullformatted values to send into request
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function patch(string $url, $patch_elements, array $header = []): CurlResponse
+    public function patch(string $url, $patch_elements, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "PATCH");
@@ -271,10 +277,10 @@ class CurlRequest
     /**
      * Send a DELETE request to the URL
      * @param string $url URL
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function delete(string $url, array $header = []): CurlResponse
+    public function delete(string $url, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "DELETE");
@@ -284,41 +290,44 @@ class CurlRequest
     /**
      * Send a HEAD request to the URL
      * @param string $url URL
-     * @param Array $header Extra headers for send in this request
-     * @return CurlResponse Request response
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
      */
-    public function head(string $url, array $header = []): CurlResponse
+    public function head(string $url, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
         curl_setopt_array(
-                $this->curl,
-                array(
-                    CURLOPT_HEADER => true,
-                    CURLOPT_NOBODY => true,
-                )
+            $this->curl,
+            array(
+                CURLOPT_HEADER => true,
+                CURLOPT_NOBODY => true,
+            )
         );
-        $result = explode("\n", curl_exec($this->curl));
+        $result_execution = curl_exec($this->curl);
+        $result = ($this->return_transfer) ? explode("\n", (string) $result_execution) : $result_execution;
         $this->response_info = curl_getinfo($this->curl);
         $this->close();
         return new CurlResponse($result, $this->response_info);
-        return $result;
     }
 
     /**
      * Retrieve a remote file on binary format
      * @param string $url Path of the remote file
-     * @return string
+     * @return CurlResponseInterface Request response
      */
-    public function getBinary($url)
+    public function getBinary($url): CurlResponseInterface
     {
         $this->init($url);
         curl_setopt($this->curl, CURLOPT_BINARYTRANSFER, 1);
         return $this->exec();
     }
 
-    private function _close(): void
+    public function __destruct()
     {
-        curl_close($this->curl);
+        if (file_exists($this->cookie)) {
+            unlink($this->cookie);
+        }
+        $this->close();
     }
 
     /**
@@ -327,21 +336,9 @@ class CurlRequest
      */
     public function close(): void
     {
-        if (file_exists($this->cookie)) {
-            unlink($this->cookie);
+        if (isset($this->curl)) {
+            curl_close($this->curl);
         }
-        $this->_close();
-    }
-
-    /**
-     * Retrieve the info from the last request performed
-     * @param int $id The desired info name or null for all responses array
-     * @return mixed The value of the selected index or the full array of data
-     */
-    public function getLastInfo($id = null): mixed
-    {
-        $info = $this->response_info;
-        return (!empty($id)) ? $info[$id] : $info;
     }
 
 }

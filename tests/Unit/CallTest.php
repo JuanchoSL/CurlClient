@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\CurlClient\CurlResponse;
-use JuanchoSL\CurlClient\DataConverter;
 use PHPUnit\Framework\TestCase;
 
 class CallTest extends TestCase
@@ -13,9 +12,7 @@ class CallTest extends TestCase
     public function testGetApiLyrics()
     {
         $curl = new CurlRequest();
-        $curl->setSsl(false);
-        $body = DataConverter::bodyPrepare(['artist' => 'rihanna', 'song' => 'umbrella'], 'url');
-        $response = $curl->get('http://api.chartlyrics.com/apiv1.asmx/SearchLyric?' . $body);
+        $response = $curl->setSsl(false)->get('http://api.chartlyrics.com/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
@@ -37,8 +34,7 @@ class CallTest extends TestCase
     public function testGetApiBitcoinPrice()
     {
         $curl = new CurlRequest();
-        $curl->setSsl(true);
-        $response = $curl->get('https://api.coindesk.com/v1/bpi/currentprice.json');
+        $response = $curl->setSsl(true)->get('https://api.coindesk.com/v1/bpi/currentprice.json');
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
@@ -53,8 +49,7 @@ class CallTest extends TestCase
     public function testGetExchangeRatesApi()
     {
         $curl = new CurlRequest();
-        $curl->setSsl(true);
-        $response = $curl->get('https://api.coingecko.com/api/v3/exchange_rates');
+        $response = $curl->setSsl(true)->get('https://api.coingecko.com/api/v3/exchange_rates');
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
