@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace JuanchoSL\CurlClient;
 
-class CurlResponse
+use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+
+/**
+ * Group the cURL response data in order to use from other services
+ */
+class CurlResponse implements CurlResponseInterface
 {
 
-    private $last_info;
-    private $body;
+    /**
+     *
+     * @var array<string,mixed>
+     */
+    private array $last_info;
+    private mixed $body;
 
+    /**
+     * Default constructor, set the responsed body and the info from the request
+     * @param mixed $body The resturned body from the request
+     * @param array<string,mixed> $info The xtra info returned from the request
+     */
     public function __construct(mixed $body, array $info)
     {
         $this->last_info = $info;
@@ -45,7 +59,7 @@ class CurlResponse
 
     /**
      * Retrieve ALL available info
-     * @return array
+     * @return array<string,string>
      */
     public function getAllInfo(): array
     {

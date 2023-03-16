@@ -1,6 +1,19 @@
 # Change Log Curl Client
 
 
+## [1.0.3] - 2023-03-16
+
+### Added
+
+- A class for read some UserAgents from distinct platforms
+
+### Changed
+
+- CurlRequest setters return this in order to concat calls
+
+### Fixed
+
+
 ## [1.0.2] - 2022-11-12
 
 ### Added
