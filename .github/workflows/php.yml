@@ -1,5 +1,3 @@
-name: PHP Composer and Tests
-
 on:
   push:
     branches: [ "dev" ]
