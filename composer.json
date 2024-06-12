@@ -25,7 +25,8 @@
     "require-dev": {
         "phpunit/phpunit": "9.5.25",
         "apigen/apigen": "v7.0.0-alpha.3",
-        "phpstan/phpstan": "1.9.1"
+        "phpstan/phpstan": "1.9.1",
+        "juanchosl/httpheaders": "1.0.*"
     },
     "autoload": {
         "psr-4": {
