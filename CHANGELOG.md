@@ -1,6 +1,18 @@
 # Change Log Curl Client
 
 
+## [1.0.4] - 2024-06-12
+
+### Added
+- Workflow for github action
+- clean output on download
+- check the php libs required into composer.json
+
+### Changed
+
+### Fixed
+
+
 ## [1.0.3] - 2023-03-16
 
 ### Added

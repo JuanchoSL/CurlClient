@@ -4,6 +4,8 @@ namespace Tests\Unit;
 
 use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\CurlClient\CurlResponse;
+use JuanchoSL\HttpHeaders\Constants\Types\Extensions;
+use JuanchoSL\HttpHeaders\Constants\Types\MimeTypes;
 use PHPUnit\Framework\TestCase;
 
 class CallTest extends TestCase
@@ -16,7 +18,7 @@ class CallTest extends TestCase
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
-        $this->assertStringStartsWith('text/xml', $response->getContentType());
+        $this->assertStringContainsStringIgnoringCase("/" . Extensions::XML, $response->getContentType());
 
         $xml = simplexml_load_string($response->getBody(), "SimpleXMLElement", LIBXML_NOCDATA);
         $body = json_decode(json_encode($xml), false, 512, JSON_THROW_ON_ERROR);
@@ -38,7 +40,7 @@ class CallTest extends TestCase
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
-        $this->assertStringStartsWith('application/javascript', $response->getContentType());
+        $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
         $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
@@ -53,7 +55,7 @@ class CallTest extends TestCase
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
-        $this->assertStringStartsWith('application/json', $response->getContentType());
+        $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
         $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);

@@ -8,32 +8,26 @@ This is a class based on native php curl functions in order to perform requests 
 
 Use composer in order to install the module
 
-### Add the repository
-```
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "http://github.com/juanchosl/curlclient"
-    }
-],
-```
-
 ### Add the dependency
+```bash
+composer reuqire juanchosl/curlclient
 ```
+or
+```json
 "require": {
     "juanchosl/curlclient": "1.0.*"
 },
 ```
 
 ### Install
-```
+```bash
 $ composer install
 ```
 
 
 ## How use
 
-```
+```php
 use JuanchoSL\CurlClient\CurlRequest;
 
 $extra_headers = ['Content-type' => 'application/json'];
