@@ -112,37 +112,37 @@ class UserAgent
         return $this->getMobiles()?->android ?? [];
     }
 
-    public function getDesktopWindows(int $index = null): string
+    public function getDesktopWindows(?int $index = null): string
     {
         return $this->getUserAgent($this->getDesktopsWindows(), $index);
     }
 
-    public function getDesktopMac(int $index = null): string
+    public function getDesktopMac(?int $index = null): string
     {
         return $this->getUserAgent($this->getDesktopsMac(), $index);
     }
 
-    public function getDesktopLinux(int $index = null): string
+    public function getDesktopLinux(?int $index = null): string
     {
         return $this->getUserAgent($this->getDesktopsLinux(), $index);
     }
 
-    public function getMobileIphone(int $index = null): string
+    public function getMobileIphone(?int $index = null): string
     {
         return $this->getUserAgent($this->getMobilesIphone(), $index);
     }
 
-    public function getMobileIpad(int $index = null): string
+    public function getMobileIpad(?int $index = null): string
     {
         return $this->getUserAgent($this->getMobilesIpad(), $index);
     }
 
-    public function getMobileIpod(int $index = null): string
+    public function getMobileIpod(?int $index = null): string
     {
         return $this->getUserAgent($this->getMobilesIpod(), $index);
     }
 
-    public function getMobileAndroid(int $index = null): string
+    public function getMobileAndroid(?int $index = null): string
     {
         return $this->getUserAgent($this->getMobilesAndroid(), $index);
     }
@@ -153,7 +153,7 @@ class UserAgent
      * @param int $index
      * @return string
      */
-    protected function getUserAgent(array $elements, int $index = null): string
+    protected function getUserAgent(array $elements, ?int $index = null): string
     {
         return (string) (is_null($index) || !array_key_exists($index, $elements)) ? array_key_last($elements) . '' : $elements[$index];
     }

@@ -10,7 +10,7 @@ Use composer in order to install the module
 
 ### Add the dependency
 ```bash
-composer reuqire juanchosl/curlclient
+composer require juanchosl/curlclient
 ```
 or
 ```json

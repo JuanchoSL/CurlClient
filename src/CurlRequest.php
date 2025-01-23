@@ -39,7 +39,7 @@ class CurlRequest
      */
     public function __construct(array $settings = [])
     {
-        $this->cookie_path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->cookie_path;
+        $this->setCookiePath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->cookie_path);
         $this->settings = $settings;
     }
 
@@ -136,7 +136,10 @@ class CurlRequest
      */
     public function setCookiePath($path): self
     {
-        $this->cookie_path = $path;
+        $this->cookie_path = realpath($path);
+        if (!file_exists($this->cookie_path)) {
+            mkdir($this->cookie_path, 0777, true);
+        }
         return $this;
     }
 
@@ -163,6 +166,9 @@ class CurlRequest
         }
         $host = (string) parse_url($url, PHP_URL_HOST);
         $this->cookie = $this->cookie_path . DIRECTORY_SEPARATOR . md5($host);
+        if (substr(PHP_OS, 0, 3) == 'WIN') {
+            $this->cookie = str_replace('\\', '/', $this->cookie);
+        }
         $this->curl = curl_init();
         curl_setopt($this->curl, CURLOPT_URL, $url);
         if (!empty($this->user_agent)) {
@@ -178,7 +184,7 @@ class CurlRequest
             $header = array_values($header);
             curl_setopt($this->curl, CURLOPT_HTTPHEADER, $header);
         }
-        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, $this->return_transfer);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, $this->return_transfer ? 1 : 0);
         curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($this->curl, CURLOPT_AUTOREFERER, true);
@@ -191,7 +197,7 @@ class CurlRequest
             curl_setopt($this->curl, CURLOPT_CAINFO, ($strictSSL) ? $caCert : true);
         }
         curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $this->follow_locations);
+        curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $this->follow_locations ? 1 : 0);
 
         curl_setopt($this->curl, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($this->curl, CURLOPT_COOKIEJAR, $this->cookie);
@@ -324,7 +330,7 @@ class CurlRequest
 
     public function __destruct()
     {
-        if (file_exists($this->cookie)) {
+        if (!empty($this->cookie) && file_exists($this->cookie)) {
             unlink($this->cookie);
         }
         $this->close();
