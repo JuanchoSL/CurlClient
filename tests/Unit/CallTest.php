@@ -23,13 +23,13 @@ class CallTest extends TestCase
         $xml = simplexml_load_string($response->getBody(), "SimpleXMLElement", LIBXML_NOCDATA);
         $body = json_decode(json_encode($xml), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
-        $this->assertObjectHasAttribute('SearchLyricResult', $body);
+        $this->assertObjectHasProperty('SearchLyricResult', $body);
         $this->assertIsArray($body->SearchLyricResult);
         $this->assertNotEmpty($body->SearchLyricResult);
         $body = current($body->SearchLyricResult);
-        $this->assertObjectHasAttribute('Artist', $body);
+        $this->assertObjectHasProperty('Artist', $body);
         $this->assertStringContainsStringIgnoringCase('rihanna', $body->Artist);
-        $this->assertObjectHasAttribute('Song', $body);
+        $this->assertObjectHasProperty('Song', $body);
         $this->assertStringContainsStringIgnoringCase('umbrella', $body->Song);
     }
 
@@ -44,7 +44,7 @@ class CallTest extends TestCase
 
         $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
-        $this->assertObjectHasAttribute('chartName', $body);
+        $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
 
