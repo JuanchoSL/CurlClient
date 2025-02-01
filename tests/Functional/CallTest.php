@@ -1,7 +1,9 @@
 <?php
 
-namespace Tests\Functional;
+namespace JuanchoSL\CurlClient\Tests\Functional;
 
+use JuanchoSL\CurlClient\Exceptions\NetworkException;
+use JuanchoSL\CurlClient\Exceptions\RequestException;
 use JuanchoSL\CurlClient\Wrappers\Psr7CurlClient;
 use JuanchoSL\HttpData\Factories\RequestFactory;
 use JuanchoSL\HttpHeaders\Constants\Types\Extensions;
@@ -16,7 +18,7 @@ class CallTest extends TestCase
     {
 
         $request = (new RequestFactory)->createRequest('GET', 'http://api.chartlyrics.com/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
-        $response = (new Psr7CurlClient)->execute($request);
+        $response = (new Psr7CurlClient)->sendRequest($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
@@ -38,23 +40,23 @@ class CallTest extends TestCase
     public function testGetApiBitcoinPrice()
     {
         $request = (new RequestFactory)->createRequest('GET', 'https://api.coindesk.com/v1/bpi/currentprice.json');
-        $response = (new Psr7CurlClient)->execute($request);
+        $response = (new Psr7CurlClient)->sendRequest($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('Content-type'));
-        
+
         $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
         $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
-    
+
     public function testGetExchangeRatesApi()
     {
         $request = (new RequestFactory)->createRequest('GET', 'https://api.coingecko.com/api/v3/exchange_rates');
-        $response = (new Psr7CurlClient)->execute($request);
-        
+        $response = (new Psr7CurlClient)->sendRequest($request);
+
         $this->assertInstanceOf(ResponseInterface::class, $response);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
@@ -72,4 +74,17 @@ class CallTest extends TestCase
         $this->assertEqualsIgnoringCase('euro', $body['rates']['eur']['name']);
     }
 
+    public function testErrorMethod()
+    {
+        $this->expectException(RequestException::class);
+        $request = (new RequestFactory)->createRequest('WHATEVER', 'https://api.coingecko.com/api/v3/exchange_rates');
+        (new Psr7CurlClient)->sendRequest($request);
+    }
+
+    public function testErrorUri()
+    {
+        $this->expectException(NetworkException::class);
+        $request = (new RequestFactory)->createRequest('HEAD', 'https://no.existe.com');
+        (new Psr7CurlClient)->sendRequest($request);
+    }
 }

@@ -4,17 +4,24 @@ namespace JuanchoSL\CurlClient\Wrappers;
 
 use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\CurlRequest;
-use JuanchoSL\Exceptions\DestinationUnreachableException;
+use JuanchoSL\CurlClient\Exceptions\NetworkException;
+use JuanchoSL\CurlClient\Exceptions\RequestException;
 use JuanchoSL\HttpData\Factories\ResponseFactory;
 use JuanchoSL\HttpData\Factories\StreamFactory;
 use JuanchoSL\HttpHeaders\Headers;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Psr7CurlClient
+class Psr7CurlClient implements ClientInterface
 {
-    public function execute(RequestInterface $request): ResponseInterface
+    public function sendRequest(RequestInterface $request): ResponseInterface
     {
+        if (!$request->getBody()->isSeekable()) {
+            $exception = new RequestException("The sended body is not seekable");
+            $exception->setRequest($request);
+            throw $exception;
+        }
         $headers = [];
         foreach ($request->getHeaders() as $header => $values) {
             $headers[$header] = $request->getHeaderLine($header);
@@ -39,19 +46,26 @@ class Psr7CurlClient
             case RequestMethodInterface::METHOD_HEAD:
                 $result = $client->head((string) $request->getUri(), $headers);
                 break;
+            case RequestMethodInterface::METHOD_OPTIONS:
+            default:
+                $exception = new RequestException("The method '{$request->getMethod()}' is not supported");
+                $exception->setRequest($request);
+                throw $exception;
         }
-        if (!empty($result)) {
-            $response = new ResponseFactory;
-            $message = $response->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()))->withBody((new StreamFactory)->createStream($result->getBody()));
-            foreach ($result->getAllInfo() as $key => $value) {
-                $key = str_replace('_', '-', $key);
-                if (str_starts_with(strtoupper($key), 'HTTP-')) {
-                    $key = substr($key, 5);
-                }
-                $message = $message->withAddedHeader($key, $value);
+        if (empty($result) || $result->getResponseCode() == 0) {
+            $exception = new NetworkException("The request to '{$request->getUri()->__tostring()}' failure");
+            $exception->setRequest($request);
+            throw $exception;
+        }
+        $response = new ResponseFactory;
+        $message = $response->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()))->withBody((new StreamFactory)->createStream($result->getBody()));
+        foreach ($result->getAllInfo() as $key => $value) {
+            $key = str_replace('_', '-', $key);
+            if (str_starts_with(strtoupper($key), 'HTTP-')) {
+                $key = substr($key, 5);
             }
-            return $message;
+            $message = $message->withAddedHeader($key, $value);
         }
-        throw new DestinationUnreachableException("The request to {$request->getUri()->__tostring()} failure");
+        return $message;
     }
 }
