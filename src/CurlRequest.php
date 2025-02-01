@@ -331,7 +331,7 @@ class CurlRequest
     public function __destruct()
     {
         if (!empty($this->cookie) && file_exists($this->cookie)) {
-            unlink($this->cookie);
+            //unlink($this->cookie);
         }
         $this->close();
     }
