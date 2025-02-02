@@ -136,7 +136,7 @@ class CurlRequest
      */
     public function setCookiePath($path): self
     {
-        $this->cookie_path = realpath($path);
+        $this->cookie_path = $path;
         if (!file_exists($this->cookie_path)) {
             mkdir($this->cookie_path, 0777, true);
         }
