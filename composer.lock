@@ -461,12 +461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/HttpData.git",
-                "reference": "1fc3d251ecca1ae96599f2fbf0699727ee0a54e0"
+                "reference": "d5023aa1fb835c32d75da202f70086c681742764"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/1fc3d251ecca1ae96599f2fbf0699727ee0a54e0",
-                "reference": "1fc3d251ecca1ae96599f2fbf0699727ee0a54e0",
+                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/d5023aa1fb835c32d75da202f70086c681742764",
+                "reference": "d5023aa1fb835c32d75da202f70086c681742764",
                 "shasum": ""
             },
             "require": {
@@ -521,7 +521,7 @@
                 "issues": "https://github.com/JuanchoSL/HttpData/issues",
                 "source": "https://github.com/JuanchoSL/HttpData/tree/master"
             },
-            "time": "2025-02-01T03:23:08+00:00"
+            "time": "2025-02-02T00:38:42+00:00"
         },
         {
             "name": "juanchosl/httpheaders",

@@ -64,6 +64,9 @@ class Psr7CurlClient implements ClientInterface
             if (str_starts_with(strtoupper($key), 'HTTP-')) {
                 $key = substr($key, 5);
             }
+            if (is_numeric($value)) {
+                $value = (string) $value;
+            }
             $message = $message->withAddedHeader($key, $value);
         }
         return $message;
