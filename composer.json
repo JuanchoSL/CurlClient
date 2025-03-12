@@ -1,13 +1,24 @@
 {
     "name": "juanchosl/curlclient",
-    "description": "A small, lightweight utility to perform curl calls using GET, POST, PUT, PATH, DELETE and HEAD methods...",
+    "description": "A small, lightweight utility to perform curl calls using GET, POST, PUT, PACTH, DELETE, HEAD, TRACE, OPTIONS methods...",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/JuanchoSL/CurlClient",
     "minimum-stability": "stable",
     "keywords": [
         "curl",
-        "request"
+        "request",
+        "client",
+        "psr7",
+        "psr18",
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "HEAD",
+        "DELETE",
+        "OPTIONS",
+        "TRACE"
     ],
     "authors": [
         {
@@ -26,7 +37,7 @@
         "phpunit/phpunit": "9.6.*",
         "apigen/apigen": "v7.0.0-alpha.6",
         "phpstan/phpstan": "1.9.1",
-        "juanchosl/httpheaders": "1.0.*",
+        "juanchosl/httpheaders": "dev-master",
         "juanchosl/httpdata": "dev-master"
     },
     "autoload": {
