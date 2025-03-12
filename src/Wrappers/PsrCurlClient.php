@@ -2,6 +2,7 @@
 
 namespace JuanchoSL\CurlClient\Wrappers;
 
+use ArrayAccess;
 use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\CurlClient\Exceptions\NetworkException;
@@ -13,8 +14,9 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class Psr7CurlClient implements ClientInterface
+class PsrCurlClient implements ClientInterface
 {
+
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         if (!$request->getBody()->isSeekable()) {
@@ -47,6 +49,11 @@ class Psr7CurlClient implements ClientInterface
                 $result = $client->head((string) $request->getUri(), $headers);
                 break;
             case RequestMethodInterface::METHOD_OPTIONS:
+                $result = $client->options((string) $request->getUri(), $headers);
+                break;
+            case RequestMethodInterface::METHOD_TRACE:
+                $result = $client->trace((string) $request->getUri(), $headers);
+                break;
             default:
                 $exception = new RequestException("The method '{$request->getMethod()}' is not supported");
                 $exception->setRequest($request);
@@ -59,7 +66,7 @@ class Psr7CurlClient implements ClientInterface
         }
         $response = new ResponseFactory;
         $message = $response->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()))->withBody((new StreamFactory)->createStream($result->getBody()));
-        foreach ($result->getAllInfo() as $key => $value) {
+        foreach ($result->getHeaders() as $key => $value) {
             $key = str_replace('_', '-', $key);
             if (str_starts_with(strtoupper($key), 'HTTP-')) {
                 $key = substr($key, 5);
@@ -69,6 +76,7 @@ class Psr7CurlClient implements ClientInterface
             }
             $message = $message->withAddedHeader($key, $value);
         }
+
         return $message;
     }
 }
