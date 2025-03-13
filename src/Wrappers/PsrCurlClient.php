@@ -34,13 +34,13 @@ class PsrCurlClient implements ClientInterface
                 $result = $client->get((string) $request->getUri(), $headers);
                 break;
             case RequestMethodInterface::METHOD_POST:
-                $result = $client->post((string) $request->getUri(), $request->getBody()->getContents(), $headers);
+                $result = $client->post((string) $request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_PATCH:
-                $result = $client->patch((string) $request->getUri(), $request->getBody()->getContents(), $headers);
+                $result = $client->patch((string) $request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_PUT:
-                $result = $client->put((string) $request->getUri(), $request->getBody()->getContents(), $headers);
+                $result = $client->put((string) $request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_DELETE:
                 $result = $client->delete((string) $request->getUri(), $headers);
