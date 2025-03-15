@@ -56,10 +56,9 @@ $request = (new RequestFactory)
     ->createRequest('GET', 'https://www.tecnicosweb.com')
     ->withProtocolVersion('1.1')
     ->withHeader('User-agent',(new UserAgent())->getDesktopWindows(1))
-    ->withAddedHeader('Accept','text/html')
-    ;
+    ->withAddedHeader('Accept','text/html');
 
-$response = (new Psr7CurlClient)->sendRequest($request);
+$response = (new PsrCurlClient)->sendRequest($request);
 
 print_r($response);
 ```
@@ -72,212 +71,81 @@ JuanchoSL\HttpData\Containers\Response Object
     [protocol_version:protected] => 1.1
     [headers:protected] => Array
         (
-            [url] => Array
+            [Date] => Array
                 (
-                    [0] => https://www.tecnicosweb.com/
+                    [0] => Sat, 15 Mar 2025 22:45:48 GMT
                 )
 
-            [content-type] => Array
+            [Content-Type] => Array
                 (
                     [0] => text/html; charset=UTF-8
                 )
 
-            [code] => Array
+            [Transfer-Encoding] => Array
                 (
-                    [0] => 200
+                    [0] => chunked
                 )
 
-            [header-size] => Array
+            [Connection] => Array
                 (
-                    [0] => 473
+                    [0] => keep-alive
                 )
 
-            [request-size] => Array
+            [Server] => Array
                 (
-                    [0] => 237
+                    [0] => OVHcloud
                 )
 
-            [filetime] => Array
+            [X-Powered-By] => Array
                 (
-                    [0] => -1
+                    [0] => PHP/8.3
                 )
 
-            [ssl-verify-result] => Array
+            [Set-Cookie] => Array
                 (
-                    [0] => 20
+                    [0] => PHPSESSID=82ba4ec20aa3c3b024c49f3db3d56255; path=/
                 )
 
-            [redirect-count] => Array
+            [X-Content-Type-Options] => Array
                 (
-                    [0] => 0
+                    [0] => nosniff
                 )
 
-            [total-time] => Array
+            [ETag] => Array
                 (
-                    [0] => 0.258074
+                    [0] => "5ded4b575dbc971a6f22e31632c3b9ff"
                 )
 
-            [namelookup-time] => Array
+            [Expires] => Array
                 (
-                    [0] => 0.064663
+                    [0] => Sun, 16 Mar 2025 22:33:11 GMT
                 )
 
-            [connect-time] => Array
+            [Cache-control] => Array
                 (
-                    [0] => 0.111044
+                    [0] => max-age=85643
+                    [1] => private
                 )
 
-            [pretransfer-time] => Array
+            [Pragma] => Array
                 (
-                    [0] => 0.169494
+                    [0] => cache
                 )
 
-            [size-upload] => Array
+            [User-Cache-Control] => Array
                 (
-                    [0] => 0
+                    [0] => max-age=85643
                 )
 
-            [size-download] => Array
+            [Last-Modified] => Array
                 (
-                    [0] => 31524
+                    [0] => Sat, 15 Mar 2025 22:33:11 GMT
                 )
 
-            [speed-download] => Array
+            [Vary] => Array
                 (
-                    [0] => 122151
-                )
-
-            [speed-upload] => Array
-                (
-                    [0] => 0
-                )
-
-            [download-content-length] => Array
-                (
-                    [0] => -1
-                )
-
-            [upload-content-length] => Array
-                (
-                    [0] => 0
-                )
-
-            [starttransfer-time] => Array
-                (
-                    [0] => 0.217347
-                )
-
-            [redirect-time] => Array
-                (
-                    [0] => 0
-                )
-
-            [redirect-url] => Array
-                (
-                    [0] =>
-                )
-
-            [primary-ip] => Array
-                (
-                    [0] => 87.98.231.3
-                )
-
-            [certinfo] => Array
-                (
-                    [0] => Array
-                        (
-                        )
-
-                )
-
-            [primary-port] => Array
-                (
-                    [0] => 443
-                )
-
-            [local-ip] => Array
-                (
-                    [0] => 192.168.0.5
-                )
-
-            [local-port] => Array
-                (
-                    [0] => 60058
-                )
-
-            [version] => Array
-                (
-                    [0] => 2
-                )
-
-            [protocol] => Array
-                (
-                    [0] => 2
-                )
-
-            [ssl-verifyresult] => Array
-                (
-                    [0] => 0
-                )
-
-            [scheme] => Array
-                (
-                    [0] => https
-                )
-
-            [appconnect-time-us] => Array
-                (
-                    [0] => 169416
-                )
-
-            [connect-time-us] => Array
-                (
-                    [0] => 111044
-                )
-
-            [namelookup-time-us] => Array
-                (
-                    [0] => 64663
-                )
-
-            [pretransfer-time-us] => Array
-                (
-                    [0] => 169494
-                )
-
-            [redirect-time-us] => Array
-                (
-                    [0] => 0
-                )
-
-            [starttransfer-time-us] => Array
-                (
-                    [0] => 217347
-                )
-
-            [posttransfer-time-us] => Array
-                (
-                    [0] => 169510
-                )
-
-            [total-time-us] => Array
-                (
-                    [0] => 258074
-                )
-
-            [effective-method] => Array
-                (
-                    [0] => GET
-                )
-
-            [capath] => Array
-                (
-                    [0] =>
-                )
-
-            [cainfo] => Array
-                (
-                    [0] =>
+                    [0] => Accept-Encoding
+                    [1] => User-Agent
                 )
 
         )

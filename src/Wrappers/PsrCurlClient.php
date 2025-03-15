@@ -2,7 +2,6 @@
 
 namespace JuanchoSL\CurlClient\Wrappers;
 
-use ArrayAccess;
 use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\CurlClient\Exceptions\NetworkException;
