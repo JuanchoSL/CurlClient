@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d80e7ff25eb556c9be07850db03a18d",
+    "content-hash": "a939a7194a6ee1faab7fafbcbdfcc16e",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -116,23 +116,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/HttpData.git",
-                "reference": "7cd909cacbaf20f2d1da03e258c58cfd3b831bc2"
+                "reference": "9586848f02693356fb8db44f5e6ca64d222428ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/7cd909cacbaf20f2d1da03e258c58cfd3b831bc2",
-                "reference": "7cd909cacbaf20f2d1da03e258c58cfd3b831bc2",
+                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/9586848f02693356fb8db44f5e6ca64d222428ba",
+                "reference": "9586848f02693356fb8db44f5e6ca64d222428ba",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "fig/http-message-util": "*",
+                "fig/http-message-util": "1.1.*",
                 "juanchosl/exceptions": "1.0.*",
                 "juanchosl/httpheaders": "dev-master",
                 "php": "^7.1 || ^8.0",
-                "psr/http-client": "*",
-                "psr/http-factory": "*",
-                "psr/http-message": "*"
+                "psr/http-client": "1.0.*",
+                "psr/http-factory": "1.1.*",
+                "psr/http-message": "^2.0"
             },
             "require-dev": {
                 "juanchosl/curlclient": "dev-develop",
@@ -174,7 +174,7 @@
                 "issues": "https://github.com/JuanchoSL/HttpData/issues",
                 "source": "https://github.com/JuanchoSL/HttpData/tree/master"
             },
-            "time": "2025-03-14T23:03:12+00:00"
+            "time": "2025-03-16T19:16:32+00:00"
         },
         {
             "name": "juanchosl/httpheaders",
