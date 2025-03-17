@@ -12,9 +12,13 @@ use JuanchoSL\HttpHeaders\Headers;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class PsrCurlClient implements ClientInterface
+class PsrCurlClient implements ClientInterface, LoggerAwareInterface
 {
+
+    use LoggerAwareTrait;
 
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
@@ -27,7 +31,7 @@ class PsrCurlClient implements ClientInterface
         foreach ($request->getHeaders() as $header => $values) {
             $headers[$header] = $request->getHeaderLine($header);
         }
-        $client = new CurlRequest();
+        $client = new CurlRequest([CURLOPT_REQUEST_TARGET => $request->getRequestTarget()]);
         switch (strtoupper($request->getMethod())) {
             case RequestMethodInterface::METHOD_GET:
                 $result = $client->get((string) $request->getUri(), $headers);
@@ -75,7 +79,13 @@ class PsrCurlClient implements ClientInterface
             }
             $message = $message->withAddedHeader($key, $value);
         }
-
+        $this->logger?->info("{method} {path} {target} {code} {response}", [
+            "method" => $request->getMethod(),
+            "path" => (string) $request->getUri(),
+            "target" => $request->getRequestTarget(),
+            "code" => $message->getStatusCode(),
+            "response" => $message->getReasonPhrase(),
+        ]);
         return $message;
     }
 }

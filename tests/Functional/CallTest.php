@@ -17,7 +17,7 @@ class CallTest extends TestCase
     public function testGetApiLyrics()
     {
 
-        $request = (new RequestFactory)->createRequest('GET', 'http://api.chartlyrics.com/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
+        $request = (new RequestFactory)->createRequest('GET', 'http://api.chartlyrics.com')->withRequestTarget('/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
         $response = (new PsrCurlClient)->sendRequest($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
