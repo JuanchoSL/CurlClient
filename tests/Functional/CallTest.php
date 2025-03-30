@@ -2,8 +2,8 @@
 
 namespace JuanchoSL\CurlClient\Tests\Functional;
 
-use JuanchoSL\CurlClient\Exceptions\NetworkException;
-use JuanchoSL\CurlClient\Exceptions\RequestException;
+use JuanchoSL\HttpData\Exceptions\NetworkException;
+use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\CurlClient\Wrappers\PsrCurlClient;
 use JuanchoSL\HttpData\Factories\RequestFactory;
 use JuanchoSL\HttpHeaders\Constants\Types\Extensions;

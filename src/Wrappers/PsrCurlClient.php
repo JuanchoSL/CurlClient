@@ -4,8 +4,10 @@ namespace JuanchoSL\CurlClient\Wrappers;
 
 use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\CurlRequest;
-use JuanchoSL\CurlClient\Exceptions\NetworkException;
-use JuanchoSL\CurlClient\Exceptions\RequestException;
+use JuanchoSL\HttpData\Exceptions\NetworkException;
+use JuanchoSL\HttpData\Exceptions\RequestException;
+use JuanchoSL\HttpData\Bodies\Creators\MultipartCreator;
+use JuanchoSL\HttpData\Bodies\Creators\UrlencodeCreator;
 use JuanchoSL\HttpData\Factories\ResponseFactory;
 use JuanchoSL\HttpData\Factories\StreamFactory;
 use JuanchoSL\HttpHeaders\Headers;
@@ -19,6 +21,25 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
 {
 
     use LoggerAwareTrait;
+
+    public function sendRequestWithBody(RequestInterface $request, array $data): ResponseInterface
+    {
+        $content_type = strtolower($request->getHeaderLine('content-type'));
+        switch (substr($content_type, 0, strpos($content_type, ';'))) {
+            case 'application/json':
+                $body = json_encode($data);
+                break;
+            case 'application/x-www-form-urlencoded':
+                $body = (new UrlencodeCreator)->appendData($data);
+                break;
+            case 'multipart/form-data':
+                $boundary = md5(uniqid());
+                $body = (new MultipartCreator($boundary))->appendData($data);
+                $request = $request->withHeader('content-type', "multipart/form-data; boundary={$boundary}");
+                break;
+        }
+        return $this->sendRequest($request->withBody((new StreamFactory)->createStream((string) $body)));
+    }
 
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
