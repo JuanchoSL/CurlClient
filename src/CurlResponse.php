@@ -18,6 +18,7 @@ class CurlResponse implements CurlResponseInterface
      */
     private array $last_info;
     private mixed $body;
+    private array $headers;
 
     /**
      * Default constructor, set the responsed body and the info from the request
@@ -27,7 +28,20 @@ class CurlResponse implements CurlResponseInterface
     public function __construct(mixed $body, array $info)
     {
         $this->last_info = $info;
-        $this->body = $body;
+        $headers = '';
+        if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
+            list($headers, $this->body) = explode("\r\n\r\n", $body);
+        }
+        $headers = explode(PHP_EOL, $headers);
+        foreach ($headers as $value) {
+            if (($pos = strpos($value, ':')) !== false) {
+                $name = substr($value, 0, $pos);
+                $value = substr($value, $pos + 1);
+                if (!empty($value)) {
+                    $this->headers[trim($name)] = trim($value);
+                }
+            }
+        }
     }
 
     /**
@@ -64,6 +78,10 @@ class CurlResponse implements CurlResponseInterface
     public function getAllInfo(): array
     {
         return $this->last_info;
+    }
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 
 }

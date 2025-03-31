@@ -1,13 +1,24 @@
 {
     "name": "juanchosl/curlclient",
-    "description": "A small, lightweight utility to perform curl calls using GET, POST, PUT, PATH, DELETE and HEAD methods...",
+    "description": "A small, lightweight utility to perform curl calls using GET, POST, PUT, PACTH, DELETE, HEAD, TRACE, OPTIONS methods...",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/JuanchoSL/CurlClient",
     "minimum-stability": "stable",
     "keywords": [
         "curl",
-        "request"
+        "request",
+        "client",
+        "psr7",
+        "psr18",
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "HEAD",
+        "DELETE",
+        "OPTIONS",
+        "TRACE"
     ],
     "authors": [
         {
@@ -20,13 +31,20 @@
         "php": "^7.1 || ^8.0",
         "ext-curl": "*",
         "ext-json": "*",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "fig/http-message-util": "1.1.*",
+        "psr/http-message": "^2.0",
+        "psr/http-factory": "1.1.*",
+        "psr/http-client": "1.0.*",
+        "psr/log": "^3.0",
+        "juanchosl/httpheaders": "dev-master",
+        "juanchosl/httpdata": "dev-master"
     },
     "require-dev": {
+        "juanchosl/logger": "1.1.*",
         "phpunit/phpunit": "9.6.*",
         "apigen/apigen": "v7.0.0-alpha.6",
-        "phpstan/phpstan": "1.9.1",
-        "juanchosl/httpheaders": "1.0.*"
+        "phpstan/phpstan": "1.9.1"
     },
     "autoload": {
         "psr-4": {

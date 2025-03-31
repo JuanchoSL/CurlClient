@@ -136,7 +136,7 @@ class CurlRequest
      */
     public function setCookiePath($path): self
     {
-        $this->cookie_path = realpath($path);
+        $this->cookie_path = $path;
         if (!file_exists($this->cookie_path)) {
             mkdir($this->cookie_path, 0777, true);
         }
@@ -187,6 +187,7 @@ class CurlRequest
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, $this->return_transfer ? 1 : 0);
         curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($this->curl, CURLOPT_TIMEOUT, 60);
+        curl_setopt($this->curl, CURLOPT_HEADER, true);
         curl_setopt($this->curl, CURLOPT_AUTOREFERER, true);
         if (parse_url($url, PHP_URL_SCHEME) === 'https' || $this->ssl === true) {
             $caCert = dirname(__DIR__, 1) . DIRECTORY_SEPARATOR . "etc" . DIRECTORY_SEPARATOR . 'cacert.pem';
@@ -294,6 +295,33 @@ class CurlRequest
     }
 
     /**
+     * Send an OPTIONS request to the URL
+     * @param string $url URL
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
+     */
+    public function options(string $url, array $header = []): CurlResponseInterface
+    {
+        $this->init($url, $header);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "OPTIONS");
+        curl_setopt($this->curl, CURLOPT_NOBODY, true);
+        return $this->exec();
+    }
+
+    /**
+     * Send an TRACE request to the URL
+     * @param string $url URL
+     * @param array<string,string> $header Extra headers for send in this request
+     * @return CurlResponseInterface Request response
+     */
+    public function trace(string $url, array $header = []): CurlResponseInterface
+    {
+        $this->init($url, $header);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "TRACE");
+        return $this->exec();
+    }
+
+    /**
      * Send a HEAD request to the URL
      * @param string $url URL
      * @param array<string,string> $header Extra headers for send in this request
@@ -310,10 +338,10 @@ class CurlRequest
             )
         );
         $result_execution = curl_exec($this->curl);
-        $result = ($this->return_transfer) ? explode("\n", (string) $result_execution) : $result_execution;
+        //$result = ($this->return_transfer) ? explode("\n", (string) $result_execution) : $result_execution;
         $this->response_info = curl_getinfo($this->curl);
         $this->close();
-        return new CurlResponse($result, $this->response_info);
+        return new CurlResponse($result_execution . "\r\n\r\n", $this->response_info);
     }
 
     /**
@@ -331,7 +359,7 @@ class CurlRequest
     public function __destruct()
     {
         if (!empty($this->cookie) && file_exists($this->cookie)) {
-            unlink($this->cookie);
+            //unlink($this->cookie);
         }
         $this->close();
     }
