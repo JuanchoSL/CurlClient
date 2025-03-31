@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9eef8387983918e1b7eaafc719706047",
+    "content-hash": "9b4c3965a57f1b57c3942a3fb82ee24c",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -112,16 +112,16 @@
         },
         {
             "name": "juanchosl/httpdata",
-            "version": "dev-devel",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/HttpData.git",
-                "reference": "cb7cde516d8a4f30279bd41c6e02e75253b05c27"
+                "reference": "e2ab1633b4e132a265f32e3922a4bd2c9993ff10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/cb7cde516d8a4f30279bd41c6e02e75253b05c27",
-                "reference": "cb7cde516d8a4f30279bd41c6e02e75253b05c27",
+                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/e2ab1633b4e132a265f32e3922a4bd2c9993ff10",
+                "reference": "e2ab1633b4e132a265f32e3922a4bd2c9993ff10",
                 "shasum": ""
             },
             "require": {
@@ -139,6 +139,7 @@
                 "phpstan/phpstan": "1.12.*",
                 "phpunit/phpunit": "9.6.*"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -170,10 +171,9 @@
                 "uri"
             ],
             "support": {
-                "issues": "https://github.com/JuanchoSL/HttpData/issues",
-                "source": "https://github.com/JuanchoSL/HttpData/tree/devel"
+                "source": "https://github.com/JuanchoSL/HttpData/tree/master"
             },
-            "time": "2025-03-30T21:23:23+00:00"
+            "time": "2025-03-31T19:29:47+00:00"
         },
         {
             "name": "juanchosl/httpheaders",
@@ -1297,16 +1297,16 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "d201c9bc217e0969d1b678d286be49302972fb56"
+                "reference": "42806049a7774a2bd316c958f5dcf01c6b5c56fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/d201c9bc217e0969d1b678d286be49302972fb56",
-                "reference": "d201c9bc217e0969d1b678d286be49302972fb56",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/42806049a7774a2bd316c958f5dcf01c6b5c56fa",
+                "reference": "42806049a7774a2bd316c958f5dcf01c6b5c56fa",
                 "shasum": ""
             },
             "require": {
@@ -1360,9 +1360,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/php-generator/issues",
-                "source": "https://github.com/nette/php-generator/tree/v4.1.7"
+                "source": "https://github.com/nette/php-generator/tree/v4.1.8"
             },
-            "time": "2024-11-29T01:41:18+00:00"
+            "time": "2025-03-31T00:29:29+00:00"
         },
         {
             "name": "nette/robot-loader",
