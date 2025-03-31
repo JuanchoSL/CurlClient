@@ -7,7 +7,7 @@ use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\HttpData\Exceptions\NetworkException;
 use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\HttpData\Bodies\Creators\MultipartCreator;
-use JuanchoSL\HttpData\Bodies\Creators\UrlencodeCreator;
+use JuanchoSL\HttpData\Bodies\Creators\UrlencodedCreator;
 use JuanchoSL\HttpData\Factories\ResponseFactory;
 use JuanchoSL\HttpData\Factories\StreamFactory;
 use JuanchoSL\HttpHeaders\Headers;
@@ -30,7 +30,7 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
                 $body = json_encode($data);
                 break;
             case 'application/x-www-form-urlencoded':
-                $body = (new UrlencodeCreator)->appendData($data);
+                $body = (new UrlencodedCreator)->appendData($data);
                 break;
             case 'multipart/form-data':
                 $boundary = md5(uniqid());
