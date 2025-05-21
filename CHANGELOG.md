@@ -1,6 +1,26 @@
 # Change Log Curl Client
 
 
+## [1.0.5] - 2025-05-21
+
+### Added
+- OPTIONS Method compatibility
+- TRACE Method compatibility
+- Checked php v8.4 compatibility
+- create dir for cookies when does not exists
+- New **PSR-18 Client** Wrapper in order to send a standard **PSR-7 Request** and receive a standar **PSR-7 Response**
+- use **PSR-18 Client** Exceptions in order to unify with the standard
+
+### Changed
+- adapting tests to phpunit 9.6
+- Don't remove the created cookies on destruct in order to retain it for future use
+- removed realpath function used into setCookiePath class method
+- CurlRequest executions returns binary response in order to delegate the headers separation to CurlResponse
+
+### Fixed
+- Explicit nullable parameters
+
+
 ## [1.0.4] - 2024-06-12
 
 ### Added
