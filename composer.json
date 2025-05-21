@@ -4,7 +4,6 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/JuanchoSL/CurlClient",
-    "minimum-stability": "stable",
     "keywords": [
         "curl",
         "request",
@@ -38,7 +37,7 @@
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
         "juanchosl/httpheaders": "dev-master",
-        "juanchosl/httpdata": "dev-master"
+        "juanchosl/httpdata": "1.0.*"
     },
     "require-dev": {
         "juanchosl/logger": "1.1.*",
