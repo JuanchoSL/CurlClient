@@ -17,7 +17,7 @@ class CurlResponse implements CurlResponseInterface
      * @var array<string,mixed>
      */
     private array $last_info;
-    private mixed $body;
+    private mixed $body = '';
     private array $headers;
 
     /**
