@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace JuanchoSL\CurlClient;
 
@@ -79,6 +77,11 @@ class CurlResponse implements CurlResponseInterface
     {
         return $this->last_info;
     }
+
+    /**
+     * Returns the response headers as array
+     * @return array The response headers
+     */
     public function getHeaders(): array
     {
         return $this->headers;
