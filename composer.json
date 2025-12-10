@@ -46,7 +46,7 @@
     },
     "require-dev": {
         "juanchosl/logger": "1.1.*",
-        "phpunit/phpunit": "9.6.*",
+        "phpunit/phpunit": "10.5.*",
         "apigen/apigen": "v7.0.0-alpha.6",
         "phpstan/phpstan": "1.9.1"
     },
