@@ -22,12 +22,16 @@
     "authors": [
         {
             "name": "Juan Sánchez Lecegui",
-            "email": "JuanchoSL@hotmail.com",
-            "homepage": "https://github.com/JuanchoSL/"
+            "email": "Juan.Sanchez@tecnicosweb.com",
+            "homepage": "https://www.linkedin.com/in/juansanchezlecegui/",
+            "role": "Developer"
         }
     ],
+    "bin": [
+        "bin/curlclient"
+    ],
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^8.1",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
@@ -36,12 +40,13 @@
         "psr/http-factory": "1.1.*",
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
-        "juanchosl/httpheaders": "dev-master",
-        "juanchosl/httpdata": "1.0.*"
+        "juanchosl/httpheaders": "1.0.*",
+        "juanchosl/requestlistener": "dev-master",
+        "composer-runtime-api": "^2.2"
     },
     "require-dev": {
         "juanchosl/logger": "1.1.*",
-        "phpunit/phpunit": "9.6.*",
+        "phpunit/phpunit": "10.5.*",
         "apigen/apigen": "v7.0.0-alpha.6",
         "phpstan/phpstan": "1.9.1"
     },

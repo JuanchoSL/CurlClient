@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+use JuanchoSL\CurlClient\Commands\GetCommand;
+use JuanchoSL\CurlClient\Commands\PostCommand;
+use JuanchoSL\Logger\Composers\TextComposer;
+use JuanchoSL\Logger\Logger;
+use JuanchoSL\Logger\Repositories\FileRepository;
+use JuanchoSL\RequestListener\Application;
+use JuanchoSL\RequestListener\Handlers\MyErrorHandler;
+
+include $_composer_autoload_path ?? implode(DIRECTORY_SEPARATOR, [dirname(__DIR__), 'vendor', 'autoload.php']);
+
+$logger = new Logger((new FileRepository(implode(DIRECTORY_SEPARATOR, [dirname(__DIR__), 'logs', 'error.log'])))->setComposer(new TextComposer));
+$errorHandler = (new MyErrorHandler)->setLogErrors(true)->setLogErrorsDetails(true)->setDisplayErrorsDetails(true);
+$errorHandler->setLogger($logger);
+
+$app = new Application();
+$app->setErrorHandler($errorHandler);
+$app->get('/get', GetCommand::class);
+$app->post('/post', PostCommand::class);
+$app->run();

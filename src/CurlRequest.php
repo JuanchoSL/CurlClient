@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace JuanchoSL\CurlClient;
 
@@ -370,7 +368,7 @@ class CurlRequest
      */
     public function close(): void
     {
-        if (isset($this->curl)) {
+        if (isset($this->curl) && version_compare(PHP_VERSION, '8.0', '<')) {
             curl_close($this->curl);
         }
     }

@@ -16,6 +16,7 @@ class CallTest extends TestCase
         defined('TMPDIR') or define('TMPDIR', sys_get_temp_dir());
     }
 
+    /*
     public function testGetApiLyrics()
     {
         $curl = new CurlRequest();
@@ -37,7 +38,6 @@ class CallTest extends TestCase
         $this->assertObjectHasProperty('Song', $body);
         $this->assertStringContainsStringIgnoringCase('umbrella', $body->Song);
     }
-/*
     public function testGetApiBitcoinPrice()
     {
         $curl = new CurlRequest();
@@ -52,16 +52,31 @@ class CallTest extends TestCase
         $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
-*/
+    */
+    public function testGetApiChickNorris()
+    {
+        $curl = new CurlRequest();
+        $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.chucknorris.io/jokes/random');
+
+        $this->assertInstanceOf(CurlResponse::class, $response);
+        $this->assertEquals(200, $response->getResponseCode());
+        $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
+
+        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $this->assertIsObject($body);
+        $this->assertObjectHasProperty('value', $body);
+        $this->assertNotEmpty($body->value);
+    }
+
     public function testGetExchangeRatesApi()
     {
         $curl = new CurlRequest();
         $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.coingecko.com/api/v3/exchange_rates');
-        
+
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
-        
+
         $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);
         $this->assertArrayHasKey('rates', $body);
@@ -74,12 +89,12 @@ class CallTest extends TestCase
         $this->assertEqualsIgnoringCase('fiat', $body['rates']['eur']['type']);
         $this->assertEqualsIgnoringCase('euro', $body['rates']['eur']['name']);
     }
-    
+
     public function testGetRickAndMortyListApi()
     {
         $curl = new CurlRequest();
         $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://rickandmortyapi.com/api/character');
-        
+
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());

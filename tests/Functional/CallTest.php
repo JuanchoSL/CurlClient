@@ -13,7 +13,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class CallTest extends TestCase
 {
-
+    
+    /*
     public function testGetApiLyrics()
     {
 
@@ -36,7 +37,6 @@ class CallTest extends TestCase
         $this->assertObjectHasProperty('Song', $body);
         $this->assertStringContainsStringIgnoringCase('umbrella', $body->Song);
     }
-/*
     public function testGetApiBitcoinPrice()
     {
         $request = (new RequestFactory)->createRequest('GET', 'https://api.coindesk.com/v1/bpi/currentprice.json');
@@ -51,7 +51,21 @@ class CallTest extends TestCase
         $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
-*/
+    */
+    public function testGetApiBitcoinPrice()
+    {
+        $request = (new RequestFactory)->createRequest('GET', 'https://api.chucknorris.io/jokes/random');
+        $response = (new PsrCurlClient)->sendRequest($request);
+
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('Content-type'));
+
+        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $this->assertIsObject($body);
+        $this->assertObjectHasProperty('value', $body);
+        $this->assertNotEmpty($body->value);
+    }
     public function testGetExchangeRatesApi()
     {
         $request = (new RequestFactory)->createRequest('GET', 'https://api.coingecko.com/api/v3/exchange_rates');
