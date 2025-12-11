@@ -53,7 +53,7 @@ class CallTest extends TestCase
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
     */
-    public function testGetApiChickNorris()
+    public function testGetApiChuckNorris()
     {
         $curl = new CurlRequest();
         $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.chucknorris.io/jokes/random');
