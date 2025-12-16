@@ -52,7 +52,7 @@ class CallTest extends TestCase
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
     }
     */
-    public function testGetApiBitcoinPrice()
+    public function testGetApiChuckNorris()
     {
         $request = (new RequestFactory)->createRequest('GET', 'https://api.chucknorris.io/jokes/random');
         $response = (new PsrCurlClient)->sendRequest($request);
