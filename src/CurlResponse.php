@@ -20,7 +20,7 @@ class CurlResponse implements CurlResponseInterface
 
     /**
      * Default constructor, set the responsed body and the info from the request
-     * @param mixed $body The resturned body from the request
+     * @param mixed $body The returned body from the request
      * @param array<string,mixed> $info The xtra info returned from the request
      */
     public function __construct(mixed $body, array $info)

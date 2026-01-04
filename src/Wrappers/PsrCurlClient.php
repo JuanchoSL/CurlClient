@@ -25,7 +25,8 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
     public function sendRequestWithBody(RequestInterface $request, array $data): ResponseInterface
     {
         $content_type = strtolower($request->getHeaderLine('content-type'));
-        switch (substr($content_type, 0, strpos($content_type, ';'))) {
+        $length = (($length = strpos($content_type, ';')) !== false) ? $length : null;
+        switch (substr($content_type, 0, $length)) {
             case 'application/json':
                 $body = json_encode($data);
                 break;
