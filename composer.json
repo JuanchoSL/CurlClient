@@ -41,7 +41,7 @@
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
         "juanchosl/httpheaders": "1.0.*",
-        "juanchosl/requestlistener": "dev-master",
+        "juanchosl/requestlistener": "dev-develop",
         "juanchosl/datamanipulation": "dev-master",
         "composer-runtime-api": "^2.2"
     },
