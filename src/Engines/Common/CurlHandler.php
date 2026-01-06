@@ -3,9 +3,6 @@
 namespace JuanchoSL\CurlClient\Engines\Common;
 
 use CurlHandle;
-use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
-use JuanchoSL\CurlClient\CurlResponse;
-use JuanchoSL\Validators\Types\Strings\StringValidation;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -129,12 +126,12 @@ class CurlHandler
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, $this->return_transfer ? 1 : 0);
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->getConnectionTimeoutSeconds());
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->getConnectionTimeoutSeconds());
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_AUTOREFERER, true);
         if ($this->getSsl()) {
             $caCert = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . "etc" . DIRECTORY_SEPARATOR . 'cacert.pem';
             $strictSSL = (file_exists($caCert) && $this->cert_strict);
-            //$strictSSL = false;
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($strictSSL) ? 2 : 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, ($strictSSL) ? 2 : 0);
             curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_MAX_DEFAULT);
@@ -149,4 +146,28 @@ class CurlHandler
         return $curl;
     }
 
+    protected function setClientOptions(CurlHandle $curl)
+    {
+        if (!empty($this->settings)) {
+            foreach ($this->settings as $option => $setting) {
+                curl_setopt($curl, $option, $setting);
+            }
+        }
+        return $curl;
+    }
+
+    protected function readerResource(CurlHandle $curl, $resource, int $buffer): string
+    {
+        return fread($resource, $buffer);
+    }
+    
+    protected function prepareReaderResource(CurlHandle $curl, $data)
+    {
+        $path = tempnam(sys_get_temp_dir(), 'curl');
+        file_put_contents($path, $data);
+        $resource = fopen($path, 'rb');
+        curl_setopt($curl, CURLOPT_READDATA, $resource);
+        curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
+        return $curl;
+    }
 }

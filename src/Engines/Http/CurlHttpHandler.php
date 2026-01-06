@@ -104,15 +104,9 @@ class CurlHttpHandler extends CurlHandler
         }
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, $this->follow_locations ? 1 : 0);
 
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->getConnectionTimeoutSeconds());
         curl_setopt($curl, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($curl, CURLOPT_COOKIEJAR, $this->cookie);
-        if (!empty($this->settings)) {
-            foreach ($this->settings as $option => $setting) {
-                curl_setopt($curl, $option, $setting);
-            }
-        }
-        return $curl;
+        return $this->setClientOptions($curl);
     }
 
     /**

@@ -2,22 +2,12 @@
 
 namespace JuanchoSL\CurlClient\Wrappers;
 
-use CurlHandle;
-use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\BatchCurlRequests;
-use JuanchoSL\CurlClient\CurlHandler;
-use JuanchoSL\CurlClient\CurlRequest;
-use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
 use JuanchoSL\CurlClient\Factories\CurlHandleFactory;
 use JuanchoSL\CurlClient\Factories\CurlRequesterFactory;
-use JuanchoSL\HttpData\Bodies\Parsers\ResponseReader;
-use JuanchoSL\HttpData\Exceptions\NetworkException;
-use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\HttpData\Bodies\Creators\MultipartCreator;
 use JuanchoSL\HttpData\Bodies\Creators\UrlencodedCreator;
-use JuanchoSL\HttpData\Factories\ResponseFactory;
 use JuanchoSL\HttpData\Factories\StreamFactory;
-use JuanchoSL\HttpHeaders\Headers;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -62,7 +52,6 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         $message = (new CurlRequesterFactory())->createFromRequest($request);
-        //echo "<pre>" . print_r($message, true);
         $this->logger?->info("{method} {path} {target} {code} {response}", [
             "method" => $request->getMethod(),
             "path" => (string) $request->getUri(),

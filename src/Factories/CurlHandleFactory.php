@@ -78,26 +78,28 @@ class CurlHandleFactory
         ]));
         if (in_array(strtolower($request->getUri()->getScheme()), ['ftps'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
+            $request = $request->withUri($request->getUri()->withScheme('ftp'));
         }
+
         switch (strtoupper($request->getMethod())) {
             case RequestMethodInterface::METHOD_GET:
                 if (substr($request->getRequestTarget(), -1) == '/') {
-                    $result = $client->setPasive(true)->prepareList($request->getUri()->withScheme('ftp'));
+                    $result = $client->setPasive(true)->prepareList($request->getUri());
                 } else {
                     $result = $client->setPasive(true)->prepareGet($request->getUri());
                 }
                 break;
             case RequestMethodInterface::METHOD_POST:
-                $result = $client->preparePost($request->getUri(), (string) $request->getBody());
+                $result = $client->setPasive(true)->preparePost($request->getUri(), (string) $request->getBody());
                 break;
             case RequestMethodInterface::METHOD_PATCH:
-                $result = $client->preparePatch($request->getUri(), (string) $request->getBody());
+                $result = $client->setPasive(true)->preparePatch($request->getUri(), (string) $request->getBody());
                 break;
             case RequestMethodInterface::METHOD_PUT:
-                $result = $client->preparePut($request->getUri(), (string) $request->getBody());
+                $result = $client->setPasive(true)->preparePut($request->getUri(), (string) $request->getBody());
                 break;
             case RequestMethodInterface::METHOD_DELETE:
-                $result = $client->prepareDelete($request->getUri());
+                $result = $client->setPasive(false)->prepareDelete($request->getUri());
                 break;
             case RequestMethodInterface::METHOD_HEAD:
                 $result = $client->prepareModifiedTime($request->getUri());
