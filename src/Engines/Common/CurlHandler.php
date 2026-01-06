@@ -12,7 +12,7 @@ class CurlHandler
 {
     protected CurlHandle $curl;
 
-    private bool $ssl = false;
+    private ?bool $ssl = null;
     private bool $cert_strict = false;
     private bool $return_transfer = true;
     protected int $connection_timeout = 60;
@@ -56,7 +56,7 @@ class CurlHandler
      */
     public function getSsl(): bool
     {
-        return $this->ssl;
+        return $this->ssl ?? false;
     }
 
     /**
@@ -107,7 +107,11 @@ class CurlHandler
         if (!empty($url->getPort())) {
             curl_setopt($curl, CURLOPT_PORT, $url->getPort());
         }
-
+        if (is_null($this->ssl)) {
+            if (in_array(strtolower($url->getScheme()), ['ftps', 'https', 'ssl', 'tls', 'pop3s', 'imaps', 'smtps'])) {
+                $this->setSsl(true);
+            }
+        }
         $url = (string) $url;
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             throw new \Exception("The provided url is malformed");
@@ -160,7 +164,7 @@ class CurlHandler
     {
         return fread($resource, $buffer);
     }
-    
+
     protected function prepareReaderResource(CurlHandle $curl, $data)
     {
         $path = tempnam(sys_get_temp_dir(), 'curl');

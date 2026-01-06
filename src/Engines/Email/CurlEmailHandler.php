@@ -26,7 +26,7 @@ class CurlEmailHandler extends CurlHandler
     public function prepareGet(UriInterface $url): CurlHandle
     {
         $curl = $this->init($url);
-        curl_setopt($curl, CURLOPT_DIRLISTONLY, true);
+        curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
     }

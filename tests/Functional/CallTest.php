@@ -6,7 +6,6 @@ use JuanchoSL\HttpData\Exceptions\NetworkException;
 use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\CurlClient\Wrappers\PsrCurlClient;
 use JuanchoSL\HttpData\Factories\RequestFactory;
-use JuanchoSL\HttpHeaders\Constants\Types\Extensions;
 use JuanchoSL\HttpHeaders\Constants\Types\MimeTypes;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
