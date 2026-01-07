@@ -62,7 +62,16 @@ class CurlRequesterFactory
         $message = $response
             ->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()) ?? '')
             ->withBody((new StreamFactory())->createStream($result->getBody()));
-
+        foreach ($result->getHeaders() as $key => $value) {
+            $key = str_replace('_', '-', $key);
+            if (str_starts_with(strtoupper($key), 'HTTP-')) {
+                $key = substr($key, 5);
+            }
+            if (is_numeric($value)) {
+                $value = (string) $value;
+            }
+            $message = $message->withAddedHeader($key, $value);
+        }
         return $message;
     }
 
@@ -77,7 +86,7 @@ class CurlRequesterFactory
         }
         $response = new ResponseFactory();
         $message = $response
-            ->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode())??'')
+            ->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()) ?? '')
             ->withBody((new StreamFactory())->createStream($result->getBody()));
         foreach ($result->getHeaders() as $key => $value) {
             $key = str_replace('_', '-', $key);

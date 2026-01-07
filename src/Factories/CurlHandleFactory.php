@@ -102,7 +102,7 @@ class CurlHandleFactory
                 $result = $client->setPasive(false)->prepareDelete($request->getUri());
                 break;
             case RequestMethodInterface::METHOD_HEAD:
-                $result = $client->prepareModifiedTime($request->getUri());
+                $result = $client->prepareHead($request->getUri());
                 break;
             default:
                 $exception = new RequestException("The method '{$request->getMethod()}' is not supported");

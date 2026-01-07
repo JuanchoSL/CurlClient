@@ -116,7 +116,7 @@ class CurlHttpRequest extends CurlHttpHandler
         $this->curl = $this->prepareTrace($url, $header);
         return $this->exec();
     }
-
+    
     /**
      * Send a HEAD request to the URL
      * @param UriInterface $url URL
@@ -127,9 +127,14 @@ class CurlHttpRequest extends CurlHttpHandler
     {
         $this->curl = $this->prepareHead($url, $header);
         $result_execution = curl_exec($this->curl);
-        //$result = ($this->return_transfer) ? explode("\n", (string) $result_execution) : $result_execution;
         $this->response_info = curl_getinfo($this->curl);
         return new CurlResponse($result_execution . "\r\n\r\n", $this->response_info);
+    }
+    
+    public function connect(UriInterface $url, array $header = []): CurlResponseInterface
+    {
+        $this->curl = $this->prepareConnect($url, $header);
+        return $this->exec();
     }
 
 }

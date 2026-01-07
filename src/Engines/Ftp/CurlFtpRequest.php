@@ -4,8 +4,6 @@ namespace JuanchoSL\CurlClient\Engines\Ftp;
 
 use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
-use JuanchoSL\CurlClient\CurlResponse;
-use Psr\Http\Message\UriFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -60,6 +58,16 @@ class CurlFtpRequest extends CurlFtpHandler
     public function delete(UriInterface $url): CurlResponseInterface
     {
         $this->curl = $this->prepareDelete($url);
+        return $this->exec();
+    }
+    public function head(UriInterface $url): CurlResponseInterface
+    {
+        $this->curl = $this->prepareHead($url);
+        return $this->exec();
+    }
+    public function connect(UriInterface $url): CurlResponseInterface
+    {
+        $this->curl = $this->prepareConnect($url);
         return $this->exec();
     }
 }
