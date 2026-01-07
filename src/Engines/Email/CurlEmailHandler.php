@@ -6,7 +6,11 @@ use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
+use JuanchoSL\DataManipulation\Manipulators\Arrays\ArrayManipulators;
+use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
+use JuanchoSL\HttpData\Bodies\Parsers\MessageReader;
 use JuanchoSL\HttpData\Factories\StreamFactory;
+use JuanchoSL\Validators\Types\Strings\StringValidations;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -35,20 +39,9 @@ class CurlEmailHandler extends CurlHandler
 
         $curl = $this->init($url);
         curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'PATCH');
-        //curl_setopt($curl, CURLOPT_INFILE, $resource);
-        //curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
-        //curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'resource']);
-        //curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, 'resource']);
         curl_setopt($curl, CURLOPT_FTPAPPEND, true);
         curl_setopt($curl, CURLOPT_UPLOAD, 1);
         $this->prepareReaderResource($curl, $data);
-        return $curl;
-
-        $path = tempnam(sys_get_temp_dir(), 'ftpup');
-        file_put_contents($path, $data);
-        $resource = fopen($path, 'rb');
-        curl_setopt($curl, CURLOPT_READDATA, $resource);
-        curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
         return $curl;
     }
     public function preparePut(UriInterface $url, string $data): CurlHandle
@@ -58,30 +51,28 @@ class CurlEmailHandler extends CurlHandler
         curl_setopt($curl, CURLOPT_UPLOAD, true);
         $this->prepareReaderResource($curl, $data);
         return $curl;
-
-        $path = tempnam(sys_get_temp_dir(), 'ftpup');
-        file_put_contents($path, $data);
-        $resource = fopen($path, 'rb');
-        curl_setopt($curl, CURLOPT_READDATA, $resource);
-        curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
     }
     public function preparePost(UriInterface $url, string $data): CurlHandle
     {
         $curl = $this->init($url);
-
+        $msg = new MessageReader((new StreamFactory())->createStream($data));
+        $headers = (new ArrayManipulators())->keyToCase()->__invoke($msg->getHeadersParams());
+        $from = (new StringsManipulators($headers['from']))->trim()->substring(strpos($headers['from'], '<'))->trim('<>');
         curl_setopt($curl, CURLOPT_UPLOAD, true);
-        curl_setopt($curl, CURLOPT_MAIL_AUTH, 'juan.sanchez@tecnicosweb.com');
-        curl_setopt($curl, CURLOPT_MAIL_FROM, '<juan.sanchez@tecnicosweb.com>');
-        curl_setopt($curl, CURLOPT_MAIL_RCPT, ['<webmaster@tecnicosweb.com>']);
+        curl_setopt($curl, CURLOPT_MAIL_AUTH, (string) $from);
+        curl_setopt($curl, CURLOPT_MAIL_FROM, (string) $from->preppend('<', '')->concatenation('>', ''));
+        if (!is_array($headers['to'])) {
+            $headers['to'] = explode(',', $headers['to']);
+        }
+        foreach ($headers['to'] as $key => $to) {
+            if (!(new StringValidations())->isValueStartingWith('<')->isValueEndingWith('>')->getResult($to)) {
+                $headers['to'][$key] = "<{$to}>";
+            }
+        }
+        curl_setopt($curl, CURLOPT_MAIL_RCPT, $headers['to']);
         curl_setopt($curl, CURLOPT_MAIL_RCPT_ALLLOWFAILS, true);
         $this->prepareReaderResource($curl, $data);
         return $curl;
-
-        $path = tempnam(sys_get_temp_dir(), 'sendmail');
-        file_put_contents($path, $data);
-        $resource = fopen($path, 'rb');
-        curl_setopt($curl, CURLOPT_READDATA, $resource);
-        curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
     }
     public function prepareDelete(UriInterface $url): CurlHandle
     {
@@ -115,11 +106,6 @@ class CurlEmailHandler extends CurlHandler
                 curl_setopt($curl, CURLOPT_PASSWORD, $password);
             }
         }
-        /*
-                curl_setopt($curl, CURLOPT_IGNORE_CONTENT_LENGTH, true);
-                curl_setopt($curl, CURLOPT_ACCEPTTIMEOUT_MS, $this->getConnectionTimeoutSeconds() * 1000);
-                curl_setopt($curl, CURLOPT_SERVER_RESPONSE_TIMEOUT, $this->getConnectionTimeoutSeconds());
-        */
         return $this->setClientOptions($curl);
     }
 
