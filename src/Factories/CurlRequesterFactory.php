@@ -2,15 +2,11 @@
 
 namespace JuanchoSL\CurlClient\Factories;
 
-use CurlHandle;
-use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Engines\Email\CurlEmailRequest;
 use JuanchoSL\CurlClient\Engines\Ftp\CurlFtpRequest;
-use JuanchoSL\CurlClient\Engines\Http\CurlHttpHandler;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use JuanchoSL\HttpData\Exceptions\NetworkException;
-use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\HttpData\Factories\ResponseFactory;
 use JuanchoSL\HttpData\Factories\StreamFactory;
 use JuanchoSL\HttpHeaders\Headers;

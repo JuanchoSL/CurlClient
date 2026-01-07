@@ -80,11 +80,6 @@ class CurlFtpHandler extends CurlHandler
             )
         );
         return $curl;
-
-        $curl = $this->init($url);
-        curl_setopt($curl, CURLOPT_FILETIME, true);
-        curl_setopt($curl, CURLOPT_UPLOAD, false);
-        return $curl;
     }
 
     public function prepareGet(UriInterface $url): CurlHandle
@@ -102,13 +97,6 @@ class CurlFtpHandler extends CurlHandler
     {
         $curl = $this->init($url);
         if (!empty($data)) {
-            /*
-            $path = tempnam(sys_get_temp_dir(), 'ftpup');
-            file_put_contents($path, $data);
-            $resource = fopen($path, 'rb');
-            curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
-            curl_setopt($curl, CURLOPT_READDATA, $resource);
-            */
             $this->prepareReaderResource($curl, $data);
 
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
@@ -123,13 +111,6 @@ class CurlFtpHandler extends CurlHandler
     {
         $curl = $this->init($url);
         if (!empty($data)) {
-            /*
-            $path = tempnam(sys_get_temp_dir(), 'ftpup');
-            file_put_contents($path, $data);
-            $resource = fopen($path, 'rb');
-            curl_setopt($curl, CURLOPT_READDATA, $resource);
-            curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
-            */
             $this->prepareReaderResource($curl, $data);
 
             curl_setopt($curl, CURLOPT_APPEND, false);
@@ -145,13 +126,6 @@ class CurlFtpHandler extends CurlHandler
         if (empty($data)) {
             curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("MKD %s", $url->getPath())));
         } else {
-            /*
-            $path = tempnam(sys_get_temp_dir(), 'ftpup');
-            file_put_contents($path, $data);
-            $resource = fopen($path, 'rb');
-            curl_setopt($curl, CURLOPT_READDATA, $resource);
-            curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'resource']);
-            */
             $this->prepareReaderResource($curl, $data);
 
             curl_setopt($curl, CURLOPT_FTP_CREATE_MISSING_DIRS, true);
