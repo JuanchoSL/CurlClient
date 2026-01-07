@@ -4,7 +4,6 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/JuanchoSL/CurlClient",
-    "minimum-stability": "dev",
     "keywords": [
         "curl",
         "request",
@@ -42,8 +41,8 @@
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
         "juanchosl/httpheaders": "1.0.*",
-        "juanchosl/requestlistener": "dev-develop",
-        "juanchosl/datamanipulation": "dev-master",
+        "juanchosl/requestlistener": "dev-master",
+        "juanchosl/datamanipulation": "^1.0",
         "composer-runtime-api": "^2.2"
     },
     "require-dev": {
