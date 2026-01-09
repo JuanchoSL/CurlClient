@@ -7,6 +7,7 @@ use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Engines\Email\CurlEmailHandler;
 use JuanchoSL\CurlClient\Engines\Ftp\CurlFtpHandler;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpHandler;
+use JuanchoSL\CurlClient\Engines\Ssh\CurlSshHandler;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\Validators\Types\Strings\StringValidation;
@@ -29,6 +30,7 @@ class CurlHandleFactory
 
             case 'ftp':
             case 'ftps':
+            case 'sftp':
                 return $this->createFromRequestFtp($request);
 
             case 'http':
@@ -72,13 +74,16 @@ class CurlHandleFactory
             $exception->setRequest($request);
             throw $exception;
         }
-
-        $client = (new CurlFtpHandler([
+        $class = (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ssh'])) ? CurlSshHandler::class : CurlFtpHandler::class;
+        $client = (new $class([
             CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
         ]));
-        if (in_array(strtolower($request->getUri()->getScheme()), ['ftps'])) {
+
+        if (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ftps'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
-            $request = $request->withUri($request->getUri()->withScheme('ftp'));
+            if (in_array(strtolower($request->getUri()->getScheme()), ['ftps'])) {
+                $request = $request->withUri($request->getUri()->withScheme('ftp'));
+            }
         }
 
         switch (strtoupper($request->getMethod())) {

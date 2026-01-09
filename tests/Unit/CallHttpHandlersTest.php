@@ -4,6 +4,7 @@ namespace JuanchoSL\CurlClient\Tests\Unit;
 
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
+use JuanchoSL\CurlClient\UserAgent;
 use JuanchoSL\HttpData\Factories\UriFactory;
 use JuanchoSL\HttpHeaders\Constants\Types\MimeTypes;
 use PHPUnit\Framework\TestCase;
@@ -71,8 +72,9 @@ class CallHttpHandlersTest extends TestCase
     public function testGetExchangeRatesApi()
     {
         $curl = new CurlHttpRequest();
-        $response = $curl->setCookiePath(TMPDIR)->get((new UriFactory())->createUri('https://api.coingecko.com/api/v3/exchange_rates'));
-
+        $response = $curl->setSsl(true)
+            ->setUserAgent((new UserAgent())->getDesktopLinux(1))
+            ->setCookiePath(TMPDIR)->get((new UriFactory())->createUri('https://api.coingecko.com/api/v3/exchange_rates'));
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());

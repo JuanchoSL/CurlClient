@@ -4,6 +4,7 @@ namespace JuanchoSL\CurlClient\Tests\Unit;
 
 use JuanchoSL\CurlClient\CurlRequest;
 use JuanchoSL\CurlClient\CurlResponse;
+use JuanchoSL\CurlClient\UserAgent;
 use JuanchoSL\HttpHeaders\Constants\Types\Extensions;
 use JuanchoSL\HttpHeaders\Constants\Types\MimeTypes;
 use PHPUnit\Framework\TestCase;
@@ -56,7 +57,9 @@ class CallTest extends TestCase
     public function testGetApiChuckNorris()
     {
         $curl = new CurlRequest();
-        $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.chucknorris.io/jokes/random');
+        $response = $curl->setSsl(true)
+            ->setUserAgent((new UserAgent)->getDesktopLinux(1))
+            ->setCookiePath(TMPDIR)->get('https://api.chucknorris.io/jokes/random');
 
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
@@ -71,8 +74,9 @@ class CallTest extends TestCase
     public function testGetExchangeRatesApi()
     {
         $curl = new CurlRequest();
-        $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.coingecko.com/api/v3/exchange_rates');
-
+        $response = $curl->setSsl(true)
+            ->setUserAgent((new UserAgent)->getDesktopLinux(1))
+            ->setCookiePath(TMPDIR)->get('https://api.coingecko.com/api/v3/exchange_rates');
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());

@@ -2,6 +2,7 @@
 
 namespace JuanchoSL\CurlClient\Tests\Functional;
 
+use JuanchoSL\CurlClient\UserAgent;
 use JuanchoSL\HttpData\Exceptions\NetworkException;
 use JuanchoSL\HttpData\Exceptions\RequestException;
 use JuanchoSL\CurlClient\Wrappers\PsrCurlClient;
@@ -12,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class CallTest extends TestCase
 {
-    
+
     /*
     public function testGetApiLyrics()
     {
@@ -67,7 +68,9 @@ class CallTest extends TestCase
     }
     public function testGetExchangeRatesApi()
     {
-        $request = (new RequestFactory)->createRequest('GET', 'https://api.coingecko.com/api/v3/exchange_rates');
+        $request = (new RequestFactory)
+            ->createRequest('GET', 'https://api.coingecko.com/api/v3/exchange_rates')
+            ->withAddedHeader('User-Agent', (new UserAgent())->getDesktopLinux(1));
         $response = (new PsrCurlClient)->sendRequest($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);

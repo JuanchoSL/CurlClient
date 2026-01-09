@@ -29,6 +29,7 @@ class CurlRequesterFactory
 
             case 'ftp':
             case 'ftps':
+            case 'sftp':
                 return $this->createFromRequestFtp($request);
 
             case 'http':

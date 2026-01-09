@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace JuanchoSL\CurlClient\Engines\Ftp;
+namespace JuanchoSL\CurlClient\Engines\Ssh;
 
 use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
@@ -11,30 +11,11 @@ use Psr\Http\Message\UriInterface;
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlFtpHandler extends CurlHandler
+class CurlSshHandler extends CurlHandler
 {
 
     protected bool $pasive = true;
-    protected string $active_port = '-';
-
-    public function setPasive(bool $pasive): static
-    {
-        $this->pasive = $pasive;
-        return $this;
-    }
-    public function getPasive(): bool
-    {
-        return $this->pasive;
-    }
-    public function setActivePort(string $port): static
-    {
-        $this->active_port = $port;
-        return $this;
-    }
-    public function getActivePort(): string
-    {
-        return $this->active_port;
-    }
+    protected int $active_port = 20;
 
     /*
     //SFTP
@@ -85,7 +66,6 @@ class CurlFtpHandler extends CurlHandler
     public function prepareGet(UriInterface $url): CurlHandle
     {
         $curl = $this->init($url);
-        //$this->prepareWriterResource($curl);
         curl_setopt($curl, CURLOPT_FILETIME, true);
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_NOBODY, false);
@@ -125,7 +105,7 @@ class CurlFtpHandler extends CurlHandler
     {
         $curl = $this->init($url);
         if (empty($data)) {
-            curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("MKD %s", $url->getPath())));
+            curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("MKDIR %s", $url->getPath())));
         } else {
             $this->prepareReaderResource($curl, $data);
 
@@ -144,9 +124,9 @@ class CurlFtpHandler extends CurlHandler
         curl_setopt($curl, CURLOPT_NOBODY, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
         if (substr($url->getPath(), -1) == '/') {
-            curl_setopt($curl, CURLOPT_POSTQUOTE, array(sprintf("RMD %s", $url->getPath())));
+            curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("RMDIR %s", $url->getPath())));
         } else {
-            curl_setopt($curl, CURLOPT_PREQUOTE, array(sprintf("DELE %s", $url->getPath())));
+            curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("RM %s", $url->getPath())));
         }
         return $curl;
     }
@@ -162,27 +142,17 @@ class CurlFtpHandler extends CurlHandler
     protected function init(UriInterface $url, $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
-        if ($this->getPasive()) {
-            curl_setopt($curl, CURLOPT_FTP_USE_EPSV, true);
-        } else {
-            curl_setopt($curl, CURLOPT_FTPPORT, $this->getActivePort());
-            curl_setopt($curl, CURLOPT_FTP_USE_EPRT, true);
-        }
+
 
         list($username, $password) = explode(':', $url->getUserInfo());
-        if ($this->getSsl()) {
-            //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
-            //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
-            //curl_setopt($curl, CURLOPT_SSL_FALSESTART, false);
-            curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
-            curl_setopt($curl, CURLOPT_FTPSSLAUTH, CURLFTPAUTH_SSL);//CURLFTPAUTH_DEFAULT | CURLFTPAUTH_TLS | CURLFTPAUTH_SSL
-            curl_setopt($curl, CURLOPT_FTP_SSL_CCC, CURLFTPSSL_CCC_NONE);
-            curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, $username);
-            curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, $password);
-        } else {
-            curl_setopt($curl, CURLOPT_LOGIN_OPTIONS, 'AUTH=*');//AUTH=NTLM o AUTH=*
-            curl_setopt($curl, CURLOPT_USERPWD, $url->getUserInfo());
-        }
+        //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
+        //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
+        //curl_setopt($curl, CURLOPT_SSL_FALSESTART, false);
+        curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
+        curl_setopt($curl, CURLOPT_FTPSSLAUTH, CURLFTPAUTH_SSL);//CURLFTPAUTH_DEFAULT | CURLFTPAUTH_TLS | CURLFTPAUTH_SSL
+        curl_setopt($curl, CURLOPT_FTP_SSL_CCC, CURLFTPSSL_CCC_NONE);
+        curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, $username);
+        curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, $password);
 
         curl_setopt($curl, CURLOPT_IGNORE_CONTENT_LENGTH, true);
         curl_setopt($curl, CURLOPT_ACCEPTTIMEOUT_MS, $this->getConnectionTimeoutSeconds() * 1000);
