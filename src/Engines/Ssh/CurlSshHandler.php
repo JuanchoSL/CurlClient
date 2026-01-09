@@ -6,6 +6,8 @@ use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
+use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
+use JuanchoSL\Validators\Types\Strings\StringValidations;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -142,17 +144,17 @@ class CurlSshHandler extends CurlHandler
     protected function init(UriInterface $url, $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
-
-
-        list($username, $password) = explode(':', $url->getUserInfo());
         //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
         //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
         //curl_setopt($curl, CURLOPT_SSL_FALSESTART, false);
         curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
         curl_setopt($curl, CURLOPT_FTPSSLAUTH, CURLFTPAUTH_SSL);//CURLFTPAUTH_DEFAULT | CURLFTPAUTH_TLS | CURLFTPAUTH_SSL
         curl_setopt($curl, CURLOPT_FTP_SSL_CCC, CURLFTPSSL_CCC_NONE);
-        curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, $username);
-        curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, $password);
+        if ((new StringValidations())->isValueContaining(':')->getResult($url->getUserInfo())) {
+            list($username, $password) = (new StringsManipulators($url->getUserInfo()))->explode(':');
+            curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, (string) $username->urlDecode());
+            curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, (string) $password->urlDecode());
+        }
 
         curl_setopt($curl, CURLOPT_IGNORE_CONTENT_LENGTH, true);
         curl_setopt($curl, CURLOPT_ACCEPTTIMEOUT_MS, $this->getConnectionTimeoutSeconds() * 1000);

@@ -90,18 +90,21 @@ class CurlEmailHandler extends CurlHandler
         if (true) {
             curl_setopt($curl, CURLOPT_FTP_USE_EPSV, true);
         }
-        list($username, $password) = explode(':', $url->getUserInfo());
         if ($this->getSsl()) {
             curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
             //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
-            curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, $username);
-            curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, $password);
+            if ((new StringValidations())->isValueContaining(':')->getResult($url->getUserInfo())) {
+                list($username, $password) = (new StringsManipulators($url->getUserInfo()))->explode(':');
+                curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, (string) $username->urlDecode());
+                curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, (string) $password->urlDecode());
+            }
             //curl_setopt($curl, CURLSSLOPT_AUTO_CLIENT_CERT, 1);
         } else {
             curl_setopt($curl, CURLOPT_LOGIN_OPTIONS, 'AUTH=*');//AUTH=NTLM o AUTH=*
             if (true) {
                 curl_setopt($curl, CURLOPT_USERPWD, $url->getUserInfo());
             } else {
+                list($username, $password) = explode(':', $url->getUserInfo());
                 curl_setopt($curl, CURLOPT_USERNAME, $username);
                 curl_setopt($curl, CURLOPT_PASSWORD, $password);
             }

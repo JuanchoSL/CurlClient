@@ -37,6 +37,7 @@ class CurlRequest
      */
     public function __construct(array $settings = [])
     {
+        trigger_error("This class has been marked as deprecated, change to Factory in order to use the rigth Requester", E_USER_DEPRECATED);
         $this->setCookiePath(sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->cookie_path);
         $this->settings = $settings;
     }
@@ -231,6 +232,7 @@ class CurlRequest
     public function get(string $url, array $header = []): CurlResponseInterface
     {
         $this->init($url, $header);
+        curl_setopt($this->curl, CURLOPT_HTTPGET, true);
         return $this->exec();
     }
 

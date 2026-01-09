@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf3be1f12febc592f788bb888fc2de54",
+    "content-hash": "88fd2729fa06f1bf4d5962e63fb593f6",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -68,12 +68,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/DataManipulation.git",
-                "reference": "0a3f3e6efa2efc0f92c54d66163042df9a0e6a3c"
+                "reference": "e2d60d8aaadf869c1c53ef62308dca8f9aad7bf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/DataManipulation/zipball/0a3f3e6efa2efc0f92c54d66163042df9a0e6a3c",
-                "reference": "0a3f3e6efa2efc0f92c54d66163042df9a0e6a3c",
+                "url": "https://api.github.com/repos/JuanchoSL/DataManipulation/zipball/e2d60d8aaadf869c1c53ef62308dca8f9aad7bf5",
+                "reference": "e2d60d8aaadf869c1c53ef62308dca8f9aad7bf5",
                 "shasum": ""
             },
             "require": {
@@ -114,7 +114,7 @@
             "support": {
                 "source": "https://github.com/JuanchoSL/DataManipulation/tree/1.0.0"
             },
-            "time": "2026-01-07T09:32:44+00:00"
+            "time": "2026-01-07T16:40:26+00:00"
         },
         {
             "name": "juanchosl/datatransfer",
@@ -411,24 +411,25 @@
         },
         {
             "name": "juanchosl/requestlistener",
-            "version": "dev-master",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/RequestListener.git",
-                "reference": "b5f87f8c67c0b0400a8437f04df51702af6bed28"
+                "reference": "7d9c91c9062ef65107df795657960346f2ed48f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/RequestListener/zipball/b5f87f8c67c0b0400a8437f04df51702af6bed28",
-                "reference": "b5f87f8c67c0b0400a8437f04df51702af6bed28",
+                "url": "https://api.github.com/repos/JuanchoSL/RequestListener/zipball/7d9c91c9062ef65107df795657960346f2ed48f3",
+                "reference": "7d9c91c9062ef65107df795657960346f2ed48f3",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "fig/http-message-util": "1.1.*",
-                "juanchosl/datatransfer": "1.0.*",
+                "juanchosl/datamanipulation": "^1.0",
+                "juanchosl/datatransfer": "^1.0",
                 "juanchosl/exceptions": "1.0.*",
-                "juanchosl/httpdata": "1.0.*",
+                "juanchosl/httpdata": "^1.0",
                 "juanchosl/logger": "1.1.*",
                 "php": "^8.1",
                 "psr/container": "2.0.*",
@@ -443,7 +444,6 @@
             "suggest": {
                 "juanchosl/logger": "^1.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -476,9 +476,9 @@
                 "use cases"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/RequestListener/tree/master"
+                "source": "https://github.com/JuanchoSL/RequestListener/tree/1.0"
             },
-            "time": "2025-12-24T16:05:59+00:00"
+            "time": "2026-01-07T10:26:48+00:00"
         },
         {
             "name": "juanchosl/validators",

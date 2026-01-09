@@ -6,6 +6,8 @@ use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
+use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
+use JuanchoSL\Validators\Types\Strings\StringValidations;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -169,7 +171,6 @@ class CurlFtpHandler extends CurlHandler
             curl_setopt($curl, CURLOPT_FTP_USE_EPRT, true);
         }
 
-        list($username, $password) = explode(':', $url->getUserInfo());
         if ($this->getSsl()) {
             //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
             //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
@@ -177,8 +178,11 @@ class CurlFtpHandler extends CurlHandler
             curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
             curl_setopt($curl, CURLOPT_FTPSSLAUTH, CURLFTPAUTH_SSL);//CURLFTPAUTH_DEFAULT | CURLFTPAUTH_TLS | CURLFTPAUTH_SSL
             curl_setopt($curl, CURLOPT_FTP_SSL_CCC, CURLFTPSSL_CCC_NONE);
-            curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, $username);
-            curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, $password);
+            if ((new StringValidations())->isValueContaining(':')->getResult($url->getUserInfo())) {
+                list($username, $password) = (new StringsManipulators($url->getUserInfo()))->explode(':');
+                curl_setopt($curl, CURLOPT_TLSAUTH_USERNAME, (string) $username->urlDecode());
+                curl_setopt($curl, CURLOPT_TLSAUTH_PASSWORD, (string) $password->urlDecode());
+            }
         } else {
             curl_setopt($curl, CURLOPT_LOGIN_OPTIONS, 'AUTH=*');//AUTH=NTLM o AUTH=*
             curl_setopt($curl, CURLOPT_USERPWD, $url->getUserInfo());
