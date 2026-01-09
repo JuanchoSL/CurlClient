@@ -1,5 +1,31 @@
 # Change Log - Curl Client
 
+## [1.0.8] - 2026-01-09
+
+### Added
+
+- CurlHandler ir order to create a curl handle with no execution
+- CurlHandleFactory for create and prepare a CurlHandle from a PSR7 RequestInterface
+- PsrCurlClient can send a batch of request from a PSR7 compatible request sequence
+- CurlHttpRequest and CurlHttpHandler for web or API calls
+- CurlFtpRequest and CurlFtpHandler for ftp or ftps calls
+- CurlSshRequest and CurlSshHandler for sftp or ssh calls
+- CurlEmailRequest for smtp send emails or imap/pop3 reading calls
+- CONNECT request method for http
+
+### Changed
+
+- CurlRequest has been marked as DEPRECATED, you need to use provided Factories in order to load rigth Requester according the uri schema
+- The new Requesters use UriInterfaces according the PSR7
+
+### Fixed
+
+- sendRequestWithBody Psr Client method, extracting the content-type header in order to parse body according it, when a semicolon is not present
+- Fix EOL on HTTP response for extract headers and body
+- use TMP folder as default for cookies path when no other is selected
+- CurlResponse with have empty headers
+- User-Agent in some tests in order to avoid rate limit for http requests
+
 ## [1.0.7] - 2025-12-27
 
 ### Added
