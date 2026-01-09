@@ -3,6 +3,7 @@
 namespace JuanchoSL\CurlClient;
 
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 
 /**
  * Group the cURL response data in order to use from other services
@@ -16,7 +17,7 @@ class CurlResponse implements CurlResponseInterface
      */
     private array $last_info;
     private mixed $body = '';
-    private array $headers;
+    private array $headers = [];
 
     /**
      * Default constructor, set the responsed body and the info from the request
@@ -28,7 +29,8 @@ class CurlResponse implements CurlResponseInterface
         $this->last_info = $info;
         $headers = '';
         if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
-            list($headers, $this->body) = explode("\r\n\r\n", $body);
+            $body = (new StringsManipulators($body))->eol(PHP_EOL)->__tostring();
+            list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
         }
         $headers = explode(PHP_EOL, $headers);
         foreach ($headers as $value) {

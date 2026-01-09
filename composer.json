@@ -8,6 +8,13 @@
         "curl",
         "request",
         "client",
+        "api",
+        "http",
+        "ftp",
+        "ftps",
+        "sftp",
+        "ssh",
+        "ssh2",
         "psr7",
         "psr18",
         "GET",
@@ -17,6 +24,7 @@
         "HEAD",
         "DELETE",
         "OPTIONS",
+        "CONNECT",
         "TRACE"
     ],
     "authors": [
@@ -41,8 +49,7 @@
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
         "juanchosl/httpheaders": "1.0.*",
-        "juanchosl/requestlistener": "dev-master",
-        "juanchosl/datamanipulation": "dev-master",
+        "juanchosl/requestlistener": "1.0.*@dev",
         "composer-runtime-api": "^2.2"
     },
     "require-dev": {
