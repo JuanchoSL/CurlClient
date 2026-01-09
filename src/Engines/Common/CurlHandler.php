@@ -102,8 +102,10 @@ class CurlHandler
     {
 
         $curl = curl_init();
+        /*
         curl_setopt($curl, CURLOPT_STDERR, STDOUT);
-        curl_setopt($curl, CURLOPT_VERBOSE, false);
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
+        */
         if (!empty($url->getPort())) {
             curl_setopt($curl, CURLOPT_PORT, $url->getPort());
         }
@@ -172,6 +174,20 @@ class CurlHandler
         $resource = fopen($path, 'rb');
         curl_setopt($curl, CURLOPT_READDATA, $resource);
         curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
+        return $curl;
+    }
+    protected function writerResource(CurlHandle $curl, string $data): int
+    {
+        $path = tempnam(sys_get_temp_dir(), 'save');
+        $resource = fopen($path, 'a+');
+        $but = fwrite($resource, $data);
+        fclose($resource);
+        return $but;
+    }
+
+    protected function prepareWriterResource(CurlHandle $curl)
+    {
+        curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, 'writerResource']);
         return $curl;
     }
 }
