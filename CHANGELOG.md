@@ -25,6 +25,7 @@
 - use TMP folder as default for cookies path when no other is selected
 - CurlResponse with have empty headers
 - User-Agent in some tests in order to avoid rate limit for http requests
+- Check for existence STDOUT constant before use it
 
 ## [1.0.7] - 2025-12-27
 
