@@ -142,7 +142,9 @@ class CurlHandler
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, ($strictSSL) ? 2 : 0);
             curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_MAX_DEFAULT);
             curl_setopt($curl, CURLOPT_CAINFO, ($strictSSL) ? $caCert : true);
-            curl_setopt($curl, CURLSSLOPT_AUTO_CLIENT_CERT, intval(!$this->cert_strict));
+            if (defined('CURLSSLOPT_AUTO_CLIENT_CERT')) {
+                curl_setopt($curl, CURLSSLOPT_AUTO_CLIENT_CERT, intval(!$this->cert_strict));
+            }
         }
         if (!empty($this->settings)) {
             foreach ($this->settings as $option => $setting) {
