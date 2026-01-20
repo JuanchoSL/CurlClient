@@ -170,7 +170,7 @@ class CurlFtpHandler extends CurlHandler
             curl_setopt($curl, CURLOPT_FTPPORT, $this->getActivePort());
             curl_setopt($curl, CURLOPT_FTP_USE_EPRT, true);
         }
-
+        curl_setopt($curl, CURLOPT_FTP_SKIP_PASV_IP, true);
         if ($this->getSsl()) {
             //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
             //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
