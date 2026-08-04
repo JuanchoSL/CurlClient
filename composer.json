@@ -8,6 +8,7 @@
         "curl",
         "request",
         "client",
+        "webdav",
         "api",
         "http",
         "ftp",
@@ -25,7 +26,10 @@
         "DELETE",
         "OPTIONS",
         "CONNECT",
-        "TRACE"
+        "TRACE",
+        "MOVE",
+        "MKCOL",
+        "PROPFIND"
     ],
     "authors": [
         {
@@ -49,6 +53,8 @@
         "psr/http-client": "1.0.*",
         "psr/log": "^3.0",
         "juanchosl/httpheaders": "1.0.*",
+        "juanchosl/validators": "1.0.*",
+        "juanchosl/datamanipulation": "1.0.*",
         "juanchosl/requestlistener": "1.0.*@dev",
         "composer-runtime-api": "^2.2"
     },

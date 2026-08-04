@@ -4,13 +4,21 @@ namespace JuanchoSL\CurlClient\Engines\Ftp;
 
 use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\BasicCurlMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\ListMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\SpecialServersMethodsInterface;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\BasicMethodsTrait;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\ListMethodsTrait;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\SpecialServersMethodsTrait;
 use Psr\Http\Message\UriInterface;
 
-/**
- * Perform cURL request to remote ftp servers
- */
-class CurlFtpRequest extends CurlFtpHandler
+class CurlFtpRequest extends CurlFtpHandler implements
+    BasicCurlMethodsInterface,
+    SpecialServersMethodsInterface,
+    ListMethodsInterface
 {
+
+    use BasicMethodsTrait, SpecialServersMethodsTrait, ListMethodsTrait;
 
     protected CurlHandle $curl;
 
@@ -29,45 +37,9 @@ class CurlFtpRequest extends CurlFtpHandler
         return parent::execute($this->curl);
     }
 
-    public function list(UriInterface $url): CurlResponseInterface
+    public function move(UriInterface $url, array $headers = []): CurlResponseInterface
     {
-        $this->curl = $this->prepareList($url);
-        return $this->exec();
-    }
-
-    public function get(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareGet($url);
-        return $this->exec();
-    }
-    public function patch(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePatch($url, $data);
-        return $this->exec();
-    }
-    public function put(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePut($url, $data);
-        return $this->exec();
-    }
-    public function post(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePost($url, $data);
-        return $this->exec();
-    }
-    public function delete(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareDelete($url);
-        return $this->exec();
-    }
-    public function head(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareHead($url);
-        return $this->exec();
-    }
-    public function connect(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareConnect($url);
+        $this->curl = $this->prepareMove($url, $headers);
         return $this->exec();
     }
 }
