@@ -28,9 +28,16 @@ class CurlResponse implements CurlResponseInterface
     {
         $this->last_info = $info;
         $headers = '';
-        if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
+        if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0 && mb_substr_count($body, PHP_EOL . PHP_EOL) > 0) {
             $body = (new StringsManipulators($body))->eol(PHP_EOL)->__tostring();
             list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
+        } else {
+            if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
+                $headers = trim(mb_substr($body, 0, $this->last_info['header_size']));
+            }
+            if (isset($this->last_info['size_download']) && $this->last_info['size_download'] > 0) {
+                $this->body = trim(mb_substr($body, intval($this->last_info['size_download']) * -1));
+            }
         }
         $headers = explode(PHP_EOL, $headers);
         foreach ($headers as $value) {

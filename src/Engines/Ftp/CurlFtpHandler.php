@@ -229,7 +229,7 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
         $response_info = curl_getinfo($curl);
         $headers = [];
 
-        if (false && isset($response_info['header_size']) && $response_info['header_size'] == 0) {
+        if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
             if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
                 $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
             }
@@ -238,6 +238,8 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
             }
             if (!empty($headers)) {
                 $headers = implode(PHP_EOL, $headers);
+            } else {
+                $headers = '';
             }
             $response_info['header_size'] = mb_strlen($headers);
         }
