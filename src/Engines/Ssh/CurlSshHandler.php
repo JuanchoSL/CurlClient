@@ -3,7 +3,10 @@
 namespace JuanchoSL\CurlClient\Engines\Ssh;
 
 use CurlHandle;
+use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\ListMethodsInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
@@ -13,7 +16,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlSshHandler extends CurlHandler
+class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, ListMethodsInterface
 {
 
     protected bool $pasive = true;
@@ -23,24 +26,24 @@ class CurlSshHandler extends CurlHandler
     //SFTP
     public function prepareChmod(UriInterface $url, int $perms): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_NEW_DIRECTORY_PERMS, $perms);
         curl_setopt($curl, CURLOPT_NEW_FILE_PERMS, $perms);
         return $curl;
     }
         */
-    public function prepareStat(UriInterface $url): CurlHandle
+    public function prepareStat(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         //curl_setopt($curl, CURLFTPMETHOD_SINGLECWD, true);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
     }
 
-    public function prepareList(UriInterface $url): CurlHandle
+    public function prepareList(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         //curl_setopt($curl, CURLFTPMETHOD_SINGLECWD, true);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, true);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
@@ -50,11 +53,11 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function prepareHead(UriInterface $url): CurlHandle
+    public function prepareHead(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_FILETIME, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'HEAD');
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_HEAD);
         curl_setopt_array(
             $curl,
             array(
@@ -65,9 +68,9 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function prepareGet(UriInterface $url): CurlHandle
+    public function prepareGet(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_FILETIME, true);
         curl_setopt($curl, CURLOPT_HEADER, true);
         curl_setopt($curl, CURLOPT_NOBODY, false);
@@ -76,13 +79,13 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function preparePatch(UriInterface $url, string $data): CurlHandle
+    public function preparePatch(UriInterface $url, string $data, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         if (!empty($data)) {
             $this->prepareReaderResource($curl, $data);
 
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_PATCH);
             curl_setopt($curl, CURLOPT_APPEND, true);
             curl_setopt($curl, CURLOPT_FTPAPPEND, true);
             curl_setopt($curl, CURLOPT_UPLOAD, 1);
@@ -90,12 +93,13 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function preparePut(UriInterface $url, string $data): CurlHandle
+    public function preparePut(UriInterface $url, string $data, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         if (!empty($data)) {
             $this->prepareReaderResource($curl, $data);
 
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_PUT);
             curl_setopt($curl, CURLOPT_APPEND, false);
             curl_setopt($curl, CURLOPT_FTPAPPEND, false);
             curl_setopt($curl, CURLOPT_UPLOAD, true);
@@ -103,9 +107,9 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function preparePost(UriInterface $url, string $data): CurlHandle
+    public function preparePost(UriInterface $url, string $data, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         if (empty($data)) {
             curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("MKDIR %s", $url->getPath())));
         } else {
@@ -118,17 +122,17 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    public function prepareDelete(UriInterface $url): CurlHandle
+    public function prepareDelete(UriInterface $url, array $header = []): CurlHandle
     {
         $this->setReturnTransfer(false);
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
         curl_setopt($curl, CURLOPT_NOBODY, true);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
         if (substr($url->getPath(), -1) == '/') {
             curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("RMDIR %s", $url->getPath())));
         } else {
-            curl_setopt($curl, CURLOPT_QUOTE, array(sprintf("RM %s", $url->getPath())));
+            curl_setopt($curl, CURLOPT_POSTQUOTE, array(sprintf("RM %s", $url->getPath())));
         }
         return $curl;
     }
@@ -141,7 +145,7 @@ class CurlSshHandler extends CurlHandler
         return $curl;
     }
 
-    protected function init(UriInterface $url, $header = []): CurlHandle
+    protected function init(UriInterface $url, array $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
         //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
@@ -169,18 +173,26 @@ class CurlSshHandler extends CurlHandler
         $result = curl_exec($curl);
         $response_info = curl_getinfo($curl);
         $headers = [];
-        if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
-            $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
+
+        if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
+            if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
+                $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
+            }
+            if (isset($response_info['size_download']) && $response_info['size_download'] > 0) {
+                $headers[] = "Content-Length: " . $response_info['size_download'];
+            }
+            if (!empty($headers)) {
+                $headers = implode(PHP_EOL, $headers);
+            } else {
+                $headers = '';
+            }
+            $response_info['header_size'] = mb_strlen($headers);
         }
-        if (isset($response_info['size_download']) && $response_info['size_download'] > 0) {
-            $headers[] = "Content-Length: " . $response_info['size_download'];
-        }
-        $headers = (empty($headers)) ? '.' : implode(PHP_EOL, $headers);
-        $response_info['header_size'] = mb_strlen($headers);
         if ($result === false) {
             $result = curl_error($curl);
+            $response_info['size_download'] = mb_strlen($result);
         }
-        return new CurlResponse($headers . PHP_EOL . PHP_EOL . $result, $response_info);
+        return new CurlResponse($result, $response_info);
     }
 
 }
