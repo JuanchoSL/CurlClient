@@ -120,6 +120,12 @@ class CurlHandleFactory
             case 'MOVE':
                 $result = $client->prepareMove($request->getUri(), $headers);
                 break;
+            case 'LIST':
+                $result = $client->prepareList($request->getUri(), $headers);
+                break;
+            case 'PROPFIND':
+                $result = $client->prepareStat($request->getUri(), $headers);
+                break;
             default:
                 $exception = new RequestException("The method '{$request->getMethod()}' is not supported");
                 $exception->setRequest($request);
@@ -206,6 +212,7 @@ class CurlHandleFactory
         return $result;
     }
 
+    /*
     public function createFromRequestSmb(RequestInterface $request): CurlHandle
     {
         $request = $this->prepareRequestTargetIntoUri($request);
@@ -243,7 +250,7 @@ class CurlHandleFactory
         }
         return $result;
     }
-
+    */
     protected function prepareRequestTargetIntoUri(RequestInterface $request): RequestInterface
     {
         $uri = $request->getUri();
