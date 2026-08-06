@@ -7,6 +7,7 @@ use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\ListMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\MoveMethodsInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
 use JuanchoSL\DataManipulation\Manipulators\Arrays\ArrayManipulators;
@@ -18,7 +19,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, ListMethodsInterface
+class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, ListMethodsInterface, MoveMethodsInterface
 {
 
     protected bool $pasive = true;

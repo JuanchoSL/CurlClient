@@ -5,16 +5,8 @@ namespace JuanchoSL\CurlClient\Contracts\Preparations;
 use CurlHandle;
 use Psr\Http\Message\UriInterface;
 
-interface ExtendedHttpMethodsInterface
+interface ExtendedHttpMethodsInterface extends MoveMethodsInterface
 {
-
-    /**
-     * prepare a MOVE curlhandle
-     * @param UriInterface $url URL
-     * @param array<string,string> $header Extra headers for prepare in this request
-     * @return CurlHandle CurlHandle response
-     */
-    public function prepareMove(UriInterface $url, array $header = []): CurlHandle;
 
     /**
      * prepare a PROPFIND curlhandle

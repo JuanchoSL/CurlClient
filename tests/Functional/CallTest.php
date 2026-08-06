@@ -74,20 +74,24 @@ class CallTest extends TestCase
         $response = (new PsrCurlClient)->sendRequest($request);
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
 
-        $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-        $this->assertIsArray($body);
-        $this->assertArrayHasKey('rates', $body);
-        $this->assertIsArray($body['rates']);
-        $this->assertArrayHasKey('eur', $body['rates']);
-        $this->assertArrayHasKey('name', $body['rates']['eur']);
-        $this->assertArrayHasKey('unit', $body['rates']['eur']);
-        $this->assertArrayHasKey('value', $body['rates']['eur']);
-        $this->assertArrayHasKey('type', $body['rates']['eur']);
-        $this->assertEqualsIgnoringCase('fiat', $body['rates']['eur']['type']);
-        $this->assertEqualsIgnoringCase('euro', $body['rates']['eur']['name']);
+        //Sometimes the limit has been reached, is not a lib error
+        if ($response->getStatusCode() != 429) {
+            $this->assertEquals(200, $response->getStatusCode());
+            $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
+
+            $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            $this->assertIsArray($body);
+            $this->assertArrayHasKey('rates', $body);
+            $this->assertIsArray($body['rates']);
+            $this->assertArrayHasKey('eur', $body['rates']);
+            $this->assertArrayHasKey('name', $body['rates']['eur']);
+            $this->assertArrayHasKey('unit', $body['rates']['eur']);
+            $this->assertArrayHasKey('value', $body['rates']['eur']);
+            $this->assertArrayHasKey('type', $body['rates']['eur']);
+            $this->assertEqualsIgnoringCase('fiat', $body['rates']['eur']['type']);
+            $this->assertEqualsIgnoringCase('euro', $body['rates']['eur']['name']);
+        }
     }
 
     public function testGetRickAndMortyListApi()
@@ -114,6 +118,7 @@ class CallTest extends TestCase
 
     public function testErrorMethod()
     {
+        $this->markTestSkipped();//Now we accept any method
         $this->expectException(RequestException::class);
         $request = (new RequestFactory)->createRequest('WHATEVER', 'https://api.coingecko.com/api/v3/exchange_rates');
         (new PsrCurlClient)->sendRequest($request);

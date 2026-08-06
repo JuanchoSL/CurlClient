@@ -7,20 +7,20 @@ use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\ListMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\MoveMethodsInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
+use JuanchoSL\DataManipulation\Manipulators\Arrays\ArrayManipulators;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
+use JuanchoSL\Exceptions\PreconditionFailedException;
 use JuanchoSL\Validators\Types\Strings\StringValidations;
 use Psr\Http\Message\UriInterface;
 
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, ListMethodsInterface
+class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, ListMethodsInterface, MoveMethodsInterface
 {
-
-    protected bool $pasive = true;
-    protected int $active_port = 20;
 
     /*
     //SFTP
@@ -40,9 +40,28 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
     }
+    public function prepareMove(UriInterface $url, array $header = []): CurlHandle
+    {
+        $man = (new ArrayManipulators())->keyToCase(CASE_LOWER);
+        $header = $man($header);
+        if (!array_key_exists('destination', $header)) {
+            throw new PreconditionFailedException("The new pathname needs to be indicated into a 'Destination' header");
+        }
+        $curl = $this->init($url, $header);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'MOVE');
+        curl_setopt($curl, CURLOPT_FILETIME, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_NOBODY, true);
 
+        curl_setopt($curl, CURLOPT_POSTQUOTE, [
+            sprintf("RENAME %s %s", $url->getPath(), $header['destination'])
+        ]);
+        curl_setopt($curl, CURLOPT_REQUEST_TARGET, $header['destination']);
+        return $curl;
+    }
     public function prepareList(UriInterface $url, array $header = []): CurlHandle
     {
+        $this->setReturnTransfer(true);
         $curl = $this->init($url, $header);
         //curl_setopt($curl, CURLFTPMETHOD_SINGLECWD, true);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, true);
@@ -148,10 +167,10 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
     protected function init(UriInterface $url, array $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
-        //curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
+        curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);//*
         //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
         //curl_setopt($curl, CURLOPT_SSL_FALSESTART, false);
-        curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
+        //curl_setopt($curl, CURLOPT_FTP_SSL, true);//*
         curl_setopt($curl, CURLOPT_FTPSSLAUTH, CURLFTPAUTH_SSL);//CURLFTPAUTH_DEFAULT | CURLFTPAUTH_TLS | CURLFTPAUTH_SSL
         curl_setopt($curl, CURLOPT_FTP_SSL_CCC, CURLFTPSSL_CCC_NONE);
         if ((new StringValidations())->isValueContaining(':')->getResult($url->getUserInfo())) {
@@ -173,7 +192,6 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
         $result = curl_exec($curl);
         $response_info = curl_getinfo($curl);
         $headers = [];
-
         if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
             if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
                 $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
@@ -192,7 +210,8 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
             $result = curl_error($curl);
             $response_info['size_download'] = mb_strlen($result);
         }
-        return new CurlResponse($result, $response_info);
+
+        return new CurlResponse($headers . PHP_EOL . PHP_EOL . $result, $response_info);
     }
 
 }

@@ -7,9 +7,12 @@ use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Engines\Email\CurlEmailHandler;
 use JuanchoSL\CurlClient\Engines\Ftp\CurlFtpHandler;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpHandler;
+use JuanchoSL\CurlClient\Engines\Samba\CurlSmbHandler;
 use JuanchoSL\CurlClient\Engines\Ssh\CurlSshHandler;
+use JuanchoSL\CurlClient\Engines\WebDav\CurlWebDavHandler;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use JuanchoSL\HttpData\Exceptions\RequestException;
+use JuanchoSL\HttpData\Factories\UriFactory;
 use JuanchoSL\Validators\Types\Strings\StringValidation;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -33,10 +36,14 @@ class CurlHandleFactory
             case 'sftp':
                 return $this->createFromRequestFtp($request);
 
+            case 'smb':
+            case 'smbs':
+                return $this->createFromRequestSmb($request);
+
             case 'http':
             case 'https':
             default:
-                return $this->createFromRequestHttp($request);
+                return (in_array(strtoupper($request->getMethod()), ['MKCOL', 'PROPFIND', 'MOVE'])) ? $this->createFromRequestWebDav($request) : $this->createFromRequestHttp($request);
         }
     }
 
@@ -74,40 +81,44 @@ class CurlHandleFactory
             $exception->setRequest($request);
             throw $exception;
         }
+        $request = $this->prepareRequestTargetIntoUri($request);
         $class = (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ssh'])) ? CurlSshHandler::class : CurlFtpHandler::class;
-        $client = (new $class([
-            CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
-        ]));
-
+        $client = new $class();
         if (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ftps'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
             if (in_array(strtolower($request->getUri()->getScheme()), ['ftps'])) {
                 $request = $request->withUri($request->getUri()->withScheme('ftp'));
             }
         }
-
+        if (in_array(strtolower($request->getUri()->getScheme()), ['ftp', 'ftps'])) {
+            $client = $client->setPasive(true);
+        }
+        $headers = $this->prepareHeaders($request);
         switch (strtoupper($request->getMethod())) {
             case RequestMethodInterface::METHOD_GET:
                 if (substr($request->getRequestTarget(), -1) == '/') {
-                    $result = $client->setPasive(true)->prepareList($request->getUri());
+                    $result = $client->prepareList($request->getUri(), $headers);
                 } else {
-                    $result = $client->setPasive(true)->prepareGet($request->getUri());
+                    $result = $client->prepareGet($request->getUri(), $headers);
                 }
                 break;
             case RequestMethodInterface::METHOD_POST:
-                $result = $client->setPasive(true)->preparePost($request->getUri(), (string) $request->getBody());
+                $result = $client->preparePost($request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_PATCH:
-                $result = $client->setPasive(true)->preparePatch($request->getUri(), (string) $request->getBody());
+                $result = $client->preparePatch($request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_PUT:
-                $result = $client->setPasive(true)->preparePut($request->getUri(), (string) $request->getBody());
+                $result = $client->preparePut($request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_DELETE:
-                $result = $client->setPasive(false)->prepareDelete($request->getUri());
+                $result = $client->prepareDelete($request->getUri(), $headers);
                 break;
             case RequestMethodInterface::METHOD_HEAD:
-                $result = $client->prepareHead($request->getUri());
+                $result = $client->prepareHead($request->getUri(), $headers);
+                break;
+            case 'MOVE':
+                $result = $client->prepareMove($request->getUri(), $headers);
                 break;
             default:
                 $exception = new RequestException("The method '{$request->getMethod()}' is not supported");
@@ -124,32 +135,10 @@ class CurlHandleFactory
             $exception->setRequest($request);
             throw $exception;
         }
-        $headers = [];
-        foreach ($request->getHeaders() as $header => $values) {
-            $headers[$header] = $request->getHeaderLine($header);
-        }
-        switch ($request->getProtocolVersion()) {
-            case "1.0":
-                $protocol = CURL_HTTP_VERSION_1_0;
-                break;
-            default:
-            case "1.1":
-                $protocol = CURL_HTTP_VERSION_1_1;
-                break;
-            case "2":
-                $protocol = CURL_HTTP_VERSION_2;
-                break;
-            case "2.0":
-                $protocol = CURL_HTTP_VERSION_2_0;
-                break;
-            case "3":
-                $protocol = CURL_HTTP_VERSION_3;
-                break;
-        }
-
+        $headers = $this->prepareHeaders($request);
         $client = (new CurlHttpHandler([
             CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
-            CURLOPT_HTTP_VERSION => $protocol
+            CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
         ]));
         if (in_array(strtolower($request->getUri()->getScheme()), ['https'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
@@ -180,11 +169,119 @@ class CurlHandleFactory
                 $result = $client->prepareTrace($request->getUri(), $headers);
                 break;
             default:
-                $exception = new RequestException("The method '{$request->getMethod()}' is not supported");
+                $result = $client->prepare(strtoupper($request->getMethod()), $request->getUri(), $headers, (string) $request->getBody());
+                /*$exception = new RequestException("The method '{$request->getMethod()}' is not supported");
                 $exception->setRequest($request);
-                throw $exception;
+                throw $exception;*/
+                break;
         }
         return $result;
+    }
+
+    public function createFromRequestWebDav(RequestInterface $request): CurlHandle
+    {
+        $request = $this->prepareRequestTargetIntoUri($request);
+        $headers = $this->prepareHeaders($request);
+        $client = (new CurlWebDavHandler([
+            //CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
+            CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
+        ]));
+        if (in_array(strtolower($request->getUri()->getScheme()), ['https'])) {
+            $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
+        }
+        switch (strtoupper($request->getMethod())) {
+            case 'MOVE':
+                $result = $client->prepareMove($request->getUri(), $headers);
+                break;
+            case 'PROPFIND':
+                $result = $client->preparePropfind($request->getUri(), $headers);
+                break;
+            case 'MKCOL':
+                $result = $client->prepareMkcol($request->getUri(), $headers);
+                break;
+            default:
+                $result = $this->createFromRequestHttp($request);
+                break;
+        }
+        return $result;
+    }
+
+    public function createFromRequestSmb(RequestInterface $request): CurlHandle
+    {
+        $request = $this->prepareRequestTargetIntoUri($request);
+        $headers = $this->prepareHeaders($request);
+        $client = (new CurlSmbHandler([
+            //CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
+            //CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
+        ]));
+        if (in_array(strtolower($request->getUri()->getScheme()), ['smbs'])) {
+            $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
+        }
+        switch (strtoupper($request->getMethod())) {
+            case RequestMethodInterface::METHOD_GET:
+                if (substr($request->getRequestTarget(), -1) == '/') {
+                    $result = $client->prepareList($request->getUri(), $headers);
+                } else {
+                    $result = $client->prepareGet($request->getUri(), $headers);
+                }
+                break;
+            case RequestMethodInterface::METHOD_POST:
+                $result = $client->preparePost($request->getUri(), (string) $request->getBody(), $headers);
+                break;
+            case RequestMethodInterface::METHOD_PATCH:
+                $result = $client->preparePatch($request->getUri(), (string) $request->getBody(), $headers);
+                break;
+            case RequestMethodInterface::METHOD_PUT:
+                $result = $client->preparePut($request->getUri(), (string) $request->getBody(), $headers);
+                break;
+            case RequestMethodInterface::METHOD_DELETE:
+                $result = $client->prepareDelete($request->getUri(), $headers);
+                break;
+            default:
+                $result = $client->prepareHead($request->getUri(), $headers);
+                break;
+        }
+        return $result;
+    }
+
+    protected function prepareRequestTargetIntoUri(RequestInterface $request): RequestInterface
+    {
+        $uri = $request->getUri();
+        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getAuthority()))->rtrim('/')->concatenation($request->getRequestTarget(), '/')->replace('//', '/')->preppend($uri->getScheme(), '://'));
+        //$uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getScheme())->concatenation($uri->getAuthority(), '://')->rtrim('/')->concatenation($request->getRequestTarget(), '/')));
+        return $request->withUri($uri);
+    }
+
+    protected function prepareHeaders(RequestInterface $request): iterable
+    {
+        $headers = [];
+        foreach ($request->getHeaders() as $header => $values) {
+            $headers[$header] = $request->getHeaderLine($header);
+        }
+        return $headers;
+    }
+
+    protected function prepareProtocolVersion(RequestInterface $request)
+    {
+        switch ($request->getProtocolVersion()) {
+            case "1.0":
+                $protocol = CURL_HTTP_VERSION_1_0;
+                break;
+            default:
+            case "1.1":
+                $protocol = CURL_HTTP_VERSION_1_1;
+                break;
+            case "2":
+                $protocol = CURL_HTTP_VERSION_2;
+                break;
+            case "2.0":
+                $protocol = CURL_HTTP_VERSION_2_0;
+                break;
+            case "3":
+                $protocol = CURL_HTTP_VERSION_3;
+                break;
+        }
+        return $protocol;
     }
 
     protected function detectLookup(UriInterface $url)

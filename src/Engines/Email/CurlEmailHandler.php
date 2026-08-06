@@ -88,9 +88,6 @@ class CurlEmailHandler extends CurlHandler
     protected function init(UriInterface $url, $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
-        if (true) {
-            //curl_setopt($curl, CURLOPT_FTP_USE_EPSV, true);
-        }
         if ($this->getSsl()) {
             curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
             //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');
