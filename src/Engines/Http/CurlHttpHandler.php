@@ -5,6 +5,8 @@ namespace JuanchoSL\CurlClient\Engines\Http;
 use CurlHandle;
 use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Preparations\SpecialServersMethodsInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
 use Psr\Http\Message\UriInterface;
@@ -12,7 +14,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Perform cURL request to remote services as APIs
  */
-class CurlHttpHandler extends CurlHandler
+class CurlHttpHandler extends CurlHandler implements BasicCurlMethodsInterface, SpecialServersMethodsInterface
 {
 
     private string $cookie;
@@ -141,12 +143,9 @@ class CurlHttpHandler extends CurlHandler
      * @param array<string,string> $header Extra headers for send in this request
      * @return CurlHandle Request response
      */
-    public function preparePost(UriInterface $url, $post_elements, array $header = []): CurlHandle
+    public function preparePost(UriInterface $url, string $post_elements, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_elements);
-        return $curl;
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_POST, $url, $header, $post_elements);
     }
 
     /**
@@ -158,10 +157,7 @@ class CurlHttpHandler extends CurlHandler
      */
     public function preparePut(UriInterface $url, $put_elements, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_PUT);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $put_elements);
-        return $curl;
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_PUT, $url, $header, $put_elements);
     }
 
     /**
@@ -171,12 +167,9 @@ class CurlHttpHandler extends CurlHandler
      * @param array<string,string> $header Extra headers for send in this request
      * @return CurlHandle Request response
      */
-    public function preparePatch(UriInterface $url, $patch_elements, array $header = []): CurlHandle
+    public function preparePatch(UriInterface $url, string $patch_elements, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_PATCH);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $patch_elements);
-        return $curl;
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_PATCH, $url, $header, $patch_elements);
     }
 
     /**
@@ -187,9 +180,7 @@ class CurlHttpHandler extends CurlHandler
      */
     public function prepareDelete(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_DELETE);
-        return $curl;
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_DELETE, $url, $header);
     }
 
     /**
@@ -200,8 +191,7 @@ class CurlHttpHandler extends CurlHandler
      */
     public function prepareOptions(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_OPTIONS);
+        $curl = $this->prepare(RequestMethodInterface::METHOD_OPTIONS, $url, $header);
         curl_setopt($curl, CURLOPT_NOBODY, true);
         return $curl;
     }
@@ -214,9 +204,7 @@ class CurlHttpHandler extends CurlHandler
      */
     public function prepareTrace(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_TRACE);
-        return $curl;
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_TRACE, $url, $header);
     }
 
     /**
@@ -227,8 +215,7 @@ class CurlHttpHandler extends CurlHandler
      */
     public function prepareHead(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_HEAD);
+        $curl = $this->prepare(RequestMethodInterface::METHOD_HEAD, $url, $header);
         curl_setopt_array(
             $curl,
             array(
@@ -241,8 +228,16 @@ class CurlHttpHandler extends CurlHandler
 
     public function prepareConnect(UriInterface $url, array $header = []): CurlHandle
     {
+        return $curl = $this->prepare(RequestMethodInterface::METHOD_CONNECT, $url, $header);
+    }
+
+    public function prepare(string $request, UriInterface $url, array $header = [], ?string $body = null): CurlHandle
+    {
         $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_CONNECT);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, strtoupper($request));
+        if (!empty($body)) {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $body);
+        }
         return $curl;
     }
 
