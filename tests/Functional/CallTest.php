@@ -46,7 +46,7 @@ class CallTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('Content-type'));
 
-        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string)$response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
         $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
@@ -61,7 +61,7 @@ class CallTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('Content-type'));
 
-        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
         $this->assertObjectHasProperty('value', $body);
         $this->assertNotEmpty($body->value);
@@ -80,7 +80,7 @@ class CallTest extends TestCase
             $this->assertEquals(200, $response->getStatusCode());
             $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
 
-            $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
             $this->assertIsArray($body);
             $this->assertArrayHasKey('rates', $body);
             $this->assertIsArray($body['rates']);
@@ -103,7 +103,7 @@ class CallTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
 
-        $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);
         $this->assertArrayHasKey('info', $body);
         $this->assertIsArray($body['info']);
