@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45619048655f20ff663b55d8f6ebbc21",
+    "content-hash": "4fa821618266e11b779aebe8af4e4c25",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -421,25 +421,25 @@
         },
         {
             "name": "juanchosl/requestlistener",
-            "version": "1.0.x-dev",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/RequestListener.git",
-                "reference": "0e47026c666cb1607ae33f06c91dd201f1af83b1"
+                "reference": "7d9c91c9062ef65107df795657960346f2ed48f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/RequestListener/zipball/0e47026c666cb1607ae33f06c91dd201f1af83b1",
-                "reference": "0e47026c666cb1607ae33f06c91dd201f1af83b1",
+                "url": "https://api.github.com/repos/JuanchoSL/RequestListener/zipball/7d9c91c9062ef65107df795657960346f2ed48f3",
+                "reference": "7d9c91c9062ef65107df795657960346f2ed48f3",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "fig/http-message-util": "1.1.*",
-                "juanchosl/datamanipulation": "1.0.*",
-                "juanchosl/datatransfer": "1.0.*",
+                "juanchosl/datamanipulation": "^1.0",
+                "juanchosl/datatransfer": "^1.0",
                 "juanchosl/exceptions": "1.0.*",
-                "juanchosl/httpdata": "1.0.*",
+                "juanchosl/httpdata": "^1.0",
                 "juanchosl/logger": "1.1.*",
                 "php": "^8.1",
                 "psr/container": "2.0.*",
@@ -454,7 +454,6 @@
             "suggest": {
                 "juanchosl/logger": "^1.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -487,9 +486,9 @@
                 "use cases"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/RequestListener/tree/1.0"
+                "source": "https://github.com/JuanchoSL/RequestListener/tree/1.0.0"
             },
-            "time": "2026-08-02T18:18:07+00:00"
+            "time": "2026-01-07T10:26:48+00:00"
         },
         {
             "name": "juanchosl/validators",
@@ -1226,16 +1225,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "5703d83ba3da3b2e356a5fedc848ed6d8ffb6529"
+                "reference": "73cb188c785abfa7a7bec73487148202968274c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/5703d83ba3da3b2e356a5fedc848ed6d8ffb6529",
-                "reference": "5703d83ba3da3b2e356a5fedc848ed6d8ffb6529",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/73cb188c785abfa7a7bec73487148202968274c6",
+                "reference": "73cb188c785abfa7a7bec73487148202968274c6",
                 "shasum": ""
             },
             "require": {
@@ -1329,7 +1328,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-03T13:42:31+00:00"
+            "time": "2026-08-09T14:10:38+00:00"
         },
         {
             "name": "league/config",
@@ -4271,8 +4270,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "apigen/apigen": 15,
-        "juanchosl/requestlistener": 20
+        "apigen/apigen": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,

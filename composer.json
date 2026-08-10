@@ -55,7 +55,7 @@
         "juanchosl/httpheaders": "1.0.*",
         "juanchosl/validators": "1.0.*",
         "juanchosl/datamanipulation": "1.0.*",
-        "juanchosl/requestlistener": "1.0.*@dev",
+        "juanchosl/requestlistener": "1.0.*",
         "composer-runtime-api": "^2.2"
     },
     "require-dev": {
