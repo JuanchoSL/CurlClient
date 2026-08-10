@@ -3,6 +3,7 @@
 namespace JuanchoSL\CurlClient\Engines\Email;
 
 use CurlHandle;
+use Fig\Http\Message\RequestMethodInterface;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
@@ -19,42 +20,42 @@ use Psr\Http\Message\UriInterface;
 class CurlEmailHandler extends CurlHandler
 {
 
-    public function prepareList(UriInterface $url): CurlHandle
+    public function prepareList(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, true);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
     }
 
-    public function prepareGet(UriInterface $url): CurlHandle
+    public function prepareGet(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
     }
-    public function preparePatch(UriInterface $url, string $data): CurlHandle
+    public function preparePatch(UriInterface $url, string $data, array $header = []): CurlHandle
     {
 
-        $curl = $this->init($url);
-        curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, 'PATCH');
+        $curl = $this->init($url, $header);
+        curl_setopt($curl, \CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_PATCH);
         curl_setopt($curl, CURLOPT_FTPAPPEND, true);
         curl_setopt($curl, CURLOPT_UPLOAD, 1);
         $this->prepareReaderResource($curl, $data);
         return $curl;
     }
-    public function preparePut(UriInterface $url, string $data): CurlHandle
+    public function preparePut(UriInterface $url, string $data, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_APPEND, false);
         curl_setopt($curl, CURLOPT_UPLOAD, true);
         $this->prepareReaderResource($curl, $data);
         return $curl;
     }
-    public function preparePost(UriInterface $url, string $data): CurlHandle
+    public function preparePost(UriInterface $url, string $data, array $header = []): CurlHandle
     {
-        $curl = $this->init($url);
+        $curl = $this->init($url, $header);
         $msg = new MessageReader((new StreamFactory())->createStream($data));
         $headers = (new ArrayManipulators())->keyToCase()->__invoke($msg->getHeadersParams());
         $from = (new StringsManipulators($headers['from']))->trim()->substring(strpos($headers['from'], '<'))->trim('<>');
@@ -74,22 +75,19 @@ class CurlEmailHandler extends CurlHandler
         $this->prepareReaderResource($curl, $data);
         return $curl;
     }
-    public function prepareDelete(UriInterface $url): CurlHandle
+    public function prepareDelete(UriInterface $url, array $header = []): CurlHandle
     {
-        $curl = $this->init($url->withPath($url->getPath()));
+        $curl = $this->init($url->withPath($url->getPath()), $header);
         $this->setReturnTransfer(false);
         curl_setopt($curl, CURLOPT_DIRLISTONLY, true);
         curl_setopt($curl, CURLOPT_NOBODY, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELE');
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_DELETE);//DELE????
         return $curl;
     }
 
     protected function init(UriInterface $url, $header = []): CurlHandle
     {
         $curl = parent::init($url, $header);
-        if (true) {
-            curl_setopt($curl, CURLOPT_FTP_USE_EPSV, true);
-        }
         if ($this->getSsl()) {
             curl_setopt($curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
             //curl_setopt($curl, CURLOPT_TLSAUTH_TYPE, 'SRP');

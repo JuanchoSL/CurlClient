@@ -4,13 +4,19 @@ namespace JuanchoSL\CurlClient\Engines\Ssh;
 
 use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
-use Psr\Http\Message\UriInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\BasicCurlMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\ListMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\MoveHttpMethodsInterface;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\BasicMethodsTrait;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\ListMethodsTrait;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\MoveMethodsTrait;
 
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlSshRequest extends CurlSshHandler
+class CurlSshRequest extends CurlSshHandler implements BasicCurlMethodsInterface, ListMethodsInterface, MoveHttpMethodsInterface
 {
+    use BasicMethodsTrait, ListMethodsTrait, MoveMethodsTrait;
 
     protected CurlHandle $curl;
 
@@ -29,35 +35,4 @@ class CurlSshRequest extends CurlSshHandler
         return parent::execute($this->curl);
     }
 
-    public function list(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareList($url);
-        return $this->exec();
-    }
-
-    public function get(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareGet($url);
-        return $this->exec();
-    }
-    public function patch(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePatch($url, $data);
-        return $this->exec();
-    }
-    public function put(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePut($url, $data);
-        return $this->exec();
-    }
-    public function post(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePost($url, $data);
-        return $this->exec();
-    }
-    public function delete(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareDelete($url);
-        return $this->exec();
-    }
 }

@@ -1,4 +1,5 @@
 .env
+phpunit-local.xml
 /vendor/
 .vscode
 .phpunit.result.cache

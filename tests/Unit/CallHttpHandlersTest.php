@@ -3,6 +3,7 @@
 namespace JuanchoSL\CurlClient\Tests\Unit;
 
 use JuanchoSL\CurlClient\CurlResponse;
+use JuanchoSL\CurlClient\Engines\Http\CurlHttpHandler;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
 use JuanchoSL\CurlClient\UserAgent;
 use JuanchoSL\HttpData\Factories\UriFactory;
@@ -20,9 +21,9 @@ class CallHttpHandlersTest extends TestCase
     /*
     public function testGetApiLyrics()
     {
-        $curl = new CurlHttpRequest();
-        $response = $curl->setSsl(false)->setCookiePath(TMPDIR)->get('http://api.chartlyrics.com/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
-
+        $curl = new CurlHttpHandler();
+        $handle = $curl->setSsl(false)->setCookiePath(TMPDIR)->prepareGet('http://api.chartlyrics.com/apiv1.asmx/SearchLyric?artist=rihanna&song=umbrella');
+        $response = CurlHttpRequest::execute($handle);
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringContainsStringIgnoringCase("/" . Extensions::XML, $response->getContentType());
@@ -41,14 +42,14 @@ class CallHttpHandlersTest extends TestCase
     }
     public function testGetApiBitcoinPrice()
     {
-        $curl = new CurlHttpRequest();
-        $response = $curl->setSsl(true)->setCookiePath(TMPDIR)->get('https://api.coindesk.com/v1/bpi/currentprice.json');
-
+        $curl = new CurlHttpHandler();
+        $handle = $curl->setSsl(true)->setCookiePath(TMPDIR)->prepareGet('https://api.coindesk.com/v1/bpi/currentprice.json');
+        $response = CurlHttpRequest::execute($handle);
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
-        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string)$response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
         $this->assertObjectHasProperty('chartName', $body);
         $this->assertEqualsIgnoringCase('bitcoin', $body->chartName);
@@ -56,14 +57,14 @@ class CallHttpHandlersTest extends TestCase
     */
     public function testGetApiChuckNorris()
     {
-        $curl = new CurlHttpRequest();
-        $response = $curl->setCookiePath(TMPDIR)->get((new UriFactory())->createUri('https://api.chucknorris.io/jokes/random'));
-
+        $curl = new CurlHttpHandler();
+        $handle = $curl->setCookiePath(TMPDIR)->prepareGet((new UriFactory())->createUri('https://api.chucknorris.io/jokes/random'));
+        $response = CurlHttpRequest::execute($handle);
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
-        $body = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $this->assertIsObject($body);
         $this->assertObjectHasProperty('value', $body);
         $this->assertNotEmpty($body->value);
@@ -71,15 +72,16 @@ class CallHttpHandlersTest extends TestCase
 
     public function testGetExchangeRatesApi()
     {
-        $curl = new CurlHttpRequest();
-        $response = $curl->setSsl(true)
+        $curl = new CurlHttpHandler();
+        $handle = $curl->setSsl(true)
             ->setUserAgent((new UserAgent())->getDesktopLinux(1))
-            ->setCookiePath(TMPDIR)->get((new UriFactory())->createUri('https://api.coingecko.com/api/v3/exchange_rates'));
+            ->setCookiePath(TMPDIR)->prepareGet((new UriFactory())->createUri('https://api.coingecko.com/api/v3/exchange_rates'));
+        $response = CurlHttpRequest::execute($handle);
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
-        $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);
         $this->assertArrayHasKey('rates', $body);
         $this->assertIsArray($body['rates']);
@@ -94,14 +96,14 @@ class CallHttpHandlersTest extends TestCase
 
     public function testGetRickAndMortyListApi()
     {
-        $curl = new CurlHttpRequest();
-        $response = $curl->setCookiePath(TMPDIR)->get((new UriFactory())->createUri('https://rickandmortyapi.com/api/character'));
-
+        $curl = new CurlHttpHandler();
+        $handle = $curl->setCookiePath(TMPDIR)->prepareGet((new UriFactory())->createUri('https://rickandmortyapi.com/api/character'));
+        $response = CurlHttpRequest::execute($handle);
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
 
-        $body = json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);
         $this->assertArrayHasKey('info', $body);
         $this->assertIsArray($body['info']);

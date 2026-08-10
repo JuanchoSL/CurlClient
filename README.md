@@ -34,7 +34,8 @@ $ composer install
 
 ### Native cURL lib implementation
 
-> CurlRequest has been marked as __DEPRECATED__, use __Factories__ or specyfic handler type
+> CurlRequest has been marked as **DEPRECATED**, use **Factories** or specyfic handler type
+
 ```php
 use JuanchoSL\CurlClient\CurlRequest;
 
@@ -47,8 +48,11 @@ $response = $curl->post($url, json_encode([$key => $value]), $extra_headers);
 $http_code = $response->getResponseCode();
 $body = $response->getBody();
 ```
+
 #### HTTP Request
+
 For use with servers using http comunications, with apis or webservers
+
 ```php
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
 
@@ -63,7 +67,9 @@ $body = $response->getBody();
 ```
 
 #### FTP Request
+
 For use with servers using ftp protocols, ftp and ftps
+
 ```php
 use JuanchoSL\CurlClient\Engines\Ftp\CurlFtpRequest;
 
@@ -76,6 +82,7 @@ $body = $response->getBody();
 ```
 
 #### SMTP Request
+
 For use with smtp servers using single authentication, for send emails
 
 ```php
@@ -85,9 +92,11 @@ $curl = new CurlEmailRequest();
 $curl->setSsl(true);
 $response = $curl->post("smtps://username:password@host:port", file_get_contents("/path/to/full/formed/message.eml"));
 ```
+
 #### Handlers
 
 In order to construct a CurlHandle and prepare the request for future use (as a Batch), use the equivalent CurlXXXHandler and call the prepare{METHOD}, retrieving a standard php CurlHandle
+
 ```php
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpHandler;
 
