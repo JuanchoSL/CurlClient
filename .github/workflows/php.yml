@@ -9,9 +9,15 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.5"
+          extensions: curl,openssl,ssh2,json,mbstring
+
       - uses: actions/checkout@main
 
       - name: Validate composer.json and composer.lock
