@@ -5,6 +5,8 @@ namespace JuanchoSL\CurlClient\Factories;
 use JuanchoSL\CurlClient\Engines\Email\CurlEmailRequest;
 use JuanchoSL\CurlClient\Engines\Ftp\CurlFtpRequest;
 use JuanchoSL\CurlClient\Engines\Http\CurlHttpRequest;
+use JuanchoSL\CurlClient\Engines\Samba\CurlSmbRequest;
+use JuanchoSL\CurlClient\Engines\Ssh\CurlSshRequest;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use JuanchoSL\HttpData\Exceptions\NetworkException;
 use JuanchoSL\HttpData\Factories\ResponseFactory;
@@ -32,6 +34,10 @@ class CurlRequesterFactory
             case 'sftp':
                 return $this->createFromRequestFtp($request);
 
+            case 'smb':
+            case 'smbs':
+                return $this->createFromRequestSmb($request);
+
             case 'http':
             case 'https':
             default:
@@ -39,6 +45,19 @@ class CurlRequesterFactory
         }
     }
 
+    /*
+    public function createFromRequestSmb(RequestInterface $request): ResponseInterface
+    {
+        $result = (new CurlHandleFactory())->createFromRequest($request);
+        $result = CurlSmbRequest::execute($result);
+        $response = new ResponseFactory();
+        $message = $response
+            ->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()) ?? '')
+            ->withBody((new StreamFactory())->createStream($result->getBody()));
+
+        return $message;
+    }
+    */
     public function createFromRequestEmail(RequestInterface $request): ResponseInterface
     {
         $result = (new CurlHandleFactory())->createFromRequest($request);
@@ -54,7 +73,7 @@ class CurlRequesterFactory
     public function createFromRequestFtp(RequestInterface $request): ResponseInterface
     {
         $result = (new CurlHandleFactory())->createFromRequest($request);
-        $result = CurlFtpRequest::execute($result);
+        $result = (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ssh'])) ? CurlSshRequest::execute($result) : CurlFtpRequest::execute($result);
         $response = new ResponseFactory();
         $message = $response
             ->createResponse($result->getResponseCode(), Headers::getMessage((int) $result->getResponseCode()) ?? '')

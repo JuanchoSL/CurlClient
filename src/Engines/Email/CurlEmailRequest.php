@@ -4,15 +4,17 @@ namespace JuanchoSL\CurlClient\Engines\Email;
 
 use CurlHandle;
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
-use JuanchoSL\CurlClient\CurlResponse;
-use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\BasicCurlMethodsInterface;
+use JuanchoSL\CurlClient\Contracts\Executions\ListMethodsInterface;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\BasicMethodsTrait;
+use JuanchoSL\CurlClient\Engines\Common\Traits\Executions\ListMethodsTrait;
 
 /**
  * Perform cURL request to remote ftp servers
  */
-class CurlEmailRequest extends CurlEmailHandler
+class CurlEmailRequest extends CurlEmailHandler implements BasicCurlMethodsInterface, ListMethodsInterface
 {
+    use BasicMethodsTrait, ListMethodsTrait;
 
     protected CurlHandle $curl;
 
@@ -31,35 +33,4 @@ class CurlEmailRequest extends CurlEmailHandler
         return parent::execute($this->curl);
     }
 
-    public function list(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareList($url);
-        return $this->exec();
-    }
-
-    public function get(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareGet($url);
-        return $this->exec();
-    }
-    public function patch(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePatch($url, $data);
-        return $this->exec();
-    }
-    public function put(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePut($url, $data);
-        return $this->exec();
-    }
-    public function post(UriInterface $url, string $data): CurlResponseInterface
-    {
-        $this->curl = $this->preparePost($url, $data);
-        return $this->exec();
-    }
-    public function delete(UriInterface $url): CurlResponseInterface
-    {
-        $this->curl = $this->prepareDelete($url);
-        return $this->exec();
-    }
 }

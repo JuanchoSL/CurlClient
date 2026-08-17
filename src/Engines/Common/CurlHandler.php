@@ -110,7 +110,7 @@ class CurlHandler
             curl_setopt($curl, CURLOPT_PORT, $url->getPort());
         }
         if (is_null($this->ssl)) {
-            if (in_array(strtolower($url->getScheme()), ['ftps', 'https', 'ssl', 'tls', 'pop3s', 'imaps', 'smtps'])) {
+            if (in_array(strtolower($url->getScheme()), ['ftps', 'https', 'ssl', 'tls', 'pop3s', 'imaps', 'smtps', 'smbs'])) {
                 $this->setSsl(true);
             }
         }
@@ -173,7 +173,7 @@ class CurlHandler
     {
         $path = tempnam(sys_get_temp_dir(), 'curl');
         file_put_contents($path, $data);
-        $resource = fopen($path, 'rb');
+        $resource = fopen($path, 'r+');
         curl_setopt($curl, CURLOPT_READDATA, $resource);
         curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
         return $curl;
