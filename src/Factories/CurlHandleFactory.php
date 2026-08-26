@@ -315,7 +315,7 @@ class CurlHandleFactory
         foreach (net_get_interfaces() as $interface) {
             if ($interface['up'] == 1) {
                 foreach ($interface['unicast'] as $lan) {
-                    if ($lan['address'] == $host) {
+                    if (array_key_exists('address', $lan) && $lan['address'] == $host) {
                         return true;
                     }
                 }
