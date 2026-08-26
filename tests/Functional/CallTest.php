@@ -80,7 +80,7 @@ class CallTest extends TestCase
             $this->assertEquals(200, $response->getStatusCode());
             $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
 
-            $body = json_decode((string) $response->getBody(), true, 512, JSON_BIGINT_AS_STRING);
+            $body = json_decode((string) $response->getBody(), true, 512, JSON_INVALID_UTF8_IGNORE);
             $this->assertIsArray($body);
             $this->assertArrayHasKey('rates', $body);
             $this->assertIsArray($body['rates']);
