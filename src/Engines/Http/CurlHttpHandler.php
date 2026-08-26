@@ -9,6 +9,7 @@ use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\SpecialServersMethodsInterface;
 use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
+use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -248,7 +249,7 @@ class CurlHttpHandler extends CurlHandler implements BasicCurlMethodsInterface, 
         if ($result === false) {
             $result = curl_error($curl);
         }
-
+        $result = (string) (new StringsManipulators($result))->eol(PHP_EOL);
         return new CurlResponse($result, $response_info);
     }
 }
