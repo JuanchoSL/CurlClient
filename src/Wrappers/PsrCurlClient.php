@@ -19,6 +19,12 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
 
     use LoggerAwareTrait;
 
+    protected array $options = [];
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
+    }
     public function sendRequestWithBody(RequestInterface $request, array $data): ResponseInterface
     {
         $content_type = strtolower($request->getHeaderLine('content-type'));
@@ -51,7 +57,7 @@ class PsrCurlClient implements ClientInterface, LoggerAwareInterface
 
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-        $message = (new CurlRequesterFactory())->createFromRequest($request);
+        $message = (new CurlRequesterFactory($this->options))->createFromRequest($request);
         $this->logger?->info("{method} {path} {target} {code} {response}", [
             "method" => $request->getMethod(),
             "path" => (string) $request->getUri(),

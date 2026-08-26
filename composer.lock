@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fa821618266e11b779aebe8af4e4c25",
+    "content-hash": "87a325f1084cd1585515cdf49d8d99fe",
     "packages": [
         {
             "name": "fig/http-message-util",
@@ -64,25 +64,28 @@
         },
         {
             "name": "juanchosl/datamanipulation",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/DataManipulation.git",
-                "reference": "1ca36dfb3d538827425c0193910efb60efdcdd68"
+                "reference": "1d9ab593bbb4bb616e1029f79696273cbc9ab53c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/DataManipulation/zipball/1ca36dfb3d538827425c0193910efb60efdcdd68",
-                "reference": "1ca36dfb3d538827425c0193910efb60efdcdd68",
+                "url": "https://api.github.com/repos/JuanchoSL/DataManipulation/zipball/1d9ab593bbb4bb616e1029f79696273cbc9ab53c",
+                "reference": "1d9ab593bbb4bb616e1029f79696273cbc9ab53c",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": "^8.0"
+                "juanchosl/validators": "1.0.*",
+                "php": "^8.0",
+                "psr/log": "3.0.*"
             },
             "require-dev": {
+                "juanchosl/logger": "1.1.*",
                 "phpstan/phpstan": "1.12.*",
-                "phpunit/phpunit": "9.6.*"
+                "phpunit/phpunit": "9.6.*|10.5.*"
             },
             "type": "library",
             "autoload": {
@@ -112,26 +115,27 @@
                 "variables"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/DataManipulation/tree/1.0.2"
+                "source": "https://github.com/JuanchoSL/DataManipulation/tree/1.0.3"
             },
-            "time": "2026-01-30T20:01:12+00:00"
+            "time": "2026-08-12T09:21:02+00:00"
         },
         {
             "name": "juanchosl/datatransfer",
-            "version": "1.0.14",
+            "version": "1.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/DataTransfer.git",
-                "reference": "e8a3f617faec70dce4ef01e2eb67425bd923c427"
+                "reference": "49eba459144d91a1ab7646363a106838f898c620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/DataTransfer/zipball/e8a3f617faec70dce4ef01e2eb67425bd923c427",
-                "reference": "e8a3f617faec70dce4ef01e2eb67425bd923c427",
+                "url": "https://api.github.com/repos/JuanchoSL/DataTransfer/zipball/49eba459144d91a1ab7646363a106838f898c620",
+                "reference": "49eba459144d91a1ab7646363a106838f898c620",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.2",
+                "ext-fileinfo": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-xml": "*",
@@ -139,7 +143,7 @@
                 "juanchosl/exceptions": "1.0.*",
                 "juanchosl/httpheaders": "1.0.*",
                 "juanchosl/validators": "1.0.*",
-                "php": "^8.1",
+                "php": "^8.0",
                 "psr/http-server-handler": "1.0.*"
             },
             "require-dev": {
@@ -148,7 +152,9 @@
             },
             "suggest": {
                 "ext-xlswriter": "*",
-                "ext-yaml": "*"
+                "ext-xml": "*",
+                "ext-yaml": "*",
+                "ext-zip": "*"
             },
             "type": "library",
             "autoload": {
@@ -171,11 +177,13 @@
             "description": "A small, lightweight utility to read values and properties from distinct sources using the same methodology",
             "homepage": "https://github.com/JuanchoSL/DataTransfer",
             "keywords": [
+                "Data Interchange Format",
                 "array",
                 "csv",
                 "data converter",
                 "data sheets",
                 "data transfer objects",
+                "dif",
                 "dto",
                 "entity",
                 "file contents",
@@ -192,9 +200,9 @@
                 "yaml"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/DataTransfer/tree/1.0.14"
+                "source": "https://github.com/JuanchoSL/DataTransfer/tree/1.0.16"
             },
-            "time": "2026-01-14T16:28:39+00:00"
+            "time": "2026-08-26T04:58:39+00:00"
         },
         {
             "name": "juanchosl/exceptions",
@@ -247,24 +255,26 @@
         },
         {
             "name": "juanchosl/httpdata",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/HttpData.git",
-                "reference": "68fd8423b800cf4e628a83b336b492527e4fb504"
+                "reference": "e83f9377edad8e00df3d1759f35813c495b87a99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/68fd8423b800cf4e628a83b336b492527e4fb504",
-                "reference": "68fd8423b800cf4e628a83b336b492527e4fb504",
+                "url": "https://api.github.com/repos/JuanchoSL/HttpData/zipball/e83f9377edad8e00df3d1759f35813c495b87a99",
+                "reference": "e83f9377edad8e00df3d1759f35813c495b87a99",
                 "shasum": ""
             },
             "require": {
+                "ext-fileinfo": "*",
                 "ext-mbstring": "*",
                 "fig/http-message-util": "1.1.*",
-                "juanchosl/datamanipulation": "^1.0",
+                "juanchosl/datamanipulation": "1.0.*",
                 "juanchosl/exceptions": "1.0.*",
                 "juanchosl/httpheaders": "1.0.*",
+                "juanchosl/validators": "1.0.*",
                 "php": "^8.0",
                 "psr/http-client": "1.0.*",
                 "psr/http-factory": "1.1.*",
@@ -272,7 +282,7 @@
             },
             "require-dev": {
                 "phpstan/phpstan": "1.12.*",
-                "phpunit/phpunit": "10.5.*"
+                "phpunit/phpunit": "9.6.* | 10.5.*"
             },
             "type": "library",
             "autoload": {
@@ -306,9 +316,9 @@
                 "uri"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/HttpData/tree/1.0.7"
+                "source": "https://github.com/JuanchoSL/HttpData/tree/1.0.8"
             },
-            "time": "2026-01-09T14:26:43+00:00"
+            "time": "2026-08-13T08:30:33+00:00"
         },
         {
             "name": "juanchosl/httpheaders",
@@ -367,28 +377,28 @@
         },
         {
             "name": "juanchosl/logger",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/Logger.git",
-                "reference": "ccc98ea040342c6f2a87c7e035e76bdbfded8869"
+                "reference": "57776650543402e130a901962713dc80c663436b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/Logger/zipball/ccc98ea040342c6f2a87c7e035e76bdbfded8869",
-                "reference": "ccc98ea040342c6f2a87c7e035e76bdbfded8869",
+                "url": "https://api.github.com/repos/JuanchoSL/Logger/zipball/57776650543402e130a901962713dc80c663436b",
+                "reference": "57776650543402e130a901962713dc80c663436b",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^8.1",
+                "php": "^8.0",
                 "psr/http-message": "^2.0",
                 "psr/log": "3.0.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "9.6.*"
+                "phpunit/phpunit": "9.6.* || 10.5.*"
             },
             "type": "library",
             "autoload": {
@@ -415,9 +425,9 @@
                 "log"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/Logger/tree/1.1.3"
+                "source": "https://github.com/JuanchoSL/Logger/tree/1.1.4"
             },
-            "time": "2026-01-20T07:44:30+00:00"
+            "time": "2026-08-13T11:15:28+00:00"
         },
         {
             "name": "juanchosl/requestlistener",
@@ -492,28 +502,29 @@
         },
         {
             "name": "juanchosl/validators",
-            "version": "1.0.9",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JuanchoSL/Validators.git",
-                "reference": "c97691bc8ef01084e1a0f209e0a55b1465406ab5"
+                "reference": "c5f14af1c675c3aa19b0e325b1bc1269e1259b41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JuanchoSL/Validators/zipball/c97691bc8ef01084e1a0f209e0a55b1465406ab5",
-                "reference": "c97691bc8ef01084e1a0f209e0a55b1465406ab5",
+                "url": "https://api.github.com/repos/JuanchoSL/Validators/zipball/c5f14af1c675c3aa19b0e325b1bc1269e1259b41",
+                "reference": "c5f14af1c675c3aa19b0e325b1bc1269e1259b41",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "juanchosl/datamanipulation": "1.0.*",
-                "php": "^8.1",
+                "juanchosl/exceptions": "1.0.*",
+                "php": "^8.0",
                 "psr/log": "3.0.*"
             },
             "require-dev": {
                 "juanchosl/logger": "1.1.*",
                 "phpstan/phpstan": "1.12.*",
-                "phpunit/phpunit": "10.5.*"
+                "phpunit/phpunit": "9.6.* | 10.5.*"
             },
             "type": "library",
             "autoload": {
@@ -546,9 +557,9 @@
                 "validator"
             ],
             "support": {
-                "source": "https://github.com/JuanchoSL/Validators/tree/1.0.9"
+                "source": "https://github.com/JuanchoSL/Validators/tree/1.0.11"
             },
-            "time": "2026-07-22T10:02:00+00:00"
+            "time": "2026-08-22T10:14:59+00:00"
         },
         {
             "name": "psr/container",
@@ -1225,16 +1236,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.9.1",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "73cb188c785abfa7a7bec73487148202968274c6"
+                "reference": "d2d1aa8b35e072966c89bc0c66cf926e56767dc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/73cb188c785abfa7a7bec73487148202968274c6",
-                "reference": "73cb188c785abfa7a7bec73487148202968274c6",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d2d1aa8b35e072966c89bc0c66cf926e56767dc4",
+                "reference": "d2d1aa8b35e072966c89bc0c66cf926e56767dc4",
                 "shasum": ""
             },
             "require": {
@@ -1271,7 +1282,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.10-dev"
+                    "dev-main": "2.11-dev"
                 }
             },
             "autoload": {
@@ -1328,7 +1339,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-09T14:10:38+00:00"
+            "time": "2026-08-11T16:06:25+00:00"
         },
         {
             "name": "league/config",
@@ -1414,20 +1425,20 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.13.4",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "07d290f0c47959fd5eed98c95ee5602db07e0b6a"
+                "reference": "8680aa248f8e07bc8fb43f56f0f5fc77a0c96aae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/07d290f0c47959fd5eed98c95ee5602db07e0b6a",
-                "reference": "07d290f0c47959fd5eed98c95ee5602db07e0b6a",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8680aa248f8e07bc8fb43f56f0f5fc77a0c96aae",
+                "reference": "8680aa248f8e07bc8fb43f56f0f5fc77a0c96aae",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": "^8.0"
             },
             "conflict": {
                 "doctrine/collections": "<1.6.8",
@@ -1462,15 +1473,15 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.4"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.14.0"
             },
             "funding": [
                 {
-                    "url": "https://tidelift.com/funding/github/packagist/myclabs/deep-copy",
-                    "type": "tidelift"
+                    "url": "https://github.com/mnapoli",
+                    "type": "github"
                 }
             ],
-            "time": "2025-08-01T08:46:24+00:00"
+            "time": "2026-08-11T10:17:44+00:00"
         },
         {
             "name": "nette/di",
@@ -1751,21 +1762,21 @@
         },
         {
             "name": "nette/robot-loader",
-            "version": "v4.1.2",
+            "version": "v4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/robot-loader.git",
-                "reference": "ad3f4be7a9cd8a95ccc7596a1c4982a3b103d91e"
+                "reference": "44dba0bbb9cb521a3fed15046d3294c85dabe516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/robot-loader/zipball/ad3f4be7a9cd8a95ccc7596a1c4982a3b103d91e",
-                "reference": "ad3f4be7a9cd8a95ccc7596a1c4982a3b103d91e",
+                "url": "https://api.github.com/repos/nette/robot-loader/zipball/44dba0bbb9cb521a3fed15046d3294c85dabe516",
+                "reference": "44dba0bbb9cb521a3fed15046d3294c85dabe516",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
-                "nette/utils": "^4.0",
+                "nette/utils": "^4.0.6",
                 "php": "8.1 - 8.5"
             },
             "require-dev": {
@@ -1816,22 +1827,22 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/robot-loader/issues",
-                "source": "https://github.com/nette/robot-loader/tree/v4.1.2"
+                "source": "https://github.com/nette/robot-loader/tree/v4.1.3"
             },
-            "time": "2026-02-23T04:18:24+00:00"
+            "time": "2026-08-18T10:23:46+00:00"
         },
         {
             "name": "nette/schema",
-            "version": "v1.3.5",
+            "version": "v1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/schema.git",
-                "reference": "f0ab1a3cda782dbc5da270d28545236aa80c4002"
+                "reference": "c54350438cd6914616f790a49cb424605f421562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/schema/zipball/f0ab1a3cda782dbc5da270d28545236aa80c4002",
-                "reference": "f0ab1a3cda782dbc5da270d28545236aa80c4002",
+                "url": "https://api.github.com/repos/nette/schema/zipball/c54350438cd6914616f790a49cb424605f421562",
+                "reference": "c54350438cd6914616f790a49cb424605f421562",
                 "shasum": ""
             },
             "require": {
@@ -1883,9 +1894,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/schema/issues",
-                "source": "https://github.com/nette/schema/tree/v1.3.5"
+                "source": "https://github.com/nette/schema/tree/v1.3.6"
             },
-            "time": "2026-02-23T03:47:12+00:00"
+            "time": "2026-08-16T21:58:41+00:00"
         },
         {
             "name": "nette/utils",
@@ -3519,16 +3530,16 @@
         },
         {
             "name": "sebastian/recursion-context",
-            "version": "5.0.1",
+            "version": "5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/recursion-context.git",
-                "reference": "47e34210757a2f37a97dcd207d032e1b01e64c7a"
+                "reference": "5d32fe257a9b39cb63146924d6b4e32a22d4502a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/47e34210757a2f37a97dcd207d032e1b01e64c7a",
-                "reference": "47e34210757a2f37a97dcd207d032e1b01e64c7a",
+                "url": "https://api.github.com/repos/sebastianbergmann/recursion-context/zipball/5d32fe257a9b39cb63146924d6b4e32a22d4502a",
+                "reference": "5d32fe257a9b39cb63146924d6b4e32a22d4502a",
                 "shasum": ""
             },
             "require": {
@@ -3571,7 +3582,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/recursion-context/issues",
                 "security": "https://github.com/sebastianbergmann/recursion-context/security/policy",
-                "source": "https://github.com/sebastianbergmann/recursion-context/tree/5.0.1"
+                "source": "https://github.com/sebastianbergmann/recursion-context/tree/5.0.2"
             },
             "funding": [
                 {
@@ -3591,7 +3602,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-08-10T07:50:56+00:00"
+            "time": "2026-08-11T05:27:39+00:00"
         },
         {
             "name": "sebastian/type",
@@ -3704,16 +3715,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v6.4.43",
+            "version": "v6.4.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "3b643aa587acbc42f967a429af088a56ed8f046d"
+                "reference": "60e3944c4859c487aa6ea2f0f7754917f70f7524"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/3b643aa587acbc42f967a429af088a56ed8f046d",
-                "reference": "3b643aa587acbc42f967a429af088a56ed8f046d",
+                "url": "https://api.github.com/repos/symfony/console/zipball/60e3944c4859c487aa6ea2f0f7754917f70f7524",
+                "reference": "60e3944c4859c487aa6ea2f0f7754917f70f7524",
                 "shasum": ""
             },
             "require": {
@@ -3778,7 +3789,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.4.43"
+                "source": "https://github.com/symfony/console/tree/v6.4.44"
             },
             "funding": [
                 {
@@ -3798,7 +3809,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-26T14:44:19+00:00"
+            "time": "2026-08-21T07:42:12+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3955,16 +3966,16 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.38.0",
+            "version": "v1.42.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "2d446c214bdbe5b71bde5011b060a05fece3ae6b"
+                "reference": "aa20edea75bd9c48cfecc8360922e5a6e5c44502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/2d446c214bdbe5b71bde5011b060a05fece3ae6b",
-                "reference": "2d446c214bdbe5b71bde5011b060a05fece3ae6b",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/aa20edea75bd9c48cfecc8360922e5a6e5c44502",
+                "reference": "aa20edea75bd9c48cfecc8360922e5a6e5c44502",
                 "shasum": ""
             },
             "require": {
@@ -4016,7 +4027,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.38.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.42.0"
             },
             "funding": [
                 {
@@ -4036,7 +4047,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-25T13:48:31+00:00"
+            "time": "2026-08-07T06:33:24+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4275,7 +4286,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1",
+        "php": "^8.0",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",

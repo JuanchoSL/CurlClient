@@ -20,6 +20,12 @@ use Psr\Http\Message\UriInterface;
 class CurlHandleFactory
 {
 
+    protected array $options = [];
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
+    }
     public function createFromRequest(RequestInterface $request): CurlHandle
     {
         switch ((new StringsManipulators($request->getUri()->getScheme()))->toLower()->__tostring()) {
@@ -54,7 +60,7 @@ class CurlHandleFactory
             $exception->setRequest($request);
             throw $exception;
         }
-        $client = new CurlEmailHandler();
+        $client = new CurlEmailHandler($this->options);
         if (in_array(strtolower($request->getUri()->getScheme()), ['smtps', 'pop3s', 'imaps'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
         }
@@ -83,7 +89,9 @@ class CurlHandleFactory
         }
         $request = $this->prepareRequestTargetIntoUri($request);
         $class = (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ssh'])) ? CurlSshHandler::class : CurlFtpHandler::class;
-        $client = new $class();
+        $client = new $class($this->options + [
+            CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
+        ]);
         if (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ftps'])) {
             $client = $client->setSsl(true, !$this->detectLookup($request->getUri()));
             if (in_array(strtolower($request->getUri()->getScheme()), ['ftps'])) {
@@ -142,7 +150,7 @@ class CurlHandleFactory
             throw $exception;
         }
         $headers = $this->prepareHeaders($request);
-        $client = (new CurlHttpHandler([
+        $client = (new CurlHttpHandler($this->options + [
             CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
             CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
         ]));
@@ -188,7 +196,7 @@ class CurlHandleFactory
     {
         $request = $this->prepareRequestTargetIntoUri($request);
         $headers = $this->prepareHeaders($request);
-        $client = (new CurlWebDavHandler([
+        $client = (new CurlWebDavHandler($this->options + [
             //CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
             CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
         ]));
@@ -217,7 +225,7 @@ class CurlHandleFactory
     {
         $request = $this->prepareRequestTargetIntoUri($request);
         $headers = $this->prepareHeaders($request);
-        $client = (new CurlSmbHandler([
+        $client = (new CurlSmbHandler($this->options + [
             //CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
             //CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
         ]));
@@ -227,9 +235,9 @@ class CurlHandleFactory
         switch (strtoupper($request->getMethod())) {
             case RequestMethodInterface::METHOD_GET:
                 if (substr($request->getRequestTarget(), -1) == '/') {
-                    $result = $client->prepareList($request->getUri(), $headers);
+                    $result = $client->prepareGet($this->detectIp($request->getUri()), $headers);
                 } else {
-                    $result = $client->prepareGet($request->getUri(), $headers);
+                    $result = $client->prepareGet($this->detectIp($request->getUri()), $headers);
                 }
                 break;
             case RequestMethodInterface::METHOD_POST:
@@ -242,7 +250,10 @@ class CurlHandleFactory
                 $result = $client->preparePut($request->getUri(), (string) $request->getBody(), $headers);
                 break;
             case RequestMethodInterface::METHOD_DELETE:
-                $result = $client->prepareDelete($request->getUri(), $headers);
+                $result = $client->prepareDelete($this->detectIp($request->getUri()), $headers);
+                break;
+            case 'MOVE':
+                $result = $client->prepareMove($this->detectIp($request->getUri()), $headers);
                 break;
             default:
                 $result = $client->prepareHead($request->getUri(), $headers);
@@ -291,16 +302,20 @@ class CurlHandleFactory
         return $protocol;
     }
 
+    protected function detectIp(UriInterface $url)
+    {
+        if (!StringValidation::isIpV4($url->getHost())) {
+            return $url->withHost(gethostbyname($url->getHost()));
+        }
+        return $url;
+    }
     protected function detectLookup(UriInterface $url)
     {
-        $host = $url->getHost();
-        if (!StringValidation::isIpV4($url->getHost())) {
-            $host = gethostbyname($url->getHost());
-        }
+        $host = $this->detectIp($url)->getHost();
         foreach (net_get_interfaces() as $interface) {
             if ($interface['up'] == 1) {
                 foreach ($interface['unicast'] as $lan) {
-                    if ($lan['address'] == $host) {
+                    if (array_key_exists('address', $lan) && $lan['address'] == $host) {
                         return true;
                     }
                 }

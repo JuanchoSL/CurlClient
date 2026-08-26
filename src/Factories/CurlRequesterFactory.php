@@ -18,6 +18,12 @@ use Psr\Http\Message\ResponseInterface;
 class CurlRequesterFactory
 {
 
+    protected array $options = [];
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
+    }
     public function createFromRequest(RequestInterface $request): ResponseInterface
     {
         switch ((new StringsManipulators($request->getUri()->getScheme()))->toLower()->__tostring()) {
@@ -48,7 +54,7 @@ class CurlRequesterFactory
     /*
     public function createFromRequestSmb(RequestInterface $request): ResponseInterface
     {
-        $result = (new CurlHandleFactory())->createFromRequest($request);
+        $result = (new CurlHandleFactory($this->options))->createFromRequest($request);
         $result = CurlSmbRequest::execute($result);
         $response = new ResponseFactory();
         $message = $response
@@ -60,7 +66,7 @@ class CurlRequesterFactory
     */
     public function createFromRequestEmail(RequestInterface $request): ResponseInterface
     {
-        $result = (new CurlHandleFactory())->createFromRequest($request);
+        $result = (new CurlHandleFactory($this->options))->createFromRequest($request);
         $result = CurlEmailRequest::execute($result);
         $response = new ResponseFactory();
         $message = $response
@@ -72,7 +78,7 @@ class CurlRequesterFactory
 
     public function createFromRequestFtp(RequestInterface $request): ResponseInterface
     {
-        $result = (new CurlHandleFactory())->createFromRequest($request);
+        $result = (new CurlHandleFactory($this->options))->createFromRequest($request);
         $result = (in_array(strtolower($request->getUri()->getScheme()), ['sftp', 'ssh'])) ? CurlSshRequest::execute($result) : CurlFtpRequest::execute($result);
         $response = new ResponseFactory();
         $message = $response
@@ -93,7 +99,7 @@ class CurlRequesterFactory
 
     public function createFromRequestHttp(RequestInterface $request): ResponseInterface
     {
-        $result = (new CurlHandleFactory())->createFromRequest($request);
+        $result = (new CurlHandleFactory($this->options))->createFromRequest($request);
         $result = CurlHttpRequest::execute($result);
         if (empty($result) || $result->getResponseCode() == 0) {
             $exception = new NetworkException("The request to '{$request->getUri()->__tostring()}' failure");
