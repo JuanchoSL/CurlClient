@@ -79,14 +79,7 @@ class CallTest extends TestCase
         if ($response->getStatusCode() != 429) {
             $this->assertEquals(200, $response->getStatusCode());
             $this->assertStringStartsWith(MimeTypes::JSON, $response->getHeaderLine('content-type'));
-            try {
-                $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-            } catch (\Exception $e) {
-                echo print_r($e->getMessage(), true);
-                echo print_r($response->getStatusCode(), true);
-                echo print_r((string) $response->getBody(), true);
-                exit;
-            }
+            $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
             $this->assertIsArray($body);
             $this->assertArrayHasKey('rates', $body);
             $this->assertIsArray($body['rates']);

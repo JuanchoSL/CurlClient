@@ -80,15 +80,8 @@ class CallHttpHandlersTest extends TestCase
         $this->assertInstanceOf(CurlResponse::class, $response);
         $this->assertEquals(200, $response->getResponseCode());
         $this->assertStringStartsWith(MimeTypes::JSON, $response->getContentType());
-try{
-    $body = json_decode((string) $response->getBody(), true, 512, JSON_INVALID_UTF8_IGNORE);
-}catch(\Exception $e){
 
-echo print_r($e->getMessage(), true);
-echo print_r($response->getResponseCode(), true);
-echo print_r((string) $response->getBody(), true);
-exit;
-}
+        $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertIsArray($body);
         $this->assertArrayHasKey('rates', $body);
         $this->assertIsArray($body['rates']);
