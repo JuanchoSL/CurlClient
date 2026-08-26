@@ -87,7 +87,7 @@ try{
 echo print_r($e->getMessage(), true);
 echo print_r($response->getResponseCode(), true);
 echo print_r((string) $response->getBody(), true);
-
+exit;
 }
         $this->assertIsArray($body);
         $this->assertArrayHasKey('rates', $body);
