@@ -4,7 +4,6 @@ namespace JuanchoSL\CurlClient;
 
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
-use JuanchoSL\Validators\Types\Strings\StringValidation;
 
 /**
  * Group the cURL response data in order to use from other services
@@ -29,19 +28,6 @@ class CurlResponse implements CurlResponseInterface
     {
         $this->last_info = $info;
         $headers = '';
-
-        if (is_string($body) && isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
-            if (mb_substr_count($body, PHP_EOL . PHP_EOL) > 0) {
-                //$body = (string)(new StringsManipulators(strval($body)))->eol(PHP_EOL);
-                list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
-            } else {
-                $headers = trim(mb_substr($body, 0, $this->last_info['header_size']));
-            }
-        }
-        if (empty($this->body) && isset($this->last_info['size_download']) && $this->last_info['size_download'] > 0) {
-            $this->body = trim(mb_substr($body, (intval($this->last_info['size_download'])) * -1));
-        }
-        /*
         if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0 && mb_substr_count($body, PHP_EOL . PHP_EOL) > 0) {
             $body = (new StringsManipulators($body))->eol(PHP_EOL)->__tostring();
             list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
@@ -53,14 +39,8 @@ class CurlResponse implements CurlResponseInterface
                 $this->body = trim(mb_substr($body, intval($this->last_info['size_download']) * -1));
             }
         }
-        */
-        //$headers = explode(PHP_EOL, $headers);
-        $headers = (new StringsManipulators($headers))->eol(PHP_EOL)->explode(PHP_EOL);
+        $headers = explode(PHP_EOL, $headers);
         foreach ($headers as $value) {
-            if (StringValidation::isValueContaining((string) $value, ':')) {
-                $this->headers[(string) $value->substringBeforeChar(':')->trim()] = (string) $value->substringAfterChar(':')->trim();
-            }
-            /*
             if (($pos = strpos($value, ':')) !== false) {
                 $name = substr($value, 0, $pos);
                 $value = substr($value, $pos + 1);
@@ -68,7 +48,6 @@ class CurlResponse implements CurlResponseInterface
                     $this->headers[trim($name)] = trim($value);
                 }
             }
-            */
         }
     }
 
