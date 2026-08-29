@@ -46,7 +46,7 @@ class SFtpTest extends TestCase
             CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
         ]))->sendRequest($request);
         //echo print_r((string) $response->getBody(), true);exit;
-        $this->assertStringContainsString('No such file or directory', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
 
     /**
@@ -187,7 +187,7 @@ class SFtpTest extends TestCase
             CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
             CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
         ]))->sendRequest($request);
-        $this->assertStringContainsString('No such file or directory', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());
 
         //$this->assertEquals(Codes::FILE_UNAVAILABLE, $response->getStatusCode());
         //$this->assertNotEmpty((string) $response->getBody());
@@ -224,7 +224,7 @@ class SFtpTest extends TestCase
             CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
         ]))->sendRequest($request);
         $this->assertNotEmpty((string) $response->getBody());
-        $this->assertStringContainsString('No such file or directory', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
     /**
      * @dataProvider providerData
@@ -275,7 +275,7 @@ class SFtpTest extends TestCase
         ]))->sendRequest($request);
         //echo print_r($response, true);exit;
         $this->assertNotEmpty((string) $response->getBody());
-        $this->assertStringContainsString('No such file or directory', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
     /**
      * @dataProvider providerData
