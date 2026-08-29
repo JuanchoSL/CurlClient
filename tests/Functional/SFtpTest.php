@@ -76,12 +76,13 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_POST, $uri)
             ->withRequestTarget("test/")
         ;
-        //echo print_r($request, true);exit;
+        echo print_r($request, true).PHP_EOL;
         $response = (new PsrCurlClient([
             CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
             CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
         ]))->sendRequest($request);
-        //echo print_r((string)$response->getBody(), true);exit;
+        echo print_r($response, true).PHP_EOL;
+        echo print_r($response, true).PHP_EOL;
         $this->assertStringNotContainsString('mkdir command failed', (string) $response->getBody());
 
         //$this->assertEquals(Codes::CLOSING_DATA_CONNECTION, $response->getStatusCode());
