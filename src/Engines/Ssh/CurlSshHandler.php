@@ -191,7 +191,9 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
     {
         $result = curl_exec($curl);
         $response_info = curl_getinfo($curl);
+        /*
         $headers = [];
+
         if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
             if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
                 $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
@@ -206,12 +208,13 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
             }
             $response_info['header_size'] = mb_strlen($headers);
         }
+        */
         if ($result === false) {
             $result = curl_error($curl);
             $response_info['size_download'] = mb_strlen($result);
         }
 
-        return new CurlResponse($headers . PHP_EOL . PHP_EOL . $result, $response_info);
+        return new CurlResponse($result, $response_info);
     }
 
 }
