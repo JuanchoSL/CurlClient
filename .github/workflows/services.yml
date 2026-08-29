@@ -25,7 +25,7 @@ jobs:
         os: [ubuntu-latest]
         dependencies: ["install", "update"]
     env: 
-      extensions: curl,openssl,ssh2,json,mbstring
+      extensions: curl,openssl,ssh2,json,mbstring,ftp
       key: extensions-php
 
     steps:
@@ -38,7 +38,7 @@ jobs:
         run: docker compose up -d --force-recreate
       
       - name: Wait for services
-        run: sleep 10
+        run: sleep 5
 
       - name: Setup PHP
         id: php-env
