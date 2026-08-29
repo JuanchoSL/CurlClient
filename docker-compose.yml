@@ -1,0 +1,9 @@
+services:
+  nginx-webdav:
+    image: baksili/webdav-server:latest
+    container_name: webdav
+    ports:
+      - "80:80/tcp"
+    environment:
+      - USERNAME=user
+      - PASSWORD=pass

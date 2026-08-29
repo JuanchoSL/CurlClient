@@ -270,9 +270,6 @@ class CurlHandleFactory
             $path .= '/' . $request->getRequestTarget();
         }
         return $request->withUri($uri->withPath($path));
-        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getScheme())->concatenation($uri->getAuthority(), '://')->rtrim('/')->concatenation($request->getRequestTarget(), '/')));
-        return $request->withUri($uri);
-        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getAuthority()))->rtrim('/')->concatenation($request->getUri()->getPath(), '/')->concatenation($request->getRequestTarget(), '/')->replace('//', '/')->preppend($uri->getScheme(), '://'));
     }
 
     protected function prepareHeaders(RequestInterface $request): iterable
