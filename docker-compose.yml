@@ -11,6 +11,8 @@ services:
   sftp:
     image: atmoz/sftp
     volumes:
+    - ./etc/socket-ssh:/etc/ssh/ssh_host_rsa
+    - ./etc/localhost-rsa.pub:/home/foo/.ssh/keys/id_rsa.pub:ro
     - ./data:/home/foo/upload
     ports:
       - "1522:22"
