@@ -12,6 +12,7 @@
         </testsuite>
     </testsuites>
     <php>
+        <env name="SFTP_SERVER" value="sftp://foo:pass@localhost:22/upload/" force="true" />
         <env name="WEBDAV_SERVER" value="http://user:pass@localhost:80/" force="true" />
     </php>
 </phpunit>
