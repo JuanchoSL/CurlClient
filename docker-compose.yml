@@ -3,7 +3,7 @@ services:
     image: baksili/webdav-server:latest
     container_name: webdav
     ports:
-      - "8080:8080/tcp"
+      - "8080:80/tcp"
     volumes:
       - "./data:/media/data"
     environment:
