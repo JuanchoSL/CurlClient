@@ -194,10 +194,9 @@ class CurlHandleFactory
 
     public function createFromRequestWebDav(RequestInterface $request): CurlHandle
     {
-        $request = $this->prepareRequestTargetIntoUri($request);
         $headers = $this->prepareHeaders($request);
         $client = (new CurlWebDavHandler($this->options + [
-            //CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
+            CURLOPT_REQUEST_TARGET => $request->getRequestTarget(),
             CURLOPT_HTTP_VERSION => $this->prepareProtocolVersion($request)
         ]));
         if (in_array(strtolower($request->getUri()->getScheme()), ['https'])) {
@@ -265,9 +264,15 @@ class CurlHandleFactory
     protected function prepareRequestTargetIntoUri(RequestInterface $request): RequestInterface
     {
         $uri = $request->getUri();
-        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getAuthority()))->rtrim('/')->concatenation($request->getRequestTarget(), '/')->replace('//', '/')->preppend($uri->getScheme(), '://'));
-        //$uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getScheme())->concatenation($uri->getAuthority(), '://')->rtrim('/')->concatenation($request->getRequestTarget(), '/')));
+        $path = $uri->getPath();
+        if (substr($request->getRequestTarget(), 0, 1) != '/') {
+            $path = rtrim($path, '/');
+            $path .= '/' . $request->getRequestTarget();
+        }
+        return $request->withUri($uri->withPath($path));
+        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getScheme())->concatenation($uri->getAuthority(), '://')->rtrim('/')->concatenation($request->getRequestTarget(), '/')));
         return $request->withUri($uri);
+        $uri = (new UriFactory)->createUri((string) (new StringsManipulators($uri->getAuthority()))->rtrim('/')->concatenation($request->getUri()->getPath(), '/')->concatenation($request->getRequestTarget(), '/')->replace('//', '/')->preppend($uri->getScheme(), '://'));
     }
 
     protected function prepareHeaders(RequestInterface $request): iterable

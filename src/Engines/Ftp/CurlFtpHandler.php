@@ -70,11 +70,12 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
         if (!array_key_exists('destination', $header)) {
             throw new PreconditionFailedException("The new pathname needs to be indicated into a 'Destination' header");
         }
+        $this->setReturnTransfer(false);
         $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'MOVE');
-        curl_setopt($curl, CURLOPT_FILETIME, true);
+        curl_setopt($curl, CURLOPT_FILETIME, false);
         curl_setopt($curl, CURLOPT_HEADER, false);
-        curl_setopt($curl, CURLOPT_NOBODY, true);
+        curl_setopt($curl, CURLOPT_NOBODY, !$this->getReturnTransfer());
 
         curl_setopt($curl, CURLOPT_PREQUOTE, [
             sprintf("RNFR %s", $url->getPath()),
@@ -170,8 +171,10 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
     {
         $this->setReturnTransfer(false);
         $curl = $this->init($url, $header);
-        curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
-        curl_setopt($curl, CURLOPT_NOBODY, true);
+        //curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
+        curl_setopt($curl, CURLOPT_FILETIME, false);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_NOBODY, !$this->getReturnTransfer());
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, RequestMethodInterface::METHOD_DELETE);
         if (substr($url->getPath(), -1) == '/') {
             curl_setopt($curl, CURLOPT_POSTQUOTE, array(sprintf("RMD %s", $url->getPath())));
@@ -228,14 +231,16 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
     {
         $result = curl_exec($curl);
         $response_info = curl_getinfo($curl);
+        /*
         $headers = [];
-
         if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
             if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
                 $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
             }
             if (isset($response_info['size_download']) && $response_info['size_download'] > 0) {
                 $headers[] = "Content-Length: " . $response_info['size_download'];
+            } elseif (isset($response_info['download_content_length']) && $response_info['download_content_length'] > 0) {
+                $headers[] = "Content-Length: " . $response_info['download_content_length'];
             }
             if (!empty($headers)) {
                 $headers = implode(PHP_EOL, $headers);
@@ -244,9 +249,10 @@ class CurlFtpHandler extends CurlHandler implements BasicCurlMethodsInterface, L
             }
             $response_info['header_size'] = mb_strlen($headers);
         }
+        */
         if ($result === false) {
             $result = curl_error($curl);
-            $response_info['size_download'] = mb_strlen($result);
+            $response_info['size_download'] += mb_strlen($result);
         }
         return new CurlResponse($result, $response_info);
     }

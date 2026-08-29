@@ -130,7 +130,7 @@ class CurlHandler
             $header = array_values($header);
             curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
         }
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, $this->return_transfer ? 1 : 0);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, $this->getReturnTransfer() ? 1 : 0);
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->getConnectionTimeoutSeconds());
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->getConnectionTimeoutSeconds());
         curl_setopt($curl, CURLOPT_HEADER, true);
@@ -146,12 +146,7 @@ class CurlHandler
                 curl_setopt($curl, CURLSSLOPT_AUTO_CLIENT_CERT, intval(!$this->cert_strict));
             }
         }
-        if (!empty($this->settings)) {
-            foreach ($this->settings as $option => $setting) {
-                curl_setopt($curl, $option, $setting);
-            }
-        }
-        return $curl;
+        return $this->setClientOptions($curl);
     }
 
     protected function setClientOptions(CurlHandle $curl)
@@ -173,7 +168,7 @@ class CurlHandler
     {
         $path = tempnam(sys_get_temp_dir(), 'curl');
         file_put_contents($path, $data);
-        $resource = fopen($path, 'r+');
+        $resource = fopen($path, 'rb');
         curl_setopt($curl, CURLOPT_READDATA, $resource);
         curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
         return $curl;
