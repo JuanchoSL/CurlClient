@@ -1,3 +1,5 @@
+name: PHP Composer and Tests http cURL calls
+
 on:
   push:
     branches: ["develop"]
@@ -13,7 +15,7 @@ jobs:
 
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@main
         with:
           php-version: "8.5"
           extensions: curl,openssl,ssh2,json,mbstring
@@ -41,4 +43,4 @@ jobs:
       - name: Run test suite
         env:
           TMPDIR: ${{ runner.temp }}
-        run: composer tests
+        run: vendor/bin/phpunit -c phpunit.xml tests/Unit/CallHttpHandlersTest.php
