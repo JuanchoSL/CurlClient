@@ -26,10 +26,7 @@ class SFtpTest extends TestCase
     public function testOpen($uri)
     {
         $request = (new RequestFactory())->createRequest(RequestMethodInterface::METHOD_HEAD, $uri);
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertEquals(0, $response->getStatusCode());
     }
     /**
@@ -41,10 +38,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
             ->withRequestTarget('not-exists/');
         //echo print_r($request, true);exit;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r((string) $response->getBody(), true);exit;
         $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
@@ -57,10 +51,7 @@ class SFtpTest extends TestCase
         $request = (new RequestFactory())
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r((string)$response->getBody(), true);exit;
         //$this->assertEquals(Codes::CLOSING_DATA_CONNECTION, $response->getStatusCode());
         $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->eol(PHP_EOL));
@@ -76,13 +67,10 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_POST, $uri)
             ->withRequestTarget("test/")
         ;
-        echo print_r($request, true).PHP_EOL;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
-        echo print_r($response, true).PHP_EOL;
-        echo print_r($response, true).PHP_EOL;
+        //echo print_r($request, true).PHP_EOL;
+        $response = (new PsrCurlClient())->sendRequest($request);
+        //echo print_r($response, true).PHP_EOL;
+        //echo print_r($response, true).PHP_EOL;
         $this->assertStringNotContainsString('mkdir command failed', (string) $response->getBody());
 
         //$this->assertEquals(Codes::CLOSING_DATA_CONNECTION, $response->getStatusCode());
@@ -96,10 +84,7 @@ class SFtpTest extends TestCase
         $request = (new RequestFactory())
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->eol(PHP_EOL));
         $this->assertNotEmpty($res);
         $this->assertCount(3, $res);
@@ -113,10 +98,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_POST, $uri)
             ->withRequestTarget("test/")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertStringContainsString('mkdir command failed', (string) $response->getBody());
         //$this->assertEquals(Codes::FILE_UNAVAILABLE, $response->getStatusCode());
         //$this->assertEquals("QUOT command failed with 550", (string) $response->getBody());
@@ -132,10 +114,7 @@ class SFtpTest extends TestCase
             ->withRequestTarget("test/")
         ;
         //echo print_r($request, true);exit;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r((string) $response->getBody(), true);exit;
         $this->assertEquals(0, $response->getStatusCode());
         $this->assertEmpty((string) $response->getBody());
@@ -150,10 +129,7 @@ class SFtpTest extends TestCase
             ->withRequestTarget("test.txt")
             ->withBody((new StreamFactory())->createStream("Lorem ipsum dolor"))
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertEquals(0, $response->getStatusCode());
         $this->assertEmpty((string) $response->getBody());
     }
@@ -167,10 +143,7 @@ class SFtpTest extends TestCase
             ->withHeader('Destination', (string) $uri->withUserInfo('')->withPath(rtrim($uri->getPath(), '/') . '/renamed-test.txt')->getPath())
             ->withRequestTarget("test.txt")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertEmpty((string) $response->getBody());
 
     }
@@ -184,10 +157,7 @@ class SFtpTest extends TestCase
             ->withHeader('Destination', (string) $uri->withUserInfo('')->withPath(rtrim($uri->getPath(), '/') . '/renamed-test.txt')->getPath())
             ->withRequestTarget("test.txt")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertStringContainsString('No such file', (string) $response->getBody());
 
         //$this->assertEquals(Codes::FILE_UNAVAILABLE, $response->getStatusCode());
@@ -203,10 +173,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_DELETE, $uri)
             ->withRequestTarget("renamed-test.txt")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r($response, true);exit;
         //$this->assertEquals(Codes::REQUESTED_FILE_ACTION_WAS_OKAY, $response->getStatusCode());
         $this->assertEmpty((string) $response->getBody());
@@ -220,10 +187,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_DELETE, $uri)
             ->withRequestTarget("renamed-test.txt")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertNotEmpty((string) $response->getBody());
         $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
@@ -254,10 +218,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_DELETE, $uri)
             ->withRequestTarget("renamed-test/")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r($response, true);exit;
         $this->assertEmpty((string) $response->getBody());
     }
@@ -270,10 +231,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_DELETE, $uri)
             ->withRequestTarget("renamed-test/")
         ;
-        $response = (new PsrCurlClient([
-            CURLOPT_SSH_PUBLIC_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa.pub']),
-            CURLOPT_SSH_PRIVATE_KEYFILE => implode(DIRECTORY_SEPARATOR, [dirname(__DIR__, 2), 'etc', 'localhost-rsa'])
-        ]))->sendRequest($request);
+        $response = (new PsrCurlClient())->sendRequest($request);
         //echo print_r($response, true);exit;
         $this->assertNotEmpty((string) $response->getBody());
         $this->assertStringContainsString('No such file', (string) $response->getBody());
