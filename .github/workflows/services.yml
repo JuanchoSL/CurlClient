@@ -69,6 +69,7 @@ jobs:
         env:
           TMPDIR: ${{ runner.temp }}
           WEBDAV_SERVER: http://user:pass@localhost:80/
+          SFTP_SERVER: sftp://foo:pass@localhost:1522/upload/
         run: vendor/bin/phpunit -c phpunit.xml tests/Functional/SFtpTest.php tests/Functional/WebDavTest.php
 
       - name: Tear Down Docker Compose
