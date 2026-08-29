@@ -16,4 +16,4 @@ services:
       - ./data:/home/foo/upload
     ports:
       - "1522:22"
-    command: foo:pass:1000:::upload
+    command: foo:pass:1001:::upload
