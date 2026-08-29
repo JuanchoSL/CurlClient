@@ -73,7 +73,7 @@ jobs:
         env:
           TMPDIR: ${{ runner.temp }}
           WEBDAV_SERVER: http://user:pass@localhost:80/
-        run: vendor/bin/phpunit -c phpunit.xml tests/Functional/SftpTest.php tests/Functional/WebDavTest.php
+        run: vendor/bin/phpunit -c phpunit.xml tests/Functional/SFtpTest.php tests/Functional/WebDavTest.php
 
       - name: Tear Down Docker Compose
         if: always()
