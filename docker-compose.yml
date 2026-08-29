@@ -13,7 +13,7 @@ services:
     volumes:
       - ./etc/socket-ssh:/etc/ssh/ssh_host_rsa_key
       - ./etc/localhost-rsa.pub:/home/foo/.ssh/keys/id_rsa.pub:ro
-      - ./data:/home/foo/upload
+      - ./data:/home/foo/upload:rw
     ports:
       - "1522:22"
-    command: foo:pass:1001:::upload
+    command: foo:pass:1000
