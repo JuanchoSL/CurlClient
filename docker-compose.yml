@@ -13,5 +13,5 @@ services:
     volumes:
     - ./data:/home/foo/upload
     ports:
-      - "22:22"
+      - "1522:22"
     command: foo:pass:1000:::upload
