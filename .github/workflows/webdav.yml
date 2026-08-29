@@ -35,8 +35,11 @@ jobs:
         uses: docker/setup-docker-action@master
 
       - name: Run Docker Compose
-        run: docker compose up -d
+        run: docker compose up -d --force-recreate
       
+      - name: Wait for services
+        run: sleep 10
+
       - name: Setup PHP
         id: php-env
         uses: shivammathur/setup-php@main
@@ -69,6 +72,7 @@ jobs:
       - name: Run test suite
         env:
           TMPDIR: ${{ runner.temp }}
+          WEBDAV_SERVER: http://user:pass@localhost:80/
         run: vendor/bin/phpunit -c phpunit.xml tests/Functional/WebDavTest.php
 
       - name: Tear Down Docker Compose
