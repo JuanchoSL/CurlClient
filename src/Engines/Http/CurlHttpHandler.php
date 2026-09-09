@@ -4,12 +4,9 @@ namespace JuanchoSL\CurlClient\Engines\Http;
 
 use CurlHandle;
 use Fig\Http\Message\RequestMethodInterface;
-use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\SpecialServersMethodsInterface;
-use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
-use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -242,14 +239,4 @@ class CurlHttpHandler extends CurlHandler implements BasicCurlMethodsInterface, 
         return $curl;
     }
 
-    public static function execute(CurlHandle $curl): CurlResponseInterface
-    {
-        $result = curl_exec($curl);
-        $response_info = curl_getinfo($curl);
-        if ($result === false) {
-            $result = curl_error($curl);
-        }
-        $result = (string) (new StringsManipulators($result))->eol(PHP_EOL);
-        return new CurlResponse($result, $response_info);
-    }
 }

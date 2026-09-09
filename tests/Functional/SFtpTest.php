@@ -17,6 +17,7 @@ class SFtpTest extends TestCase
     {
         return [
             'SFtp' => [(new UriFactory())->createUri(getenv('SFTP_SERVER'))],
+            //'SFtp2' => [(new UriFactory())->createUri(getenv('SFTP_SERVER2'))],
         ];
     }
 
@@ -37,9 +38,7 @@ class SFtpTest extends TestCase
         $request = (new RequestFactory())
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
             ->withRequestTarget('not-exists/');
-        //echo print_r($request, true);exit;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r((string) $response->getBody(), true);exit;
         $this->assertStringContainsString('No such file', (string) $response->getBody());
     }
 
@@ -52,9 +51,8 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
         ;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r((string)$response->getBody(), true);exit;
+        $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->eol(PHP_EOL)->trim(PHP_EOL));
         //$this->assertEquals(Codes::CLOSING_DATA_CONNECTION, $response->getStatusCode());
-        $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->eol(PHP_EOL));
         $this->assertNotEmpty($res);
         $this->assertCount(2, $res);
     }
@@ -67,10 +65,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_POST, $uri)
             ->withRequestTarget("test/")
         ;
-        //echo print_r($request, true).PHP_EOL;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r($response, true).PHP_EOL;
-        //echo print_r($response, true).PHP_EOL;
         $this->assertStringNotContainsString('mkdir command failed', (string) $response->getBody());
 
         //$this->assertEquals(Codes::CLOSING_DATA_CONNECTION, $response->getStatusCode());
@@ -85,7 +80,7 @@ class SFtpTest extends TestCase
             ->createRequest(RequestMethodInterface::METHOD_GET, $uri)
         ;
         $response = (new PsrCurlClient())->sendRequest($request);
-        $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->eol(PHP_EOL));
+        $res = explode(PHP_EOL, (string) (new StringsManipulators((string) $response->getBody()))->trim(PHP_EOL)->eol(PHP_EOL));
         $this->assertNotEmpty($res);
         $this->assertCount(3, $res);
     }
@@ -113,9 +108,7 @@ class SFtpTest extends TestCase
             ->withHeader('Destination', (string) $uri->withUserInfo('')->withPath(rtrim($uri->getPath(), '/') . '/renamed-test/')->getPath())
             ->withRequestTarget("test/")
         ;
-        //echo print_r($request, true);exit;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r((string) $response->getBody(), true);exit;
         $this->assertEquals(0, $response->getStatusCode());
         $this->assertEmpty((string) $response->getBody());
     }
@@ -174,7 +167,6 @@ class SFtpTest extends TestCase
             ->withRequestTarget("renamed-test.txt")
         ;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r($response, true);exit;
         //$this->assertEquals(Codes::REQUESTED_FILE_ACTION_WAS_OKAY, $response->getStatusCode());
         $this->assertEmpty((string) $response->getBody());
     }
@@ -189,7 +181,7 @@ class SFtpTest extends TestCase
         ;
         $response = (new PsrCurlClient())->sendRequest($request);
         $this->assertNotEmpty((string) $response->getBody());
-        $this->assertStringContainsString('No such file', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());//Code 78
     }
     /**
      * @dataProvider providerData
@@ -232,9 +224,8 @@ class SFtpTest extends TestCase
             ->withRequestTarget("renamed-test/")
         ;
         $response = (new PsrCurlClient())->sendRequest($request);
-        //echo print_r($response, true);exit;
         $this->assertNotEmpty((string) $response->getBody());
-        $this->assertStringContainsString('No such file', (string) $response->getBody());
+        $this->assertStringContainsString('No such file', (string) $response->getBody());//Code 21
     }
     /**
      * @dataProvider providerData
