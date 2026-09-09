@@ -3,6 +3,8 @@
 namespace JuanchoSL\CurlClient\Engines\Common;
 
 use CurlHandle;
+use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
+use JuanchoSL\CurlClient\CurlResponse;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -13,7 +15,7 @@ class CurlHandler
     protected CurlHandle $curl;
 
     private ?bool $ssl = null;
-    private bool $cert_strict = false;
+    protected bool $cert_strict = false;
     private bool $return_transfer = true;
     protected int $connection_timeout = 60;
 
@@ -138,12 +140,11 @@ class CurlHandler
         if ($this->getSsl()) {
             $caCert = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . "etc" . DIRECTORY_SEPARATOR . 'cacert.pem';
             $strictSSL = (file_exists($caCert) && $this->cert_strict);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($strictSSL) ? 2 : 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, ($strictSSL) ? true : false);
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, ($strictSSL) ? 2 : 0);
             curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_MAX_DEFAULT);
-            curl_setopt($curl, CURLOPT_CAINFO, ($strictSSL) ? $caCert : true);
-            if (defined('CURLSSLOPT_AUTO_CLIENT_CERT')) {
-                curl_setopt($curl, CURLSSLOPT_AUTO_CLIENT_CERT, intval(!$this->cert_strict));
+            if ($strictSSL) {
+                curl_setopt($curl, CURLOPT_CAINFO, $caCert);
             }
         }
         return $this->setClientOptions($curl);
@@ -161,7 +162,8 @@ class CurlHandler
 
     protected function readerResource(CurlHandle $curl, $resource, int $buffer): string
     {
-        return fread($resource, $buffer);
+        $read = fread($resource, $buffer);
+        return (!empty($read)) ? $read : '';
     }
 
     protected function prepareReaderResource(CurlHandle $curl, $data)
@@ -169,6 +171,7 @@ class CurlHandler
         $path = tempnam(sys_get_temp_dir(), 'curl');
         file_put_contents($path, $data);
         $resource = fopen($path, 'rb');
+        curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
         curl_setopt($curl, CURLOPT_READDATA, $resource);
         curl_setopt($curl, CURLOPT_READFUNCTION, [$this, 'readerResource']);
         return $curl;
@@ -186,5 +189,19 @@ class CurlHandler
     {
         curl_setopt($curl, CURLOPT_WRITEFUNCTION, [$this, 'writerResource']);
         return $curl;
+    }
+
+    public static function execute(CurlHandle $curl): CurlResponseInterface
+    {
+        $result = curl_exec($curl);
+        $response_info = curl_getinfo($curl);
+        if ($result === false) {
+            $result = curl_error($curl);
+            $response_info['size_download'] = mb_strlen($result);
+            if ($response_info['http_code'] == 0) {
+                $response_info['http_code'] = curl_errno($curl);
+            }
+        }
+        return new CurlResponse($result, $response_info);
     }
 }

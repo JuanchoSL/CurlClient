@@ -3,7 +3,7 @@ services:
     image: baksili/webdav-server:latest
     container_name: webdav
     ports:
-      - "80:80/tcp"
+      - "8081:80/tcp"
     environment:
       - USERNAME=user
       - PASSWORD=pass

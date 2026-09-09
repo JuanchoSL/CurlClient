@@ -4,11 +4,9 @@ namespace JuanchoSL\CurlClient\Engines\Ssh;
 
 use CurlHandle;
 use Fig\Http\Message\RequestMethodInterface;
-use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\BasicCurlMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\ListMethodsInterface;
 use JuanchoSL\CurlClient\Contracts\Preparations\MoveMethodsInterface;
-use JuanchoSL\CurlClient\CurlResponse;
 use JuanchoSL\CurlClient\Engines\Common\CurlHandler;
 use JuanchoSL\DataManipulation\Manipulators\Arrays\ArrayManipulators;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
@@ -89,10 +87,11 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
 
     public function prepareGet(UriInterface $url, array $header = []): CurlHandle
     {
+        $this->setReturnTransfer(true);
         $curl = $this->init($url, $header);
         curl_setopt($curl, CURLOPT_FILETIME, true);
         curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_NOBODY, false);
+        curl_setopt($curl, CURLOPT_NOBODY, !$this->getReturnTransfer());
         curl_setopt($curl, CURLOPT_DIRLISTONLY, false);
         curl_setopt($curl, CURLOPT_UPLOAD, false);
         return $curl;
@@ -187,34 +186,6 @@ class CurlSshHandler extends CurlHandler implements BasicCurlMethodsInterface, L
         return $this->setClientOptions($curl);
     }
 
-    public static function execute(CurlHandle $curl): CurlResponseInterface
-    {
-        $result = curl_exec($curl);
-        $response_info = curl_getinfo($curl);
-        /*
-        $headers = [];
-
-        if (isset($response_info['header_size']) && $response_info['header_size'] == 0) {
-            if (isset($response_info['filetime']) && $response_info['filetime'] > 0) {
-                $headers[] = "Last-Modified: " . date(DATE_RFC1123, $response_info['filetime']);
-            }
-            if (isset($response_info['size_download']) && $response_info['size_download'] > 0) {
-                $headers[] = "Content-Length: " . $response_info['size_download'];
-            }
-            if (!empty($headers)) {
-                $headers = implode(PHP_EOL, $headers);
-            } else {
-                $headers = '';
-            }
-            $response_info['header_size'] = mb_strlen($headers);
-        }
-        */
-        if ($result === false) {
-            $result = curl_error($curl);
-            $response_info['size_download'] = mb_strlen($result);
-        }
-
-        return new CurlResponse($result, $response_info);
-    }
+    
 
 }

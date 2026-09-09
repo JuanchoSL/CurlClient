@@ -4,6 +4,10 @@ namespace JuanchoSL\CurlClient;
 
 use JuanchoSL\CurlClient\Contracts\CurlResponseInterface;
 use JuanchoSL\DataManipulation\Manipulators\Strings\StringsManipulators;
+use JuanchoSL\HttpData\Bodies\Parsers\ResponseReader;
+use JuanchoSL\HttpData\Exceptions\NetworkException;
+use JuanchoSL\HttpData\Factories\StreamFactory;
+use JuanchoSL\Validators\Types\Strings\StringValidation;
 
 /**
  * Group the cURL response data in order to use from other services
@@ -28,24 +32,41 @@ class CurlResponse implements CurlResponseInterface
     {
         $this->last_info = $info;
         $headers = '';
-        if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0 && mb_substr_count($body, PHP_EOL . PHP_EOL) > 0) {
-            $body = (new StringsManipulators($body))->eol(PHP_EOL)->__tostring();
-            list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
+        if (array_key_exists('scheme', $info) && in_array(strtoupper($info['scheme']), ['HTTP', 'HTTPS'])) {
+            if (array_key_exists('http_code', $info) && $info['http_code'] < 100) {
+                throw new NetworkException($body, $info['http_code']);
+            }
+            $parsed = new ResponseReader((new StreamFactory())->createStream($body));
+            $this->body = (string) $parsed->getBodyStream();
+            $this->headers = $parsed->getHeadersParams();
         } else {
-            if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
-                $headers = trim(mb_substr($body, 0, $this->last_info['header_size']));
+            if (is_string($body)) {
+                if (isset($this->last_info['header_size']) && $this->last_info['header_size'] > 0) {
+                    if (mb_strlen($body) > $this->last_info['header_size']) {
+                        $headers = mb_substr($body, 0, $this->last_info['header_size']);
+                        $body = mb_substr($body, $this->last_info['header_size']);
+                    }
+                } else {
+                    if (mb_substr_count($body, PHP_EOL . PHP_EOL) > 0) {
+                        list($headers, $this->body) = explode(PHP_EOL . PHP_EOL, $body, 2);
+                    } else {
+                        $headers = trim(mb_substr($body, 0, $this->last_info['header_size']));
+                    }
+                }
             }
-            if (isset($this->last_info['size_download']) && $this->last_info['size_download'] > 0) {
-                $this->body = trim(mb_substr($body, intval($this->last_info['size_download']) * -1));
+            if (empty($this->body) && !empty($body) && is_string($body)) {
+                if (isset($this->last_info['size_download']) && $this->last_info['size_download'] > 0) {
+                    $this->body = trim(mb_substr($body, (intval($this->last_info['size_download'])) * -1));
+                } elseif (isset($this->last_info['download_content_length']) && $this->last_info['download_content_length'] > 0) {
+                    $this->body = trim(mb_substr($body, (intval($this->last_info['download_content_length'])) * -1));
+                } else {
+                    $this->body = $body;
+                }
             }
-        }
-        $headers = explode(PHP_EOL, $headers);
-        foreach ($headers as $value) {
-            if (($pos = strpos($value, ':')) !== false) {
-                $name = substr($value, 0, $pos);
-                $value = substr($value, $pos + 1);
-                if (!empty($value)) {
-                    $this->headers[trim($name)] = trim($value);
+            $headers = (new StringsManipulators($headers))->eol(PHP_EOL)->explode(PHP_EOL);
+            foreach ($headers as $value) {
+                if (StringValidation::isValueContaining((string) $value, ':')) {
+                    $this->headers[(string) $value->substringBeforeChar(':')->trim()] = (string) $value->substringAfterChar(':')->trim();
                 }
             }
         }
@@ -75,6 +96,7 @@ class CurlResponse implements CurlResponseInterface
      */
     public function getBody(): mixed
     {
+        return (empty($this->body)) ? $this->body : (string) (new StringsManipulators(strval($this->body)))->eol(PHP_EOL)->trim(PHP_EOL);
         return $this->body;
     }
 
